@@ -1,8 +1,6 @@
 "use client"
 
 import { useState } from "react"
-import { CustomerThankYouEmail } from "@/emails/customer-thank-you"
-import { BusinessNotificationEmail } from "@/emails/business-notification"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
@@ -23,7 +21,7 @@ export default function EmailPreviewPage() {
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-8">
           <h1 className="font-heading text-3xl font-bold text-secondary mb-4">Email Template Preview</h1>
-          <p className="text-muted-foreground">Preview and test your Diva Fitness branded email templates</p>
+          <p className="text-muted-foreground">Preview your Diva Fitness branded email templates</p>
         </div>
 
         {/* Email Type Selector */}
@@ -78,20 +76,72 @@ export default function EmailPreviewPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="border rounded-lg overflow-hidden bg-white">
-                <div className="transform scale-75 origin-top-left w-[133%] h-[600px] overflow-auto">
-                  {activeEmail === "customer" ? (
-                    <CustomerThankYouEmail name={sampleData.name} />
-                  ) : (
-                    <BusinessNotificationEmail
-                      name={sampleData.name}
-                      email={sampleData.email}
-                      phone={sampleData.phone}
-                      message={sampleData.message}
-                      service={sampleData.service}
-                    />
-                  )}
-                </div>
+              <div className="border rounded-lg p-6 bg-white max-h-96 overflow-y-auto">
+                {activeEmail === "customer" ? (
+                  <div className="space-y-4">
+                    <div className="text-center p-4 bg-primary text-white rounded">
+                      <h2 className="text-xl font-bold">Diva Fitness</h2>
+                    </div>
+                    <h1 className="text-2xl font-bold text-primary">Thank You, {sampleData.name}!</h1>
+                    <p>
+                      Thank you for reaching out to Diva Fitness. I'm thrilled that you're considering taking the next
+                      step in your fitness journey!
+                    </p>
+                    <p>
+                      I've received your message and will personally respond within 24 hours. In the meantime, here's
+                      what you can expect:
+                    </p>
+                    <ul className="list-disc pl-6 space-y-1">
+                      <li>✨ A personalized response tailored to your goals</li>
+                      <li>🏋️‍♀️ Information about our services and approach</li>
+                      <li>📅 Options to schedule your free consultation</li>
+                      <li>💜 A warm welcome to the Diva Fitness community</li>
+                    </ul>
+                    <p>
+                      Every woman's fitness journey is unique, and I'm here to support you every step of the way in our
+                      beautiful garden studio.
+                    </p>
+                    <div className="text-center p-4 bg-primary text-white rounded">
+                      <p>
+                        <strong>Emma Fisher</strong>
+                        <br />
+                        Personal Trainer & Wellness Coach
+                      </p>
+                      <p>📞 07966 874 821 | ✉️ info@diva-fitness.co.uk</p>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="text-center p-4 bg-primary text-white rounded">
+                      <h2 className="text-xl font-bold">Diva Fitness - New Contact Form Submission</h2>
+                    </div>
+                    <div className="p-4 bg-primary/10 rounded">
+                      <p className="text-primary font-bold">🎉 You have a new potential client inquiry!</p>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-primary">Contact Details</h3>
+                      <p>
+                        <strong>Name:</strong> {sampleData.name}
+                      </p>
+                      <p>
+                        <strong>Email:</strong> {sampleData.email}
+                      </p>
+                      <p>
+                        <strong>Phone:</strong> {sampleData.phone}
+                      </p>
+                      <p>
+                        <strong>Interested In:</strong> {sampleData.service}
+                      </p>
+                    </div>
+                    <div className="space-y-2">
+                      <h3 className="font-bold text-primary">Message</h3>
+                      <div className="p-3 bg-gray-50 rounded whitespace-pre-wrap text-sm">{sampleData.message}</div>
+                    </div>
+                    <div className="text-center p-4 bg-primary text-white rounded">
+                      <p>💜 Remember to respond within 24 hours to maintain excellent customer service!</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>

@@ -1,4 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server"
+import { Resend } from "resend"
+import { CustomerThankYouEmail } from "@/emails/customer-thank-you"
+import { BusinessNotificationEmail } from "@/emails/business-notification"
+import { createContactSubmission } from "@/lib/database"
+
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 export async function POST(request: NextRequest) {
   try {
@@ -10,23 +16,42 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name, email, and message are required" }, { status: 400 })
     }
 
-    // Here you would typically send an email using a service like SendGrid, Resend, or similar
-    // For now, we'll just log the form data and return success
-    console.log("Contact form submission:", {
+    // Save to database
+    await createContactSubmission({
       name,
       email,
       phone,
-      message,
       service,
-      timestamp: new Date().toISOString(),
+      message,
     })
 
-    // Simulate email sending delay
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    // Send thank you email to customer
+    const customerEmail = await resend.emails.send({
+      from: "Emma at Diva Fitness <emma@diva-fitness.co.uk>",
+      to: [email],
+      subject: "Thank you for contacting Diva Fitness!",
+      react: CustomerThankYouEmail({ name }),
+    })
 
-    return NextResponse.json({ message: "Message sent successfully" }, { status: 200 })
+    // Send notification email to business
+    const businessEmail = await resend.emails.send({
+      from: "Diva Fitness Contact Form <noreply@diva-fitness.co.uk>",
+      to: ["info@diva-fitness.co.uk"],
+      subject: `New Contact Form Submission from ${name}`,
+      react: BusinessNotificationEmail({
+        name,
+        email,
+        phone,
+        message,
+        service,
+      }),
+    })
+
+    console.log("Emails sent and data saved:", { customerEmail, businessEmail })
+
+    return NextResponse.json({ message: "Message sent and saved successfully" }, { status: 200 })
   } catch (error) {
     console.error("Contact form error:", error)
-    return NextResponse.json({ error: "Failed to send message" }, { status: 500 })
+    return NextResponse.json({ error: "Failed to process request" }, { status: 500 })
   }
 }

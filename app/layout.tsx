@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Poppins, Roboto } from "next/font/google"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
+import { AuthProvider } from "@/hooks/use-auth"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,9 +43,11 @@ export default function RootLayout({
   return (
     <html lang="en" className={poppins.variable + " " + roboto.variable}>
       <body className="font-body bg-white text-secondary">
-        <Navigation />
-        <main>{children}</main>
-        <Footer />
+        <AuthProvider>
+          <Navigation />
+          <main>{children}</main>
+          <Footer />
+        </AuthProvider>
       </body>
     </html>
   )

@@ -2,12 +2,21 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
+import { Menu, X, User, LogOut } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { useAuth } from "@/hooks/use-auth"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
+  const { user, logout } = useAuth()
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -16,6 +25,11 @@ export default function Navigation() {
     { href: "/faqs", label: "FAQs" },
     { href: "/contact", label: "Contact" },
   ]
+
+  const handleLogout = async () => {
+    await logout()
+    window.location.href = "/"
+  }
 
   return (
     <nav className="bg-primary sticky top-0 z-50">
@@ -48,9 +62,41 @@ export default function Navigation() {
               ))}
             </div>
 
-            <Button asChild size="sm" className="bg-white text-primary hover:bg-white/90 font-semibold">
-              <Link href="/contact">Get Started</Link>
-            </Button>
+            {user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                    <User className="w-4 h-4 mr-2" />
+                    {user.name}
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="w-48">
+                  <DropdownMenuItem asChild>
+                    <Link href="/profile" className="flex items-center">
+                      <User className="w-4 h-4 mr-2" />
+                      My Profile
+                    </Link>
+                  </DropdownMenuItem>
+                  {user.role === "admin" && (
+                    <DropdownMenuItem asChild>
+                      <Link href="/admin" className="flex items-center">
+                        <User className="w-4 h-4 mr-2" />
+                        Admin Panel
+                      </Link>
+                    </DropdownMenuItem>
+                  )}
+                  <DropdownMenuSeparator />
+                  <DropdownMenuItem onClick={handleLogout} className="flex items-center text-red-600">
+                    <LogOut className="w-4 h-4 mr-2" />
+                    Logout
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <Button asChild size="sm" className="bg-white text-primary hover:bg-white/90 font-semibold">
+                <Link href="/login">Login</Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -76,9 +122,34 @@ export default function Navigation() {
                 </Link>
               ))}
               <div className="px-3 py-2">
-                <Button asChild size="sm" className="w-full bg-white text-primary hover:bg-white/90 font-semibold">
-                  <Link href="/contact">Get Started</Link>
-                </Button>
+                {user ? (
+                  <div className="space-y-2">
+                    <Link
+                      href="/profile"
+                      className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                    >
+                      My Profile
+                    </Link>
+                    {user.role === "admin" && (
+                      <Link
+                        href="/admin"
+                        className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                      >
+                        Admin Panel
+                      </Link>
+                    )}
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                ) : (
+                  <Button asChild size="sm" className="w-full bg-white text-primary hover:bg-white/90 font-semibold">
+                    <Link href="/login">Login</Link>
+                  </Button>
+                )}
               </div>
             </div>
           </div>

@@ -10,6 +10,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
 import HeroSection from "@/components/hero-section"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -149,19 +150,20 @@ export default function ContactPage() {
                   <Label htmlFor="service" className="text-sm">
                     Interested In
                   </Label>
-                  <select
-                    id="service"
-                    name="service"
+                  <Select
                     value={formData.service}
-                    onChange={handleInputChange}
-                    className="mt-1 w-full px-3 py-2 border border-input rounded-md focus:outline-none focus:ring-2 focus:ring-primary text-sm"
+                    onValueChange={(value) => setFormData({ ...formData, service: value })}
                   >
-                    <option value="">Select a service</option>
-                    <option value="1-to-1">1-to-1 Personal Training</option>
-                    <option value="group">Group Training</option>
-                    <option value="nutrition">Nutrition Coaching</option>
-                    <option value="consultation">Free Consultation</option>
-                  </select>
+                    <SelectTrigger className="mt-1">
+                      <SelectValue placeholder="Select a service" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="1-to-1">1-to-1 Personal Training</SelectItem>
+                      <SelectItem value="group">Group Training</SelectItem>
+                      <SelectItem value="nutrition">Nutrition Coaching</SelectItem>
+                      <SelectItem value="consultation">Free Consultation</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
 
                 <div>
