@@ -2,7 +2,6 @@ import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { getAllUsers } from "@/lib/auth"
 
-// Make sure we use the same secret everywhere
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
 const secret = new TextEncoder().encode(JWT_SECRET)
 
@@ -10,37 +9,38 @@ export async function GET(request: NextRequest) {
   console.log("=== Admin users API called ===")
 
   try {
-    // Debug: Log all cookies
-    const allCookies = request.cookies.getAll()
-    console.log(
-      "All cookies received:",
-      allCookies.map((c) => ({ name: c.name, hasValue: !!c.value })),
-    )
+    // Try to get token from Authorization header first, then cookie
+    const authHeader = request.headers.get("authorization")
+    const cookieToken = request.cookies.get("auth-token")?.value
 
-    // Get token from cookie
-    const token = request.cookies.get("auth-token")?.value
-    console.log("Auth token found:", !!token)
-    console.log("Token length:", token?.length || 0)
+    console.log("🎫 Auth header:", authHeader ? "Found" : "Not found")
+    console.log("🍪 Cookie token:", cookieToken ? "Found" : "Not found")
+
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+      console.log("✅ Using token from Authorization header")
+    } else if (cookieToken) {
+      token = cookieToken
+      console.log("✅ Using token from cookie")
+    }
 
     if (!token) {
-      console.log("❌ No auth token found in cookies")
+      console.log("❌ No auth token found in header or cookie")
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    // Verify token
-    console.log("🔍 Verifying token with secret:", JWT_SECRET.substring(0, 3) + "...")
+    console.log("🔍 Verifying token...")
     const { payload } = await jwtVerify(token, secret)
     console.log("✅ JWT payload verified:", payload)
 
-    // Check if user has admin role
     if (payload.role !== "admin") {
       console.log("❌ User is not admin:", payload.role)
       return NextResponse.json({ error: "Not authorized" }, { status: 403 })
     }
 
     console.log("✅ User is admin, fetching users...")
-
-    // Get all users
     const users = await getAllUsers()
     console.log("✅ Found users:", users.length)
 

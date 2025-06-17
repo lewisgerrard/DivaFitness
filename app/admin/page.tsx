@@ -7,7 +7,9 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { Trash2, Edit, Plus, Search } from "lucide-react"
+import { Plus, Search, Users, Shield, UserCheck } from "lucide-react"
+import HeroSection from "@/components/hero-section"
+import AddClientModal from "@/components/add-client-modal"
 
 interface User {
   id: number
@@ -20,17 +22,17 @@ interface User {
 }
 
 export default function AdminPage() {
-  const { user, loading } = useAuth()
+  const { user, loading, token } = useAuth()
   const router = useRouter()
   const [users, setUsers] = useState<User[]>([])
   const [filteredUsers, setFilteredUsers] = useState<User[]>([])
   const [searchQuery, setSearchQuery] = useState("")
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false)
 
-  console.log("🔍 Admin page - Auth loading:", loading, "User:", user)
+  console.log("🔍 Admin page - Auth loading:", loading, "User:", user, "Token:", !!token)
 
-  // Don't redirect immediately, wait for auth to load
   useEffect(() => {
     if (!loading) {
       console.log("✅ Auth loaded, user:", user)
@@ -47,7 +49,6 @@ export default function AdminPage() {
         return
       }
 
-      // User is admin, fetch users
       console.log("✅ User is admin, fetching users")
       fetchUsers()
     }
@@ -56,24 +57,34 @@ export default function AdminPage() {
   const fetchUsers = async () => {
     try {
       console.log("📡 Fetching users from API...")
+      console.log("🎫 Using token:", !!token)
 
-      // Debug: Check if we have cookies before making request
-      console.log("🍪 Document cookies:", document.cookie)
+      if (!token) {
+        throw new Error("No authentication token available")
+      }
 
       const response = await fetch("/api/admin/users", {
         method: "GET",
-        credentials: "include",
         headers: {
+          Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
       })
 
-      console.log("📡 Users API response status:", response.status)
+      console.log("📡 Response status:", response.status)
 
       if (!response.ok) {
-        const errorData = await response.json().catch(() => ({}))
-        console.error("❌ API Error:", errorData)
-        throw new Error(`Failed to fetch users: ${response.status}`)
+        const errorText = await response.text()
+        console.error("❌ API Error response:", errorText)
+
+        let errorData
+        try {
+          errorData = JSON.parse(errorText)
+        } catch {
+          errorData = { error: errorText }
+        }
+
+        throw new Error(`Failed to fetch users: ${response.status} - ${errorData.error || errorText}`)
       }
 
       const data = await response.json()
@@ -84,7 +95,7 @@ export default function AdminPage() {
       setError(null)
     } catch (error) {
       console.error("❌ Error fetching users:", error)
-      setError("Failed to load users")
+      setError(`Failed to load users: ${error.message}`)
     } finally {
       setIsLoading(false)
     }
@@ -105,47 +116,66 @@ export default function AdminPage() {
     }
   }
 
-  const handleDeleteUser = async (userId: number) => {
-    if (!confirm("Are you sure you want to delete this user?")) return
-
+  const handleAddUser = async (newUser: any) => {
     try {
-      const response = await fetch(`/api/admin/users/${userId}`, {
-        method: "DELETE",
-        credentials: "include",
+      const response = await fetch("/api/admin/clients", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newUser),
       })
-
       if (response.ok) {
-        setUsers(users.filter((user) => user.id !== userId))
-        setFilteredUsers(filteredUsers.filter((user) => user.id !== userId))
-      } else {
-        alert("Failed to delete user")
+        const data = await response.json()
+        setUsers((prev) => [...prev, data.user])
+        setFilteredUsers((prev) => [...prev, data.user])
+        setIsAddUserModalOpen(false)
       }
     } catch (error) {
-      console.error("Error deleting user:", error)
-      alert("Failed to delete user")
+      console.error("Failed to add user:", error)
     }
   }
 
   // Show loading while auth is loading
   if (loading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <div className="text-center">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-2 text-muted-foreground">Loading authentication...</p>
+        </div>
       </div>
     )
   }
 
   // Show error if access denied
-  if (error) {
+  if (error && !isLoading) {
     return (
-      <div className="container mx-auto px-4 py-8">
-        <Card>
-          <CardContent className="p-6 text-center">
-            <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
-            <p className="text-gray-600 mb-4">{error}</p>
-            <Button onClick={() => router.push("/dashboard")}>Back to Dashboard</Button>
-          </CardContent>
-        </Card>
+      <div className="min-h-screen bg-gradient-to-br from-primary/5 to-accent/5">
+        <HeroSection
+          title="Access Denied"
+          description="You need administrator privileges to access this page."
+          badge="Error"
+        />
+        <section className="py-16">
+          <div className="max-w-2xl mx-auto px-4 text-center">
+            <Card className="shadow-lg">
+              <CardContent className="p-8">
+                <h2 className="text-xl font-heading font-bold text-red-600 mb-4">Authentication Error</h2>
+                <p className="text-muted-foreground mb-6">{error}</p>
+                <div className="flex gap-4 justify-center">
+                  <Button asChild className="bg-primary hover:bg-primary-dark">
+                    <a href="/dashboard">Back to Dashboard</a>
+                  </Button>
+                  <Button variant="outline" onClick={() => window.location.reload()}>
+                    Retry
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
       </div>
     )
   }
@@ -156,125 +186,180 @@ export default function AdminPage() {
   const memberCount = users.filter((u) => u.role === "member").length
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">User Management</h1>
-        <p className="text-gray-600">Manage all users in the system</p>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-accent/5">
+      <HeroSection
+        title="User Management"
+        description="Manage all users, roles, and permissions in the Diva Fitness system."
+        badge="Admin Panel"
+      />
 
-      {/* Debug Info */}
-      <Card className="mb-6 bg-blue-50">
-        <CardContent className="p-4">
-          <h3 className="font-bold mb-2">Debug Info:</h3>
-          <p>
-            Current User: {user?.email} ({user?.role})
-          </p>
-          <p>Cookies: {typeof document !== "undefined" ? document.cookie : "N/A"}</p>
-        </CardContent>
-      </Card>
+      <section className="py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          {/* Stats Cards */}
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+            <Card className="hover:shadow-lg transition-all duration-300 border-primary/20">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-heading font-bold text-secondary">{totalUsers}</p>
+                    <p className="text-sm text-muted-foreground">Total Users</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-      {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold">{totalUsers}</div>
-            <p className="text-gray-600">Total Users</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold text-red-600">{adminCount}</div>
-            <p className="text-gray-600">Admins</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold text-blue-600">{clientCount}</div>
-            <p className="text-gray-600">Clients</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-6">
-            <div className="text-2xl font-bold text-green-600">{memberCount}</div>
-            <p className="text-gray-600">Members</p>
-          </CardContent>
-        </Card>
-      </div>
+            <Card className="hover:shadow-lg transition-all duration-300 border-red-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-red-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-heading font-bold text-secondary">{adminCount}</p>
+                    <p className="text-sm text-muted-foreground">Administrators</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-      {/* Users Table */}
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <CardTitle>All Users</CardTitle>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Add User
+            <Card className="hover:shadow-lg transition-all duration-300 border-blue-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+                    <UserCheck className="w-6 h-6 text-blue-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-heading font-bold text-secondary">{clientCount}</p>
+                    <p className="text-sm text-muted-foreground">Clients</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="hover:shadow-lg transition-all duration-300 border-green-200">
+              <CardContent className="p-6">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <p className="text-2xl font-heading font-bold text-secondary">{memberCount}</p>
+                    <p className="text-sm text-muted-foreground">Members</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Users Table */}
+          <Card className="shadow-lg border-primary/20">
+            <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <CardTitle className="text-xl font-heading text-primary flex items-center gap-2">
+                  <Users className="w-5 h-5" />
+                  All Users
+                </CardTitle>
+                <Button
+                  onClick={() => setIsAddUserModalOpen(true)}
+                  className="bg-primary hover:bg-primary-dark flex items-center gap-2"
+                >
+                  <Plus className="w-4 h-4" />
+                  Add User
+                </Button>
+              </div>
+              <div className="flex items-center gap-2 mt-4">
+                <div className="relative flex-1 max-w-sm">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search users..."
+                    value={searchQuery}
+                    onChange={(e) => handleSearch(e.target.value)}
+                    className="pl-10"
+                  />
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-0">
+              {isLoading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
+                  <p className="mt-2 text-muted-foreground">Loading users...</p>
+                </div>
+              ) : filteredUsers.length === 0 ? (
+                <div className="text-center py-12 text-muted-foreground">
+                  <Users className="w-12 h-12 mx-auto mb-4 opacity-50" />
+                  <p>{searchQuery ? "No users match your search" : "No users found"}</p>
+                </div>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full">
+                    <thead className="bg-muted/50">
+                      <tr>
+                        <th className="text-left p-4 font-medium text-secondary">ID</th>
+                        <th className="text-left p-4 font-medium text-secondary">Name</th>
+                        <th className="text-left p-4 font-medium text-secondary">Email</th>
+                        <th className="text-left p-4 font-medium text-secondary">Role</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {filteredUsers.map((user, index) => (
+                        <tr
+                          key={user.id}
+                          onClick={() => router.push(`/admin/users/${user.id}`)}
+                          className={`border-b hover:bg-muted/30 transition-colors cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-muted/10"}`}
+                        >
+                          <td className="p-4 font-medium text-secondary">{user.id}</td>
+                          <td className="p-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <span className="text-sm font-medium text-primary">
+                                  {user.first_name?.charAt(0).toUpperCase() || user.email.charAt(0).toUpperCase()}
+                                </span>
+                              </div>
+                              <span className="font-medium text-secondary">
+                                {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : "N/A"}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="p-4 text-muted-foreground">{user.email}</td>
+                          <td className="p-4">
+                            <Badge
+                              variant={
+                                user.role === "admin" ? "destructive" : user.role === "client" ? "default" : "secondary"
+                              }
+                              className="font-medium"
+                            >
+                              {user.role === "admin" && <Shield className="w-3 h-3 mr-1" />}
+                              {user.role !== "admin" && <Users className="w-3 h-3 mr-1" />}
+                              {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
+                            </Badge>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Back Button */}
+          <div className="mt-8">
+            <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
+              <a href="/dashboard">← Back to Dashboard</a>
             </Button>
           </div>
-          <div className="flex items-center space-x-2">
-            <Search className="w-4 h-4 text-gray-400" />
-            <Input
-              placeholder="Search users..."
-              value={searchQuery}
-              onChange={(e) => handleSearch(e.target.value)}
-              className="max-w-sm"
-            />
-          </div>
-        </CardHeader>
-        <CardContent>
-          {isLoading ? (
-            <div className="text-center py-8">Loading users...</div>
-          ) : filteredUsers.length === 0 ? (
-            <div className="text-center py-8 text-gray-500">
-              {searchQuery ? "No users match your search" : "No users found"}
-            </div>
-          ) : (
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b">
-                    <th className="text-left p-2">ID</th>
-                    <th className="text-left p-2">Name</th>
-                    <th className="text-left p-2">Email</th>
-                    <th className="text-left p-2">Role</th>
-                    <th className="text-left p-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {filteredUsers.map((user) => (
-                    <tr key={user.id} className="border-b hover:bg-gray-50">
-                      <td className="p-2">{user.id}</td>
-                      <td className="p-2">
-                        {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : "N/A"}
-                      </td>
-                      <td className="p-2">{user.email}</td>
-                      <td className="p-2">
-                        <Badge
-                          variant={
-                            user.role === "admin" ? "destructive" : user.role === "client" ? "default" : "secondary"
-                          }
-                        >
-                          {user.role}
-                        </Badge>
-                      </td>
-                      <td className="p-2">
-                        <div className="flex space-x-2">
-                          <Button variant="outline" size="sm" onClick={() => router.push(`/admin/users/${user.id}`)}>
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="outline" size="sm" onClick={() => handleDeleteUser(user.id)}>
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </CardContent>
-      </Card>
+        </div>
+      </section>
+
+      <AddClientModal
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onAddClient={handleAddUser}
+      />
     </div>
   )
 }

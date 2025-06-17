@@ -2,27 +2,29 @@ import { type NextRequest, NextResponse } from "next/server"
 import { SignJWT } from "jose"
 import { authenticateUser } from "@/lib/auth"
 
-// Make sure we use the same secret everywhere
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
-const secret = new TextEncoder().encode(JWT_SECRET)
+const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
 export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json()
 
+    console.log("🔐 Login attempt for:", email)
+
     if (!email || !password) {
-      return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
+      return NextResponse.json({ error: "Email and password required" }, { status: 400 })
     }
 
     const user = await authenticateUser(email, password)
 
     if (!user) {
+      console.log("❌ Authentication failed for:", email)
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
-    // Create JWT token with consistent structure
+    console.log("✅ Authentication successful for:", email, "Role:", user.role)
+
+    // Create JWT token
     const token = await new SignJWT({
-      sub: String(user.id), // Use standard 'sub' claim
       userId: user.id,
       email: user.email,
       role: user.role,
@@ -32,11 +34,9 @@ export async function POST(request: NextRequest) {
       .setExpirationTime("24h")
       .sign(secret)
 
-    console.log("🔑 JWT token created with secret:", JWT_SECRET.substring(0, 3) + "...")
-    console.log("📝 JWT payload:", { userId: user.id, email: user.email, role: user.role })
-    console.log("🎫 Token length:", token.length)
+    console.log("🎫 JWT token created, length:", token.length)
 
-    // Create response
+    // Return token in response body instead of cookie
     const response = NextResponse.json({
       user: {
         id: user.id,
@@ -45,20 +45,10 @@ export async function POST(request: NextRequest) {
         last_name: user.last_name,
         role: user.role,
       },
+      token: token, // Include token in response
     })
 
-    // Set cookie with explicit domain and path
-    response.cookies.set("auth-token", token, {
-      httpOnly: true,
-      secure: false, // Set to false for development
-      sameSite: "lax",
-      maxAge: 60 * 60 * 24, // 24 hours
-      path: "/",
-      domain: undefined, // Let browser set domain automatically
-    })
-
-    console.log("✅ Login successful for user:", user.email, "Role:", user.role)
-    console.log("🍪 Cookie set with token")
+    console.log("✅ Login successful, token included in response")
 
     return response
   } catch (error) {

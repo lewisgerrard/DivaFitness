@@ -15,12 +15,14 @@ interface AuthContextType {
   login: (email: string, password: string) => Promise<boolean>
   logout: () => Promise<void>
   loading: boolean
+  token: string | null
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
+  const [token, setToken] = useState<string | null>(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
@@ -29,24 +31,46 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const checkAuth = async () => {
     try {
-      console.log("Checking authentication...")
+      console.log("🔍 Checking authentication...")
+
+      // Check if we have a token in localStorage
+      const storedToken = localStorage.getItem("auth-token")
+      console.log("🎫 Stored token found:", !!storedToken)
+
+      if (!storedToken) {
+        console.log("❌ No stored token found")
+        setUser(null)
+        setToken(null)
+        setLoading(false)
+        return
+      }
+
+      // Verify token with server
       const response = await fetch("/api/auth/me", {
-        credentials: "include",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "application/json",
+        },
       })
 
-      console.log("Auth check response status:", response.status)
+      console.log("🔍 Auth check response status:", response.status)
 
       if (response.ok) {
         const data = await response.json()
-        console.log("Auth check successful, user data:", data.user)
+        console.log("✅ Auth check successful, user data:", data.user)
         setUser(data.user)
+        setToken(storedToken)
       } else {
-        console.log("Auth check failed:", response.status)
+        console.log("❌ Auth check failed, clearing stored token")
+        localStorage.removeItem("auth-token")
         setUser(null)
+        setToken(null)
       }
     } catch (error) {
-      console.error("Auth check failed:", error)
+      console.error("❌ Auth check failed:", error)
+      localStorage.removeItem("auth-token")
       setUser(null)
+      setToken(null)
     } finally {
       setLoading(false)
     }
@@ -54,45 +78,59 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const login = async (email: string, password: string): Promise<boolean> => {
     try {
-      console.log("Attempting login for:", email)
+      console.log("🔐 Attempting login for:", email)
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
-        credentials: "include",
       })
 
-      console.log("Login response status:", response.status)
+      console.log("🔐 Login response status:", response.status)
 
       if (response.ok) {
         const data = await response.json()
-        console.log("Login successful, user data:", data.user)
+        console.log("✅ Login successful, user data:", data.user)
+        console.log("🎫 Token received:", !!data.token)
+
+        // Store token in localStorage
+        if (data.token) {
+          localStorage.setItem("auth-token", data.token)
+          setToken(data.token)
+        }
+
         setUser(data.user)
         return true
       } else {
         const errorData = await response.json().catch(() => ({}))
-        console.error("Login failed:", errorData)
+        console.error("❌ Login failed:", errorData)
         return false
       }
     } catch (error) {
-      console.error("Login failed:", error)
+      console.error("❌ Login failed:", error)
       return false
     }
   }
 
   const logout = async () => {
     try {
+      // Clear local storage
+      localStorage.removeItem("auth-token")
+      setUser(null)
+      setToken(null)
+
+      // Optionally call logout endpoint
       await fetch("/api/auth/logout", {
         method: "POST",
-        credentials: "include",
+        headers: token ? { Authorization: `Bearer ${token}` } : {},
+      }).catch(() => {
+        // Ignore errors on logout
       })
-      setUser(null)
     } catch (error) {
-      console.error("Logout failed:", error)
+      console.error("❌ Logout failed:", error)
     }
   }
 
-  return <AuthContext.Provider value={{ user, login, logout, loading }}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={{ user, login, logout, loading, token }}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {

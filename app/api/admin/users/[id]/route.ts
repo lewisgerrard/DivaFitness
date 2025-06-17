@@ -1,91 +1,62 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
-import { getUserById, deleteUser } from "@/lib/auth"
+import { getUserById, deleteUser, updateUser } from "@/lib/auth"
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
-export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+async function getAuthenticatedUser(request: NextRequest) {
   try {
-    console.log("Delete user API called for ID:", params.id)
+    // Try Authorization header first
+    const authHeader = request.headers.get("authorization")
+    let token = null
 
-    const token = request.cookies.get("auth-token")?.value
-    console.log("Token found:", !!token)
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+      console.log("[SERVER] Token found in Authorization header")
+    } else {
+      // Fallback to cookie
+      token = request.cookies.get("auth-token")?.value
+      console.log("[SERVER] Token found in cookie:", !!token)
+    }
 
     if (!token) {
-      console.log("No auth token found")
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+      console.log("[SERVER] No auth token found")
+      return null
     }
 
     const { payload } = await jwtVerify(token, secret)
-    console.log("JWT payload:", payload)
+    console.log("[SERVER] JWT payload:", payload)
 
     const userId = payload.userId as number
-    console.log("User ID from token:", userId)
-
-    // Get user to check role
     const user = await getUserById(userId)
-    console.log("User from database:", user)
+    console.log("[SERVER] User from database:", user)
 
-    if (!user) {
-      console.log("User not found in database")
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    if (!user || user.role !== "admin") {
+      console.log("[SERVER] User not admin or not found, role:", user?.role)
+      return null
     }
 
-    if (user.role !== "admin") {
-      console.log("User is not admin, role:", user.role)
-      return NextResponse.json({ error: "Access denied" }, { status: 403 })
-    }
-
-    const userIdToDelete = Number.parseInt(params.id)
-    console.log("Deleting user ID:", userIdToDelete)
-
-    await deleteUser(userIdToDelete)
-    console.log("User deleted successfully")
-
-    return NextResponse.json({ success: true })
+    return user
   } catch (error) {
-    console.error("Delete user API error:", error)
-    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
+    console.error("[SERVER] Auth error:", error)
+    return null
   }
 }
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    console.log("Get user API called for ID:", params.id)
+    console.log("[SERVER] Get user API called for ID:", params.id)
 
-    const token = request.cookies.get("auth-token")?.value
-    console.log("Token found:", !!token)
-
-    if (!token) {
-      console.log("No auth token found")
+    const authenticatedUser = await getAuthenticatedUser(request)
+    if (!authenticatedUser) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const { payload } = await jwtVerify(token, secret)
-    console.log("JWT payload:", payload)
-
-    const userId = payload.userId as number
-    console.log("User ID from token:", userId)
-
-    // Get user to check role
-    const user = await getUserById(userId)
-    console.log("User from database:", user)
-
-    if (!user) {
-      console.log("User not found in database")
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
-    }
-
-    if (user.role !== "admin") {
-      console.log("User is not admin, role:", user.role)
-      return NextResponse.json({ error: "Access denied" }, { status: 403 })
-    }
-
     const targetUserId = Number.parseInt(params.id)
-    console.log("Getting user ID:", targetUserId)
+    console.log("[SERVER] Getting user ID:", targetUserId)
 
     const targetUser = await getUserById(targetUserId)
-    console.log("Target user found:", !!targetUser)
+    console.log("[SERVER] Target user found:", !!targetUser)
 
     if (!targetUser) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
@@ -93,7 +64,60 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({ user: targetUser })
   } catch (error) {
-    console.error("Get user API error:", error)
+    console.error("[SERVER] Get user API error:", error)
     return NextResponse.json({ error: "Failed to get user" }, { status: 500 })
+  }
+}
+
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    console.log("[SERVER] Update user API called for ID:", params.id)
+
+    const authenticatedUser = await getAuthenticatedUser(request)
+    if (!authenticatedUser) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const targetUserId = Number.parseInt(params.id)
+    const updateData = await request.json()
+    console.log("[SERVER] Update data:", updateData)
+
+    const updatedUser = await updateUser(targetUserId, updateData)
+    console.log("[SERVER] User updated:", !!updatedUser)
+
+    if (!updatedUser) {
+      return NextResponse.json({ error: "Failed to update user" }, { status: 400 })
+    }
+
+    return NextResponse.json({ user: updatedUser })
+  } catch (error) {
+    console.error("[SERVER] Update user API error:", error)
+    return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
+  }
+}
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
+  try {
+    console.log("[SERVER] Delete user API called for ID:", params.id)
+
+    const authenticatedUser = await getAuthenticatedUser(request)
+    if (!authenticatedUser) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const userIdToDelete = Number.parseInt(params.id)
+    console.log("[SERVER] Deleting user ID:", userIdToDelete)
+
+    const success = await deleteUser(userIdToDelete)
+    console.log("[SERVER] User deleted successfully:", success)
+
+    if (!success) {
+      return NextResponse.json({ error: "Failed to delete user" }, { status: 400 })
+    }
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error("[SERVER] Delete user API error:", error)
+    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
   }
 }
