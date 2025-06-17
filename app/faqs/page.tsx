@@ -1,12 +1,13 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, ChevronUp } from "lucide-react"
+import { ChevronDown, ChevronUp, Search, X } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import HeroSection from "@/components/hero-section"
 
 export default function FAQsPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
+  const [searchQuery, setSearchQuery] = useState("")
 
   const faqs = [
     {
@@ -61,6 +62,12 @@ export default function FAQsPage() {
     },
   ]
 
+  const filteredFaqs = faqs.filter(
+    (faq) =>
+      faq.question.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      faq.answer.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? null : index)
   }
@@ -77,32 +84,76 @@ export default function FAQsPage() {
         badge="Got Questions?"
       />
 
+      {/* Search Section */}
+      <section className="py-6 px-4 max-w-4xl mx-auto">
+        <div className="relative">
+          <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <input
+            type="text"
+            placeholder="Search FAQs..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent outline-none"
+          />
+          {searchQuery && (
+            <button
+              onClick={() => setSearchQuery("")}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          )}
+        </div>
+        {searchQuery && (
+          <p className="mt-2 text-sm text-gray-600">
+            {filteredFaqs.length} result{filteredFaqs.length !== 1 ? "s" : ""} found for "{searchQuery}"
+          </p>
+        )}
+      </section>
+
       {/* FAQs Section */}
       <section className="py-10 px-4 max-w-4xl mx-auto">
         <div className="space-y-3">
-          {faqs.map((faq, index) => (
-            <Card key={index} className="overflow-hidden">
-              <CardContent className="p-0">
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full p-4 text-left flex justify-between items-center hover:bg-muted transition-colors"
-                >
-                  <h3 className="font-heading text-base font-semibold text-secondary pr-4">{faq.question}</h3>
-                  {openFAQ === index ? (
-                    <ChevronUp className="w-4 h-4 text-primary flex-shrink-0" />
-                  ) : (
-                    <ChevronDown className="w-4 h-4 text-primary flex-shrink-0" />
-                  )}
-                </button>
+          {filteredFaqs.length > 0 ? (
+            filteredFaqs.map((faq, index) => {
+              const originalIndex = faqs.indexOf(faq)
+              return (
+                <Card key={originalIndex} className="overflow-hidden">
+                  <CardContent className="p-0">
+                    <button
+                      onClick={() => toggleFAQ(originalIndex)}
+                      className="w-full p-4 text-left flex justify-between items-center hover:bg-muted transition-colors"
+                    >
+                      <h3 className="font-heading text-base font-semibold text-secondary pr-4">{faq.question}</h3>
+                      {openFAQ === originalIndex ? (
+                        <ChevronUp className="w-4 h-4 text-primary flex-shrink-0" />
+                      ) : (
+                        <ChevronDown className="w-4 h-4 text-primary flex-shrink-0" />
+                      )}
+                    </button>
 
-                {openFAQ === index && (
-                  <div className="px-4 pb-4">
-                    <p className="text-muted-foreground leading-relaxed text-sm">{faq.answer}</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          ))}
+                    {openFAQ === originalIndex && (
+                      <div className="px-4 pb-4">
+                        <p className="text-muted-foreground leading-relaxed text-sm">{faq.answer}</p>
+                      </div>
+                    )}
+                  </CardContent>
+                </Card>
+              )
+            })
+          ) : (
+            <div className="text-center py-12">
+              <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
+              <h3 className="text-lg font-semibold text-gray-600 mb-2">No FAQs found</h3>
+              <p className="text-gray-500">Try adjusting your search terms or browse all questions below.</p>
+              <button
+                onClick={() => setSearchQuery("")}
+                className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
+              >
+                Clear Search
+              </button>
+            </div>
+          )}
         </div>
       </section>
 

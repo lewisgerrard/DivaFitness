@@ -66,109 +66,45 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
-              {/* Journey Timeline */}
-              <div className="space-y-8">
-                {/* Timeline Line */}
-                <div className="absolute left-8 top-16 bottom-16 w-0.5 bg-gradient-to-b from-primary via-primary-light to-primary-dark hidden md:block"></div>
-
-                {/* Journey Step 1 - Beginning */}
-                <div className="flex items-center gap-6">
-                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">2017</span>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-4">
+                  <div
+                    className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
+                  >
+                    <Image
+                      src="/images/studio-exterior-cropped.jpg"
+                      alt="Studio Exterior"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                  <div className="flex-1">
-                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                      <Image
-                        src="/images/studio-exterior-full.jpg"
-                        alt="The beginning - Studio concept"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
-                      <div className="absolute bottom-2 left-3 text-white">
-                        <p className="text-xs font-semibold">The Vision Begins</p>
-                      </div>
-                    </div>
+                  <div
+                    className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
+                  >
+                    <Image
+                      src="/images/equipment-wide-shot.jpg"
+                      alt="Professional Equipment"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                 </div>
-
-                {/* Journey Step 2 - Building */}
-                <div className="flex items-center gap-6">
-                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary-light to-primary rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">2018</span>
+                <div className="space-y-4 mt-8">
+                  <div
+                    className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
+                  >
+                    <Image src="/images/weights-close-up.jpg" alt="Training Equipment" fill className="object-cover" />
                   </div>
-                  <div className="flex-1">
-                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                      <Image
-                        src="/images/studio-garden-pathway.jpg"
-                        alt="Building the dream - Garden pathway"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary-light/20 to-transparent"></div>
-                      <div className="absolute bottom-2 left-3 text-white">
-                        <p className="text-xs font-semibold">Creating the Space</p>
-                      </div>
-                    </div>
+                  <div
+                    className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
+                  >
+                    <Image
+                      src="/images/action-training-session.jpg"
+                      alt="Training Session"
+                      fill
+                      className="object-cover"
+                    />
                   </div>
-                </div>
-
-                {/* Journey Step 3 - Equipment & Setup */}
-                <div className="flex items-center gap-6">
-                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center shadow-lg">
-                    <span className="text-white font-bold text-sm">2019</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
-                      <Image
-                        src="/images/equipment-wide-shot.jpg"
-                        alt="Professional equipment setup"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/20 to-transparent"></div>
-                      <div className="absolute bottom-2 left-3 text-white">
-                        <p className="text-xs font-semibold">Professional Setup</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Journey Step 4 - Today */}
-                <div className="flex items-center gap-6">
-                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary-light to-accent rounded-full flex items-center justify-center shadow-lg animate-pulse">
-                    <span className="text-white font-bold text-sm">Now</span>
-                  </div>
-                  <div className="flex-1">
-                    <div className="relative h-40 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 ring-2 ring-primary/30">
-                      <Image
-                        src="/images/action-training-session.jpg"
-                        alt="Today - Empowering women through fitness"
-                        fill
-                        className="object-cover"
-                      />
-                      <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent"></div>
-                      <div className="absolute bottom-2 left-3 text-white">
-                        <p className="text-xs font-semibold">Empowering Women Today</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Journey Stats */}
-              <div className="mt-8 grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl">
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">7+</div>
-                  <div className="text-xs text-muted-foreground">Years Journey</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">100+</div>
-                  <div className="text-xs text-muted-foreground">Women Empowered</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-2xl font-bold text-primary">∞</div>
-                  <div className="text-xs text-muted-foreground">Dreams Realized</div>
                 </div>
               </div>
             </div>
@@ -237,6 +173,98 @@ export default function AboutPage() {
                   <p className={brandKit.components.card.description}>{value.description}</p>
                 </CardContent>
               </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Journey Transformation Section */}
+      <section className="py-24 bg-gradient-to-b from-purple-50 to-white relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
+              <Heart className="w-4 h-4" />
+              The Journey
+            </div>
+            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+              My Studio
+              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> Story</span>
+            </h2>
+            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+              From an empty garden to a dream studio - captured in moments
+            </p>
+          </div>
+
+          {/* Purple Rope */}
+          <div className="relative mb-8">
+            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-400 rounded-full shadow-lg" />
+            <div className="absolute top-0.5 left-0 right-0 h-1 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-300 rounded-full" />
+          </div>
+
+          {/* Polaroid Photos */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 relative">
+            {[
+              {
+                image: "/images/journey-before.jpg",
+                caption: "The empty garden - where it all began!",
+                rotation: "-rotate-3",
+                marginTop: "mt-8",
+              },
+              {
+                image: "/images/journey-plan.jpg",
+                caption: "Planning every detail on paper",
+                rotation: "rotate-2",
+                marginTop: "mt-4",
+              },
+              {
+                image: "/images/journey-construction.jpg",
+                caption: "Hard work with my furry helpers!",
+                rotation: "-rotate-1",
+                marginTop: "mt-12",
+              },
+              {
+                image: "/images/journey-complete.jpg",
+                caption: "The dream studio is complete! ✨",
+                rotation: "rotate-3",
+                marginTop: "mt-6",
+              },
+            ].map((photo, index) => (
+              <div key={index} className={`relative ${photo.marginTop} group`}>
+                {/* Clothespin */}
+                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
+                  <div className="w-6 h-8 bg-gradient-to-b from-amber-200 to-amber-400 rounded-t-lg shadow-md border border-amber-300">
+                    <div className="w-full h-2 bg-amber-300 rounded-t-lg" />
+                    <div className="w-full h-0.5 bg-amber-500 mt-1" />
+                  </div>
+                </div>
+
+                {/* Polaroid Frame */}
+                <div
+                  className={`bg-white p-4 pb-16 shadow-2xl ${photo.rotation} hover:rotate-0 transition-transform duration-500 group-hover:scale-105 relative z-10`}
+                >
+                  {/* Photo */}
+                  <div className="relative h-64 w-full bg-gray-100 overflow-hidden">
+                    <Image src={photo.image || "/placeholder.svg"} alt={photo.caption} fill className="object-cover" />
+                  </div>
+
+                  {/* Caption */}
+                  <div className="absolute bottom-4 left-4 right-4">
+                    <p className="text-gray-700 text-sm font-handwriting text-center leading-relaxed">
+                      {photo.caption}
+                    </p>
+                  </div>
+
+                  {/* Tape corners */}
+                  <div className="absolute -top-2 -left-2 w-8 h-8 bg-yellow-100 opacity-80 rotate-45 border border-yellow-200" />
+                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-100 opacity-80 -rotate-45 border border-yellow-200" />
+                </div>
+
+                {/* Shadow */}
+                <div
+                  className={`absolute inset-0 bg-black/10 ${photo.rotation} transform translate-x-1 translate-y-1 -z-10`}
+                />
+              </div>
             ))}
           </div>
         </div>

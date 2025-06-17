@@ -1,6 +1,4 @@
 "use client"
-
-import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { User, Users, Leaf, Clock, Target, Heart, ArrowRight, Check, Star } from "lucide-react"
@@ -9,8 +7,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import HeroSection from "@/components/hero-section"
 
 export default function ServicesPage() {
-  const [activeService, setActiveService] = useState(0)
-
   const services = [
     {
       icon: User,
@@ -105,8 +101,6 @@ export default function ServicesPage() {
     },
   ]
 
-  const ActiveServiceIcon = services[activeService].icon
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -123,7 +117,7 @@ export default function ServicesPage() {
         badge="Tailored for You"
       />
 
-      {/* Interactive Services Section */}
+      {/* Services Section */}
       <section
         id="services"
         className="py-16 bg-gradient-to-br from-white via-muted to-accent-light/20 relative overflow-hidden"
@@ -149,17 +143,16 @@ export default function ServicesPage() {
             </p>
           </div>
 
-          {/* Service Tabs */}
-          <div className="flex flex-wrap justify-center gap-3 mb-10">
+          {/* Service Navigation */}
+          <div className="flex flex-wrap justify-center gap-3 mb-16">
             {services.map((service, index) => (
               <button
                 key={index}
-                onClick={() => setActiveService(index)}
-                className={`flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 text-sm ${
-                  activeService === index
-                    ? "bg-primary text-white shadow-lg scale-105"
-                    : "bg-white text-secondary hover:bg-accent/20 shadow-md"
-                }`}
+                onClick={() => {
+                  const element = document.getElementById(`service-${index}`)
+                  element?.scrollIntoView({ behavior: "smooth" })
+                }}
+                className="flex items-center gap-2 px-4 py-2 rounded-full transition-all duration-300 text-sm bg-white text-secondary hover:bg-accent/20 shadow-md hover:shadow-lg"
               >
                 <service.icon className="w-4 h-4" />
                 <span className="font-medium">{service.title}</span>
@@ -167,67 +160,78 @@ export default function ServicesPage() {
             ))}
           </div>
 
-          {/* Active Service Display */}
-          <div className="grid lg:grid-cols-2 gap-10 items-center">
-            <div className="space-y-6">
-              <div className="space-y-3">
-                <div
-                  className={`w-14 h-14 bg-gradient-to-br ${services[activeService].color} rounded-2xl flex items-center justify-center`}
-                >
-                  <ActiveServiceIcon className="w-7 h-7 text-white" />
-                </div>
+          {/* All Services Display */}
+          <div className="space-y-20">
+            {services.map((service, index) => {
+              const ServiceIcon = service.icon
+              return (
+                <div key={index} id={`service-${index}`} className="scroll-mt-20">
+                  <div
+                    className={`grid lg:grid-cols-2 gap-10 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
+                  >
+                    <div className={`space-y-6 ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+                      <div className="space-y-3">
+                        <div
+                          className={`w-14 h-14 bg-gradient-to-br ${service.color} rounded-2xl flex items-center justify-center`}
+                        >
+                          <ServiceIcon className="w-7 h-7 text-white" />
+                        </div>
 
-                <h3 className="font-heading text-2xl font-bold text-secondary">{services[activeService].title}</h3>
+                        <h3 className="font-heading text-2xl font-bold text-secondary">{service.title}</h3>
 
-                <p className="text-base text-muted-foreground leading-relaxed">{services[activeService].description}</p>
+                        <p className="text-base text-muted-foreground leading-relaxed">{service.description}</p>
 
-                <div className="flex items-center gap-2 text-primary">
-                  <Clock className="w-4 h-4" />
-                  <span className="text-sm font-medium">{services[activeService].duration}</span>
-                </div>
-              </div>
-
-              <div className="space-y-3">
-                <h4 className="font-heading text-lg font-semibold text-secondary">What's Included:</h4>
-                <div className="grid gap-2">
-                  {services[activeService].features.map((feature, featureIndex) => (
-                    <div key={featureIndex} className="flex items-center gap-3 text-secondary">
-                      <div className="w-5 h-5 bg-accent/20 rounded-full flex items-center justify-center">
-                        <Check className="w-3 h-3 text-primary" />
+                        <div className="flex items-center gap-2 text-primary">
+                          <Clock className="w-4 h-4" />
+                          <span className="text-sm font-medium">{service.duration}</span>
+                        </div>
                       </div>
-                      <span className="text-sm">{feature}</span>
+
+                      <div className="space-y-3">
+                        <h4 className="font-heading text-lg font-semibold text-secondary">What's Included:</h4>
+                        <div className="grid gap-2">
+                          {service.features.map((feature, featureIndex) => (
+                            <div key={featureIndex} className="flex items-center gap-3 text-secondary">
+                              <div className="w-5 h-5 bg-accent/20 rounded-full flex items-center justify-center">
+                                <Check className="w-3 h-3 text-primary" />
+                              </div>
+                              <span className="text-sm">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+
+                      <Button
+                        asChild
+                        size="lg"
+                        className={`bg-gradient-to-r ${service.color} hover:opacity-90 rounded-full px-6`}
+                      >
+                        <Link href="/contact" className="flex items-center gap-2">
+                          Get Started
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
                     </div>
-                  ))}
+
+                    <div className={`relative ${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
+                      <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
+                        <Image
+                          src={service.image || "/placeholder.svg"}
+                          alt={service.title}
+                          fill
+                          className="object-cover"
+                        />
+                        <div className={`absolute inset-0 bg-gradient-to-t ${service.color} opacity-20`} />
+                      </div>
+
+                      {/* Floating Elements */}
+                      <div className="absolute -top-3 -right-3 w-20 h-20 bg-accent/30 rounded-full blur-xl" />
+                      <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+                    </div>
+                  </div>
                 </div>
-              </div>
-
-              <Button
-                asChild
-                size="lg"
-                className={`bg-gradient-to-r ${services[activeService].color} hover:opacity-90 rounded-full px-6`}
-              >
-                <Link href="/contact" className="flex items-center gap-2">
-                  Get Started
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            </div>
-
-            <div className="relative">
-              <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
-                <Image
-                  src={services[activeService].image || "/placeholder.svg"}
-                  alt={services[activeService].title}
-                  fill
-                  className="object-cover"
-                />
-                <div className={`absolute inset-0 bg-gradient-to-t ${services[activeService].color} opacity-20`} />
-              </div>
-
-              {/* Floating Elements */}
-              <div className="absolute -top-3 -right-3 w-20 h-20 bg-accent/30 rounded-full blur-xl" />
-              <div className="absolute -bottom-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
-            </div>
+              )
+            })}
           </div>
         </div>
       </section>
