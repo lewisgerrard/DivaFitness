@@ -40,7 +40,7 @@ export default function ClientsPage() {
   const [loadingData, setLoadingData] = useState(true)
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
-  const [activeTab, setActiveTab] = useState<"clients" | "inquiries">("clients")
+  const [activeTab, setActiveTab] = useState<"all" | "admins" | "clients" | "members">("all")
   const router = useRouter()
 
   useEffect(() => {
@@ -228,6 +228,22 @@ export default function ClientsPage() {
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-6">
             <div className="flex gap-2">
               <Button
+                variant={activeTab === "all" ? "default" : "outline"}
+                onClick={() => setActiveTab("all")}
+                className="flex items-center gap-2"
+              >
+                <Users className="w-4 h-4" />
+                All
+              </Button>
+              <Button
+                variant={activeTab === "admins" ? "default" : "outline"}
+                onClick={() => setActiveTab("admins")}
+                className="flex items-center gap-2"
+              >
+                <Users className="w-4 h-4" />
+                Admins
+              </Button>
+              <Button
                 variant={activeTab === "clients" ? "default" : "outline"}
                 onClick={() => setActiveTab("clients")}
                 className="flex items-center gap-2"
@@ -236,12 +252,12 @@ export default function ClientsPage() {
                 Clients
               </Button>
               <Button
-                variant={activeTab === "inquiries" ? "default" : "outline"}
-                onClick={() => setActiveTab("inquiries")}
+                variant={activeTab === "members" ? "default" : "outline"}
+                onClick={() => setActiveTab("members")}
                 className="flex items-center gap-2"
               >
-                <Mail className="w-4 h-4" />
-                Inquiries
+                <Users className="w-4 h-4" />
+                Members
               </Button>
             </div>
 
@@ -256,7 +272,7 @@ export default function ClientsPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              {activeTab === "clients" && (
+              {(activeTab === "clients" || activeTab === "all") && (
                 <Button
                   onClick={() => setIsAddClientModalOpen(true)}
                   className="bg-primary hover:bg-primary-dark flex items-center gap-2"
