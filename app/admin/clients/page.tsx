@@ -69,10 +69,17 @@ export default function ClientsPage() {
       if (response.ok) {
         const data = await response.json()
         setUsers((prevUsers) => [...prevUsers, data.user])
-        setIsAddClientModalOpen(false)
+        setIsAddClientModalOpen(false) // Close modal on success
+        // Optional: Show success message
+        alert("User added successfully!")
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || "Failed to add user")
       }
     } catch (error) {
       console.error("Failed to add user:", error)
+      alert(`Failed to add user: ${error.message}`)
+      throw error // Re-throw so modal component can handle it
     }
   }
 

@@ -1,6 +1,7 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { getAllUsers, createUser } from "@/lib/auth"
+import { sql } from "@vercel/postgres"
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
@@ -43,42 +44,29 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const {
-      name,
-      first_name,
-      last_name,
-      email,
-      phone,
-      password,
-      role,
-      address,
-      date_of_birth,
-      emergency_contact_name,
-      emergency_contact_phone,
-      service_interest,
-      notes,
-    } = body
+    const { first_name, last_name, email, phone, password, role, address, date_of_birth } = body
 
     // Validate required fields
-    if (!name || !email || !password) {
-      return NextResponse.json({ error: "Name, email, and password are required" }, { status: 400 })
+    if (!first_name || !last_name || !email || !password) {
+      return NextResponse.json({ error: "First name, last name, email, and password are required" }, { status: 400 })
     }
 
-    // Create new user in the consolidated users table
+    // Check if user already exists
+    const existingUsers = await sql`SELECT id FROM users WHERE email = ${email}`
+    if (existingUsers.length > 0) {
+      return NextResponse.json({ error: "User with this email already exists" }, { status: 400 })
+    }
+
+    // Create new user
     const user = await createUser({
-      name,
       first_name,
       last_name,
       email,
-      phone,
       password,
-      role: role || "user",
+      role: role || "member",
+      phone,
       address,
       date_of_birth,
-      emergency_contact_name,
-      emergency_contact_phone,
-      service_interest,
-      notes,
     })
 
     if (!user) {

@@ -52,7 +52,7 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
 
@@ -63,9 +63,15 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
       return
     }
 
-    onAddClient(formData)
-    setIsSubmitting(false)
-    resetForm()
+    try {
+      await onAddClient(formData)
+      // Modal will be closed by parent component after successful creation
+    } catch (error) {
+      console.error("Failed to add user:", error)
+      alert("Failed to add user. Please try again.")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const resetForm = () => {
@@ -79,6 +85,7 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
       address: "",
       date_of_birth: "",
     })
+    setIsSubmitting(false)
   }
 
   return (
