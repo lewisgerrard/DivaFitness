@@ -2,48 +2,51 @@ import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { getAllUsers } from "@/lib/auth"
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
+// Make sure we use the same secret everywhere
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
+const secret = new TextEncoder().encode(JWT_SECRET)
 
 export async function GET(request: NextRequest) {
-  try {
-    console.log("Admin users API called")
+  console.log("=== Admin users API called ===")
 
+  try {
+    // Debug: Log all cookies
+    const allCookies = request.cookies.getAll()
+    console.log(
+      "All cookies received:",
+      allCookies.map((c) => ({ name: c.name, hasValue: !!c.value })),
+    )
+
+    // Get token from cookie
     const token = request.cookies.get("auth-token")?.value
-    console.log("Token found:", !!token)
+    console.log("Auth token found:", !!token)
+    console.log("Token length:", token?.length || 0)
 
     if (!token) {
-      console.log("No auth token found")
+      console.log("❌ No auth token found in cookies")
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
+    // Verify token
+    console.log("🔍 Verifying token with secret:", JWT_SECRET.substring(0, 3) + "...")
     const { payload } = await jwtVerify(token, secret)
-    console.log("JWT payload:", payload)
+    console.log("✅ JWT payload verified:", payload)
 
-    const userId = payload.userId as number
-    console.log("User ID from token:", userId)
-
-    // Get user to check role
-    const { getUserById } = await import("@/lib/auth")
-    const user = await getUserById(userId)
-    console.log("User from database:", user)
-
-    if (!user) {
-      console.log("User not found in database")
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    // Check if user has admin role
+    if (payload.role !== "admin") {
+      console.log("❌ User is not admin:", payload.role)
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
     }
 
-    if (user.role !== "admin") {
-      console.log("User is not admin, role:", user.role)
-      return NextResponse.json({ error: "Access denied" }, { status: 403 })
-    }
+    console.log("✅ User is admin, fetching users...")
 
-    console.log("User is admin, fetching all users")
+    // Get all users
     const users = await getAllUsers()
-    console.log("Found users:", users.length)
+    console.log("✅ Found users:", users.length)
 
     return NextResponse.json({ users })
   } catch (error) {
-    console.error("Admin users API error:", error)
-    return NextResponse.json({ error: "Invalid token" }, { status: 401 })
+    console.error("❌ Admin users API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
