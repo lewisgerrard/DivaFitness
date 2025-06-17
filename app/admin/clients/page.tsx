@@ -57,6 +57,8 @@ export default function ClientsPage() {
   }
 
   const handleAddUser = async (newUser: any) => {
+    console.log("🔍 Attempting to add user:", newUser)
+
     try {
       const response = await fetch("/api/admin/clients", {
         method: "POST",
@@ -66,20 +68,23 @@ export default function ClientsPage() {
         body: JSON.stringify(newUser),
       })
 
+      console.log("📡 Add user response status:", response.status)
+
       if (response.ok) {
         const data = await response.json()
+        console.log("✅ User added successfully:", data)
         setUsers((prevUsers) => [...prevUsers, data.user])
-        setIsAddClientModalOpen(false) // Close modal on success
-        // Optional: Show success message
+        setIsAddClientModalOpen(false)
         alert("User added successfully!")
       } else {
         const errorData = await response.json()
+        console.error("❌ Add user error response:", errorData)
         throw new Error(errorData.error || "Failed to add user")
       }
     } catch (error) {
-      console.error("Failed to add user:", error)
+      console.error("❌ Failed to add user:", error)
       alert(`Failed to add user: ${error.message}`)
-      throw error // Re-throw so modal component can handle it
+      throw error
     }
   }
 
@@ -161,8 +166,8 @@ export default function ClientsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Mail className="w-6 h-6 text-green-600" />
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Mail className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
@@ -177,8 +182,8 @@ export default function ClientsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <Phone className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                    <Phone className="w-6 h-6 text-pink-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
@@ -193,8 +198,8 @@ export default function ClientsPage() {
             <Card>
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
-                    <Calendar className="w-6 h-6 text-purple-600" />
+                  <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center">
+                    <Calendar className="w-6 h-6 text-violet-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
@@ -304,10 +309,10 @@ export default function ClientsPage() {
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
                               user.role === "admin"
-                                ? "bg-red-100 text-red-800"
+                                ? "bg-purple-100 text-purple-800"
                                 : user.role === "client"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-blue-100 text-blue-800"
+                                  ? "bg-pink-100 text-pink-800"
+                                  : "bg-violet-100 text-violet-800"
                             }`}
                           >
                             {user.role.charAt(0).toUpperCase() + user.role.slice(1)}

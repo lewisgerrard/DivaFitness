@@ -30,10 +30,13 @@ export default function AdminPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false)
+  const [activeFilter, setActiveFilter] = useState<string | null>(null)
 
   console.log("🔍 Admin page - Auth loading:", loading, "User:", user, "Token:", !!token)
 
   useEffect(() => {
+    console.log("🔍 Admin page useEffect - loading:", loading, "user:", user, "token:", !!token)
+
     if (!loading) {
       console.log("✅ Auth loaded, user:", user)
       if (!user) {
@@ -52,12 +55,13 @@ export default function AdminPage() {
       console.log("✅ User is admin, fetching users")
       fetchUsers()
     }
-  }, [loading, user, router])
+  }, [loading, user, router, token])
 
   const fetchUsers = async () => {
     try {
       console.log("📡 Fetching users from API...")
       console.log("🎫 Using token:", !!token)
+      console.log("👤 Current user:", user?.email, user?.role)
 
       if (!token) {
         throw new Error("No authentication token available")
@@ -72,19 +76,12 @@ export default function AdminPage() {
       })
 
       console.log("📡 Response status:", response.status)
+      console.log("📡 Response headers:", Object.fromEntries(response.headers.entries()))
 
       if (!response.ok) {
         const errorText = await response.text()
         console.error("❌ API Error response:", errorText)
-
-        let errorData
-        try {
-          errorData = JSON.parse(errorText)
-        } catch {
-          errorData = { error: errorText }
-        }
-
-        throw new Error(`Failed to fetch users: ${response.status} - ${errorData.error || errorText}`)
+        throw new Error(`Failed to fetch users: ${response.status} - ${errorText}`)
       }
 
       const data = await response.json()
@@ -103,17 +100,39 @@ export default function AdminPage() {
 
   const handleSearch = (query: string) => {
     setSearchQuery(query)
-    if (!query.trim()) {
-      setFilteredUsers(users)
-    } else {
-      const filtered = users.filter(
+    applyFilters(query, activeFilter)
+  }
+
+  const applyFilters = (query: string, roleFilter: string | null) => {
+    let filtered = [...users]
+
+    // Apply role filter if active
+    if (roleFilter) {
+      if (roleFilter === "all") {
+        // No filtering needed for "all"
+      } else {
+        filtered = filtered.filter((user) => user.role === roleFilter)
+      }
+    }
+
+    // Apply search query if present
+    if (query.trim()) {
+      filtered = filtered.filter(
         (user) =>
           user.first_name?.toLowerCase().includes(query.toLowerCase()) ||
           user.last_name?.toLowerCase().includes(query.toLowerCase()) ||
           user.email.toLowerCase().includes(query.toLowerCase()),
       )
-      setFilteredUsers(filtered)
     }
+
+    setFilteredUsers(filtered)
+  }
+
+  const handleFilterClick = (filter: string | null) => {
+    // Toggle filter if clicking the same one
+    const newFilter = filter === activeFilter ? null : filter
+    setActiveFilter(newFilter)
+    applyFilters(searchQuery, newFilter)
   }
 
   const handleAddUser = async (newUser: any) => {
@@ -137,13 +156,21 @@ export default function AdminPage() {
     }
   }
 
+  useEffect(() => {
+    if (users.length > 0) {
+      applyFilters(searchQuery, activeFilter)
+    }
+  }, [users, searchQuery, activeFilter])
+
   // Show loading while auth is loading
   if (loading) {
+    console.log("⏳ Still loading auth...")
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading authentication...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+          <p className="mt-4 text-lg text-muted-foreground">Loading admin panel...</p>
+          <p className="mt-2 text-sm text-muted-foreground">Checking authentication...</p>
         </div>
       </div>
     )
@@ -197,7 +224,10 @@ export default function AdminPage() {
         <div className="max-w-7xl mx-auto px-4">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
-            <Card className="hover:shadow-lg transition-all duration-300 border-primary/20">
+            <Card
+              className={`hover:shadow-lg transition-all duration-300 border-primary/20 cursor-pointer ${activeFilter === null ? "ring-2 ring-primary" : ""}`}
+              onClick={() => handleFilterClick(null)}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
@@ -211,11 +241,14 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300 border-red-200">
+            <Card
+              className={`hover:shadow-lg transition-all duration-300 border-purple-200 cursor-pointer ${activeFilter === "admin" ? "ring-2 ring-purple-600" : ""}`}
+              onClick={() => handleFilterClick("admin")}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-red-600" />
+                  <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-purple-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-heading font-bold text-secondary">{adminCount}</p>
@@ -225,11 +258,14 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300 border-blue-200">
+            <Card
+              className={`hover:shadow-lg transition-all duration-300 border-pink-200 cursor-pointer ${activeFilter === "client" ? "ring-2 ring-pink-600" : ""}`}
+              onClick={() => handleFilterClick("client")}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-                    <UserCheck className="w-6 h-6 text-blue-600" />
+                  <div className="w-12 h-12 bg-pink-100 rounded-lg flex items-center justify-center">
+                    <UserCheck className="w-6 h-6 text-pink-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-heading font-bold text-secondary">{clientCount}</p>
@@ -239,11 +275,14 @@ export default function AdminPage() {
               </CardContent>
             </Card>
 
-            <Card className="hover:shadow-lg transition-all duration-300 border-green-200">
+            <Card
+              className={`hover:shadow-lg transition-all duration-300 border-violet-200 cursor-pointer ${activeFilter === "member" ? "ring-2 ring-violet-600" : ""}`}
+              onClick={() => handleFilterClick("member")}
+            >
               <CardContent className="p-6">
                 <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center">
-                    <Users className="w-6 h-6 text-green-600" />
+                  <div className="w-12 h-12 bg-violet-100 rounded-lg flex items-center justify-center">
+                    <Users className="w-6 h-6 text-violet-600" />
                   </div>
                   <div>
                     <p className="text-2xl font-heading font-bold text-secondary">{memberCount}</p>
@@ -298,7 +337,6 @@ export default function AdminPage() {
                   <table className="w-full">
                     <thead className="bg-muted/50">
                       <tr>
-                        <th className="text-left p-4 font-medium text-secondary">ID</th>
                         <th className="text-left p-4 font-medium text-secondary">Name</th>
                         <th className="text-left p-4 font-medium text-secondary">Email</th>
                         <th className="text-left p-4 font-medium text-secondary">Role</th>
@@ -308,10 +346,9 @@ export default function AdminPage() {
                       {filteredUsers.map((user, index) => (
                         <tr
                           key={user.id}
-                          onClick={() => router.push(`/admin/users/${user.id}`)}
+                          onClick={() => router.push(`/profile/${user.id}`)}
                           className={`border-b hover:bg-muted/30 transition-colors cursor-pointer ${index % 2 === 0 ? "bg-white" : "bg-muted/10"}`}
                         >
-                          <td className="p-4 font-medium text-secondary">{user.id}</td>
                           <td className="p-4">
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
@@ -328,9 +365,15 @@ export default function AdminPage() {
                           <td className="p-4">
                             <Badge
                               variant={
-                                user.role === "admin" ? "destructive" : user.role === "client" ? "default" : "secondary"
+                                user.role === "admin" ? "default" : user.role === "client" ? "secondary" : "outline"
                               }
-                              className="font-medium"
+                              className={`font-medium ${
+                                user.role === "admin"
+                                  ? "bg-purple-100 text-purple-800 hover:bg-purple-200"
+                                  : user.role === "client"
+                                    ? "bg-pink-100 text-pink-800 hover:bg-pink-200"
+                                    : "bg-violet-100 text-violet-800 hover:bg-violet-200"
+                              }`}
                             >
                               {user.role === "admin" && <Shield className="w-3 h-3 mr-1" />}
                               {user.role !== "admin" && <Users className="w-3 h-3 mr-1" />}

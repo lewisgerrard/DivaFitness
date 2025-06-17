@@ -19,7 +19,6 @@
     "@radix-ui/react-slot": "^1.0.2",
     "@react-email/components": "latest",
     "@vercel/analytics": "^1.1.1",
-    "@vercel/postgres": "latest",
     "@vercel/speed-insights": "^1.0.12",
     "bcryptjs": "latest",
     "class-variance-authority": "^0.7.1",

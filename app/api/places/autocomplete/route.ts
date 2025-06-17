@@ -9,11 +9,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ predictions: [] })
     }
 
-    const apiKey = process.env.GOOGLE_MAPS_API_KEY
-    if (!apiKey) {
-      console.error("Google Maps API key not found")
-      return NextResponse.json({ error: "API key not configured" }, { status: 500 })
-    }
+    const apiKey = process.env.GOOGLE_MAPS_API_KEY || "AIzaSyAt0i9BNsrI7oW9fiXrDDiTJNkeEvokDXk"
 
     const response = await fetch(
       `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apiKey}&types=address`,

@@ -14,6 +14,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { MapPin, AlertCircle, CheckCircle } from "lucide-react"
+import { Alert, AlertDescription } from "@/components/ui/alert"
 
 interface AddClientModalProps {
   isOpen: boolean
@@ -42,33 +44,146 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
     date_of_birth: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false)
+  const [formStatus, setFormStatus] = useState<{
+    type: "error" | "success" | null
+    message: string | null
+  }>({ type: null, message: null })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    // Clear any error messages when user starts typing
+    if (formStatus.type === "error") {
+      setFormStatus({ type: null, message: null })
+    }
   }
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handleAddressChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    handleChange(e)
+
+    if (value.length > 2) {
+      try {
+        setLoadingSuggestions(true)
+        const response = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(value)}`)
+
+        if (response.ok) {
+          const data = await response.json()
+          if (data.predictions && data.predictions.length > 0) {
+            const suggestions = data.predictions.map((prediction: any) => prediction.description)
+            setAddressSuggestions(suggestions)
+            setShowSuggestions(true)
+          } else {
+            setAddressSuggestions([])
+            setShowSuggestions(false)
+          }
+        } else {
+          console.error("Places API error:", response.status)
+          setAddressSuggestions([])
+          setShowSuggestions(false)
+        }
+      } catch (error) {
+        console.error("Error fetching address suggestions:", error)
+        setAddressSuggestions([])
+        setShowSuggestions(false)
+      } finally {
+        setLoadingSuggestions(false)
+      }
+    } else {
+      setShowSuggestions(false)
+    }
+  }
+
+  const selectAddress = (address: string) => {
+    setFormData((prev) => ({ ...prev, address }))
+    setShowSuggestions(false)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("🔍 Form submitted with data:", formData)
     setIsSubmitting(true)
+    setFormStatus({ type: null, message: null })
 
     // Validate form
     if (!formData.first_name || !formData.last_name || !formData.email || !formData.password) {
-      alert("First name, last name, email, and password are required")
+      console.error("❌ Form validation failed - missing required fields")
+      setFormStatus({
+        type: "error",
+        message: "First name, last name, email, and password are required",
+      })
       setIsSubmitting(false)
       return
     }
 
     try {
-      await onAddClient(formData)
-      // Modal will be closed by parent component after successful creation
+      console.log("🔍 Making API call to create user...")
+
+      // Get auth token from localStorage
+      const token = localStorage.getItem("auth-token")
+
+      if (!token) {
+        setFormStatus({
+          type: "error",
+          message: "Authentication required. Please log in again.",
+        })
+        setIsSubmitting(false)
+        return
+      }
+
+      const response = await fetch("/api/admin/clients", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(formData),
+      })
+
+      console.log("📡 API Response status:", response.status)
+
+      const responseData = await response.json()
+      console.log("📡 API Response data:", responseData)
+
+      if (response.ok) {
+        console.log("✅ User created successfully:", responseData)
+        setFormStatus({
+          type: "success",
+          message: "User created successfully!",
+        })
+
+        // Call the parent's onAddClient if it exists (for any additional handling)
+        if (onAddClient) {
+          await onAddClient(formData)
+        }
+
+        // Close modal and reset form after a short delay to show success message
+        setTimeout(() => {
+          onClose()
+          resetForm()
+          // Refresh the page to show the new user
+          window.location.reload()
+        }, 1500)
+      } else {
+        console.error("❌ API Error response:", responseData)
+        setFormStatus({
+          type: "error",
+          message: responseData.error || `Server error (${response.status})`,
+        })
+      }
     } catch (error) {
-      console.error("Failed to add user:", error)
-      alert("Failed to add user. Please try again.")
+      console.error("❌ Failed to create user:", error)
+      setFormStatus({
+        type: "error",
+        message: `Network error: ${error.message}. Please check your connection and try again.`,
+      })
     } finally {
       setIsSubmitting(false)
     }
@@ -86,6 +201,7 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
       date_of_birth: "",
     })
     setIsSubmitting(false)
+    setFormStatus({ type: null, message: null })
   }
 
   return (
@@ -98,13 +214,23 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
         }
       }}
     >
-      <DialogContent className="sm:max-w-[500px]">
+      <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
           <DialogTitle className="text-primary">Add New User</DialogTitle>
           <DialogDescription>
             Create a new user account. They will be able to log in with these credentials.
           </DialogDescription>
         </DialogHeader>
+
+        {formStatus.type && (
+          <Alert
+            variant={formStatus.type === "error" ? "destructive" : "default"}
+            className={formStatus.type === "success" ? "bg-green-50 border-green-200 text-green-800" : ""}
+          >
+            {formStatus.type === "error" ? <AlertCircle className="h-4 w-4" /> : <CheckCircle className="h-4 w-4" />}
+            <AlertDescription>{formStatus.message}</AlertDescription>
+          </Alert>
+        )}
 
         <form onSubmit={handleSubmit} className="space-y-4 py-4">
           <div className="grid grid-cols-2 gap-4">
@@ -157,7 +283,41 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
 
           <div className="space-y-2">
             <Label htmlFor="address">Address</Label>
-            <Input id="address" name="address" value={formData.address} onChange={handleChange} />
+            <div className="relative">
+              <Input
+                id="address"
+                name="address"
+                value={formData.address}
+                onChange={handleAddressChange}
+                onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                placeholder="Start typing an address..."
+              />
+              {showSuggestions && (
+                <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                  {loadingSuggestions ? (
+                    <div className="px-4 py-2 text-sm text-gray-500">
+                      <div className="flex items-center gap-2">
+                        <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                        Loading suggestions...
+                      </div>
+                    </div>
+                  ) : addressSuggestions.length > 0 ? (
+                    addressSuggestions.map((suggestion, index) => (
+                      <div
+                        key={index}
+                        className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                        onClick={() => selectAddress(suggestion)}
+                      >
+                        <MapPin className="w-4 h-4 inline mr-2 text-gray-400" />
+                        {suggestion}
+                      </div>
+                    ))
+                  ) : (
+                    <div className="px-4 py-2 text-sm text-gray-500">No addresses found</div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           <div className="space-y-2">

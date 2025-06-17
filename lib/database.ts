@@ -4,47 +4,19 @@ import { neon } from "@neondatabase/serverless"
 let sql: ReturnType<typeof neon>
 
 try {
-  // Try different database URL environment variables in order of preference
+  console.log("🔍 Initializing Neon database connection...")
+
+  // Use the provided Neon database URL
   const databaseUrl =
     process.env.DATABASE_URL ||
-    process.env.POSTGRES_URL ||
-    process.env.POSTGRES_PRISMA_URL ||
-    process.env.POSTGRES_URL_NON_POOLING ||
-    process.env.DATABASE_URL_UNPOOLED ||
-    process.env.POSTGRES_URL_NO_SSL
+    "postgresql://neondb_owner:npg_BQFXhk7f4VCP@ep-aged-union-ab6ljmy3-pooler.eu-west-2.aws.neon.tech/neondb?sslmode=require"
 
-  console.log("🔍 Checking environment variables:", {
-    DATABASE_URL: !!process.env.DATABASE_URL,
-    POSTGRES_URL: !!process.env.POSTGRES_URL,
-    POSTGRES_PRISMA_URL: !!process.env.POSTGRES_PRISMA_URL,
-    POSTGRES_URL_NON_POOLING: !!process.env.POSTGRES_URL_NON_POOLING,
-    DATABASE_URL_UNPOOLED: !!process.env.DATABASE_URL_UNPOOLED,
-    POSTGRES_URL_NO_SSL: !!process.env.POSTGRES_URL_NO_SSL,
-    POSTGRES_HOST: !!process.env.POSTGRES_HOST,
-    POSTGRES_USER: !!process.env.POSTGRES_USER,
-    POSTGRES_PASSWORD: !!process.env.POSTGRES_PASSWORD,
-    POSTGRES_DATABASE: !!process.env.POSTGRES_DATABASE,
-  })
-
-  if (!databaseUrl) {
-    // Try to construct URL from individual components if available
-    if (
-      process.env.POSTGRES_HOST &&
-      process.env.POSTGRES_USER &&
-      process.env.POSTGRES_PASSWORD &&
-      process.env.POSTGRES_DATABASE
-    ) {
-      const constructedUrl = `postgresql://${process.env.POSTGRES_USER}:${process.env.POSTGRES_PASSWORD}@${process.env.POSTGRES_HOST}/${process.env.POSTGRES_DATABASE}?sslmode=require`
-      console.log("🔧 Constructing database URL from components")
-      sql = neon(constructedUrl)
-      console.log("✅ Database connection initialized successfully with constructed URL")
-    } else {
-      console.error("❌ No database URL found and cannot construct from components")
-      throw new Error("No database URL environment variable is set and cannot construct from components")
-    }
-  } else {
+  if (databaseUrl) {
+    console.log("✅ Using Neon database URL")
     sql = neon(databaseUrl)
-    console.log("✅ Database connection initialized successfully with:", databaseUrl.substring(0, 30) + "...")
+    console.log("✅ Database connection initialized successfully")
+  } else {
+    throw new Error("No database URL available")
   }
 } catch (error) {
   console.error("❌ Failed to initialize database connection:", error)
@@ -70,7 +42,6 @@ export async function createContactSubmission(data: {
     }
 
     // For now, we'll store contact submissions as potential clients
-    // You might want to create a separate contact_submissions table later
     const result = await sql`
       INSERT INTO users (first_name, last_name, email, password_hash, role, phone)
       VALUES (${data.name.split(" ")[0]}, ${data.name.split(" ").slice(1).join(" ")}, 
@@ -92,7 +63,6 @@ export async function getContactSubmissions() {
       return []
     }
 
-    // Return users with role 'client' who might be from contact forms
     const result = await sql`
       SELECT * FROM users 
       WHERE role = 'client' AND password_hash = 'temp_password_hash'

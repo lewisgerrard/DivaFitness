@@ -403,7 +403,7 @@ export default function ClientDetailPage() {
                               ? "bg-green-500"
                               : client.status === "inactive"
                                 ? "bg-red-500"
-                                : "bg-blue-500"
+                                : "bg-purple-500"
                           }`}
                         ></span>
                       </div>

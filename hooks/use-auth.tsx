@@ -36,6 +36,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Check if we have a token in localStorage
       const storedToken = localStorage.getItem("auth-token")
       console.log("🎫 Stored token found:", !!storedToken)
+      console.log("🎫 Token length:", storedToken?.length || 0)
 
       if (!storedToken) {
         console.log("❌ No stored token found")
@@ -47,10 +48,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       // Verify token with server
       const response = await fetch("/api/auth/me", {
+        method: "GET",
         headers: {
           Authorization: `Bearer ${storedToken}`,
           "Content-Type": "application/json",
         },
+        credentials: "include",
       })
 
       console.log("🔍 Auth check response status:", response.status)
@@ -61,16 +64,37 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(data.user)
         setToken(storedToken)
       } else {
-        console.log("❌ Auth check failed, clearing stored token")
+        console.log("❌ Auth check failed, response:", response.status)
+        // Don't clear token immediately, try to refresh it
+        if (response.status === 401) {
+          console.log("🔄 Token might be expired, attempting refresh...")
+          // Try to refresh the session
+          const refreshResponse = await fetch("/api/auth/refresh", {
+            method: "POST",
+            credentials: "include",
+          })
+
+          if (refreshResponse.ok) {
+            const refreshData = await refreshResponse.json()
+            if (refreshData.token) {
+              localStorage.setItem("auth-token", refreshData.token)
+              setToken(refreshData.token)
+              setUser(refreshData.user)
+              console.log("✅ Token refreshed successfully")
+              return
+            }
+          }
+        }
+
+        console.log("❌ Clearing stored token")
         localStorage.removeItem("auth-token")
         setUser(null)
         setToken(null)
       }
     } catch (error) {
       console.error("❌ Auth check failed:", error)
-      localStorage.removeItem("auth-token")
-      setUser(null)
-      setToken(null)
+      // Don't clear token on network errors
+      console.log("🔄 Network error, keeping token for retry")
     } finally {
       setLoading(false)
     }
@@ -82,6 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const response = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email, password }),
       })
 
@@ -96,6 +121,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         if (data.token) {
           localStorage.setItem("auth-token", data.token)
           setToken(data.token)
+          console.log("💾 Token stored in localStorage")
         }
 
         setUser(data.user)
@@ -113,7 +139,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   const logout = async () => {
     try {
-      // Clear local storage
+      console.log("🚪 Logging out...")
+
+      // Clear local storage first
       localStorage.removeItem("auth-token")
       setUser(null)
       setToken(null)
@@ -122,9 +150,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       await fetch("/api/auth/logout", {
         method: "POST",
         headers: token ? { Authorization: `Bearer ${token}` } : {},
+        credentials: "include",
       }).catch(() => {
         // Ignore errors on logout
+        console.log("⚠️ Logout endpoint error (ignored)")
       })
+
+      console.log("✅ Logout completed")
     } catch (error) {
       console.error("❌ Logout failed:", error)
     }

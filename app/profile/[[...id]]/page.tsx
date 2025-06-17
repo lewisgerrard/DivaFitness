@@ -10,10 +10,11 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, Save, Trash2, Mail, Phone, MapPin } from "lucide-react"
+import { ArrowLeft, Save, Trash2, Mail, Phone, MapPin, Calendar, Shield } from "lucide-react"
 import { UserIcon } from "lucide-react"
 import HeroSection from "@/components/hero-section"
 import { Alert, AlertDescription } from "@/components/ui/alert"
+import { ConfirmDialog } from "@/components/confirm-dialog"
 
 interface User {
   id: number
@@ -29,11 +30,11 @@ interface User {
   updated_at?: string
 }
 
-export default function UserEditPage() {
+export default function ProfilePage() {
   const { user: currentUser, loading, token } = useAuth()
   const router = useRouter()
   const params = useParams()
-  const userId = params.id as string
+  const userId = params.id?.[0] // Get the first parameter from the catch-all route
 
   const [user, setUser] = useState<User | null>(null)
   const [loadingUser, setLoadingUser] = useState(true)
@@ -45,18 +46,25 @@ export default function UserEditPage() {
   const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
   const [showSuggestions, setShowSuggestions] = useState(false)
   const [loadingSuggestions, setLoadingSuggestions] = useState(false)
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false)
+
+  // Determine if this is the current user's profile or another user's profile
+  const isOwnProfile = !userId || (currentUser && userId === currentUser.id.toString())
+  const isAdminViewingOther = currentUser?.role === "admin" && !isOwnProfile
+  const canEdit = isOwnProfile || isAdminViewingOther
+  const canDelete = isAdminViewingOther && userId !== currentUser?.id.toString()
 
   useEffect(() => {
-    if (!loading && (!currentUser || currentUser.role !== "admin")) {
+    if (!loading && !currentUser) {
       router.push("/login")
     }
   }, [currentUser, loading, router])
 
   useEffect(() => {
-    if (currentUser && currentUser.role === "admin" && token) {
+    if (!loading && currentUser && token) {
       fetchUser()
     }
-  }, [currentUser, userId, token])
+  }, [currentUser, userId, token, loading])
 
   useEffect(() => {
     if (user) {
@@ -76,7 +84,23 @@ export default function UserEditPage() {
   const fetchUser = async () => {
     try {
       setLoadingUser(true)
-      const response = await fetch(`/api/admin/users/${userId}`, {
+
+      // If no userId provided, show current user's profile
+      const targetUserId = userId || currentUser?.id
+
+      if (!targetUserId) {
+        setError("User ID not found")
+        return
+      }
+
+      let endpoint = `/api/profile/${targetUserId}`
+
+      // If admin is viewing another user, use admin endpoint
+      if (isAdminViewingOther) {
+        endpoint = `/api/admin/users/${targetUserId}`
+      }
+
+      const response = await fetch(endpoint, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -84,7 +108,9 @@ export default function UserEditPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setUser(data.user)
+        // Handle different response structures
+        const userData = data.user || data.profile
+        setUser(userData)
       } else {
         setError("Failed to load user details")
       }
@@ -112,7 +138,6 @@ export default function UserEditPage() {
     if (value.length > 2) {
       try {
         setLoadingSuggestions(true)
-        // Use our server-side API route instead of direct Google API call
         const response = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(value)}`)
 
         if (response.ok) {
@@ -153,7 +178,15 @@ export default function UserEditPage() {
       setError(null)
       setSuccess(null)
 
-      const response = await fetch(`/api/admin/users/${userId}`, {
+      const targetUserId = userId || currentUser?.id
+      let endpoint = `/api/profile/${targetUserId}`
+
+      // If admin is updating another user, use admin endpoint
+      if (isAdminViewingOther) {
+        endpoint = `/api/admin/users/${targetUserId}`
+      }
+
+      const response = await fetch(endpoint, {
         method: "PUT",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -164,26 +197,23 @@ export default function UserEditPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setUser(data.user)
+        const userData = data.user || data.profile
+        setUser(userData)
         setIsEditing(false)
-        setSuccess("User updated successfully")
+        setSuccess("Profile updated successfully")
       } else {
         const errorData = await response.json()
-        setError(errorData.error || "Failed to update user")
+        setError(errorData.error || "Failed to update profile")
       }
     } catch (error) {
-      console.error("Failed to update user:", error)
-      setError("An error occurred while updating user")
+      console.error("Failed to update profile:", error)
+      setError("An error occurred while updating profile")
     } finally {
       setIsSaving(false)
     }
   }
 
-  const handleDelete = async () => {
-    if (!window.confirm("Are you sure you want to delete this user? This action cannot be undone.")) {
-      return
-    }
-
+  const handleDeleteConfirm = async () => {
     try {
       setIsSaving(true)
       setError(null)
@@ -209,18 +239,59 @@ export default function UserEditPage() {
     }
   }
 
+  const getBackUrl = () => {
+    if (isAdminViewingOther) {
+      return "/admin"
+    }
+    return "/dashboard"
+  }
+
+  const getBackText = () => {
+    if (isAdminViewingOther) {
+      return "Back to User Management"
+    }
+    return "Back to Dashboard"
+  }
+
+  const getPageTitle = () => {
+    if (isOwnProfile) {
+      return "My Profile"
+    }
+    return `${user?.first_name} ${user?.last_name}` || user?.email || "User Profile"
+  }
+
+  const getPageDescription = () => {
+    if (isOwnProfile) {
+      return "Manage your personal information and access your health data and appointments."
+    }
+    return "View and manage user details, role, and account information."
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case "active":
+        return "bg-green-100 text-green-800"
+      case "inactive":
+        return "bg-red-100 text-red-800"
+      case "pending":
+        return "bg-purple-100 text-purple-800"
+      default:
+        return "bg-gray-100 text-gray-800"
+    }
+  }
+
   if (loading || loadingUser) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-primary/5 to-accent/5">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading user details...</p>
+          <p className="mt-2 text-muted-foreground">Loading profile...</p>
         </div>
       </div>
     )
   }
 
-  if (!currentUser || currentUser.role !== "admin") {
+  if (!currentUser) {
     return null
   }
 
@@ -241,9 +312,9 @@ export default function UserEditPage() {
                   The user you are looking for does not exist or has been deleted.
                 </p>
                 <Button asChild className="bg-primary hover:bg-primary-dark">
-                  <a href="/admin" className="flex items-center gap-2">
+                  <a href={getBackUrl()} className="flex items-center gap-2">
                     <ArrowLeft className="w-4 h-4" />
-                    Back to User Management
+                    {getBackText()}
                   </a>
                 </Button>
               </CardContent>
@@ -257,9 +328,9 @@ export default function UserEditPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-accent/5">
       <HeroSection
-        title={`${user.first_name} ${user.last_name}` || user.email}
-        description="View and manage user details, role, and account information."
-        badge="User Details"
+        title={getPageTitle()}
+        description={getPageDescription()}
+        badge={isOwnProfile ? "Profile" : "User Details"}
       />
 
       <section className="py-16">
@@ -267,46 +338,53 @@ export default function UserEditPage() {
           {/* Back Button */}
           <div className="mb-8 flex justify-between items-center">
             <Button asChild variant="outline" className="border-primary text-primary hover:bg-primary hover:text-white">
-              <a href="/admin" className="flex items-center gap-2">
+              <a href={getBackUrl()} className="flex items-center gap-2">
                 <ArrowLeft className="w-4 h-4" />
-                Back to User Management
+                {getBackText()}
               </a>
             </Button>
 
             <div className="flex gap-2">
-              {isEditing ? (
+              {canEdit && (
                 <>
-                  <Button
-                    onClick={() => {
-                      setIsEditing(false)
-                      setFormData({
-                        first_name: user.first_name || "",
-                        last_name: user.last_name || "",
-                        email: user.email,
-                        phone: user.phone || "",
-                        address: user.address || "",
-                        date_of_birth: user.date_of_birth || "",
-                        role: user.role,
-                      })
-                    }}
-                    variant="outline"
-                  >
-                    Cancel
-                  </Button>
-                  <Button onClick={handleSave} disabled={isSaving} className="bg-primary hover:bg-primary-dark">
-                    <Save className="w-4 h-4 mr-2" />
-                    {isSaving ? "Saving..." : "Save Changes"}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  <Button onClick={() => setIsEditing(true)} variant="outline">
-                    Edit User
-                  </Button>
-                  <Button onClick={handleDelete} variant="destructive" disabled={isSaving}>
-                    <Trash2 className="w-4 h-4 mr-2" />
-                    Delete
-                  </Button>
+                  {isEditing ? (
+                    <>
+                      <Button
+                        onClick={() => {
+                          setIsEditing(false)
+                          setFormData({
+                            first_name: user.first_name || "",
+                            last_name: user.last_name || "",
+                            email: user.email,
+                            phone: user.phone || "",
+                            address: user.address || "",
+                            date_of_birth: user.date_of_birth || "",
+                            photo_url: user.photo_url || "",
+                            role: user.role,
+                          })
+                        }}
+                        variant="outline"
+                      >
+                        Cancel
+                      </Button>
+                      <Button onClick={handleSave} disabled={isSaving} className="bg-primary hover:bg-primary-dark">
+                        <Save className="w-4 h-4 mr-2" />
+                        {isSaving ? "Saving..." : "Save Changes"}
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      <Button onClick={() => setIsEditing(true)} variant="outline">
+                        {isOwnProfile ? "Edit Profile" : "Edit User"}
+                      </Button>
+                      {canDelete && (
+                        <Button onClick={() => setShowDeleteConfirm(true)} variant="destructive" disabled={isSaving}>
+                          <Trash2 className="w-4 h-4 mr-2" />
+                          Delete
+                        </Button>
+                      )}
+                    </>
+                  )}
                 </>
               )}
             </div>
@@ -330,7 +408,7 @@ export default function UserEditPage() {
             <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
               <CardTitle className="flex items-center gap-2 text-primary font-heading">
                 <UserIcon className="w-5 h-5" />
-                User Information
+                {isOwnProfile ? "My Details" : "User Information"}
               </CardTitle>
             </CardHeader>
             <CardContent className="p-6">
@@ -421,58 +499,104 @@ export default function UserEditPage() {
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="photo_url">Photo URL</Label>
-                      <Input id="photo_url" name="photo_url" value={formData.photo_url || ""} onChange={handleChange} />
-                    </div>
+                    <div className="space-y-4">
+                      <Label htmlFor="photo" className="text-base font-medium">
+                        Profile Photo
+                      </Label>
 
-                    <div className="space-y-2">
-                      <Label htmlFor="role">Role</Label>
-                      <Select
-                        value={formData.role || "member"}
-                        onValueChange={(value) => handleSelectChange("role", value)}
-                      >
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select role" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="admin">Administrator</SelectItem>
-                          <SelectItem value="client">Client</SelectItem>
-                          <SelectItem value="member">Member</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
+                      {/* Photo Preview Area */}
+                      <div className="flex items-center gap-6">
+                        <div className="relative">
+                          <div className="w-24 h-24 rounded-full border-4 border-primary/20 overflow-hidden bg-muted/50 flex items-center justify-center">
+                            {formData.photo_url ? (
+                              <img
+                                src={formData.photo_url || "/placeholder.svg"}
+                                alt="Profile preview"
+                                className="w-full h-full object-cover"
+                              />
+                            ) : (
+                              <UserIcon className="w-8 h-8 text-muted-foreground" />
+                            )}
+                          </div>
+                          {formData.photo_url && (
+                            <button
+                              type="button"
+                              onClick={() => setFormData((prev) => ({ ...prev, photo_url: "" }))}
+                              className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 text-white rounded-full flex items-center justify-center text-xs hover:bg-red-600 transition-colors"
+                            >
+                              ×
+                            </button>
+                          )}
+                        </div>
 
-                    <div className="space-y-2">
-                      <Label>Account Created</Label>
-                      <div className="p-2 bg-muted/30 rounded text-sm text-muted-foreground">
-                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : "Not available"}
+                        <div className="flex-1">
+                          <div className="border-2 border-dashed border-primary/30 rounded-lg p-6 text-center hover:border-primary/50 transition-colors">
+                            <Input
+                              id="photo"
+                              name="photo"
+                              type="file"
+                              accept="image/*"
+                              onChange={(e) => {
+                                const file = e.target.files?.[0]
+                                if (file) {
+                                  const reader = new FileReader()
+                                  reader.onload = (event) => {
+                                    setFormData((prev) => ({ ...prev, photo_url: event.target?.result as string }))
+                                  }
+                                  reader.readAsDataURL(file)
+                                }
+                              }}
+                              className="hidden"
+                            />
+                            <label htmlFor="photo" className="cursor-pointer flex flex-col items-center gap-2">
+                              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                <UserIcon className="w-6 h-6 text-primary" />
+                              </div>
+                              <div>
+                                <p className="text-sm font-medium text-primary">Click to upload photo</p>
+                                <p className="text-xs text-muted-foreground">PNG, JPG up to 5MB</p>
+                              </div>
+                            </label>
+                          </div>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="space-y-2">
-                      <Label>Last Updated</Label>
-                      <div className="p-2 bg-muted/30 rounded text-sm text-muted-foreground">
-                        {user.updated_at ? new Date(user.updated_at).toLocaleDateString() : "Not available"}
+                    {(currentUser.role === "admin" || isAdminViewingOther) && (
+                      <div className="space-y-2">
+                        <Label htmlFor="role">Role</Label>
+                        <Select
+                          value={formData.role || "member"}
+                          onValueChange={(value) => handleSelectChange("role", value)}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Select role" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="admin">Administrator</SelectItem>
+                            <SelectItem value="client">Client</SelectItem>
+                            <SelectItem value="member">Member</SelectItem>
+                          </SelectContent>
+                        </Select>
                       </div>
-                    </div>
+                    )}
                   </div>
                 </div>
               ) : (
                 <div className="space-y-6">
                   <div className="grid md:grid-cols-2 gap-6">
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <UserIcon className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium text-secondary">
-                            {user.first_name} {user.last_name}
+                            {user.first_name && user.last_name ? `${user.first_name} ${user.last_name}` : user.email}
                           </p>
                           <p className="text-sm text-muted-foreground">Full Name</p>
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <Mail className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium text-secondary">{user.email}</p>
@@ -480,7 +604,7 @@ export default function UserEditPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <Phone className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium text-secondary">{user.phone || "Not provided"}</p>
@@ -488,7 +612,7 @@ export default function UserEditPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <UserIcon className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium text-secondary">
@@ -500,7 +624,7 @@ export default function UserEditPage() {
                     </div>
 
                     <div className="space-y-4">
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <MapPin className="w-5 h-5 text-primary" />
                         <div className="flex-1">
                           <p className="font-medium text-secondary">{user.address || "Not provided"}</p>
@@ -522,15 +646,28 @@ export default function UserEditPage() {
                         )}
                       </div>
 
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
+                        <Shield className="w-5 h-5 text-primary" />
+                        <div>
+                          <span
+                            className={`inline-flex items-center px-3 py-1 rounded-full text-xs font-medium ${getStatusColor("active")}`}
+                          >
+                            <div className="w-2 h-2 bg-current rounded-full mr-2"></div>
+                            Active
+                          </span>
+                          <p className="text-sm text-muted-foreground mt-1">Account Status</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
                         <div className="w-5 h-5 flex items-center justify-center">
                           <span
                             className={`w-3 h-3 rounded-full ${
                               user.role === "admin"
-                                ? "bg-red-500"
+                                ? "bg-purple-500"
                                 : user.role === "client"
-                                  ? "bg-blue-500"
-                                  : "bg-green-500"
+                                  ? "bg-pink-500"
+                                  : "bg-violet-500"
                             }`}
                           ></span>
                         </div>
@@ -540,21 +677,13 @@ export default function UserEditPage() {
                         </div>
                       </div>
 
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                        <UserIcon className="w-5 h-5 text-primary" />
-                        <div>
-                          <p className="font-medium text-secondary">#{user.id}</p>
-                          <p className="text-sm text-muted-foreground">User ID</p>
-                        </div>
-                      </div>
-
-                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                        <UserIcon className="w-5 h-5 text-primary" />
+                      <div className="flex items-center gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted/70 transition-colors">
+                        <Calendar className="w-5 h-5 text-primary" />
                         <div>
                           <p className="font-medium text-secondary">
                             {user.created_at ? new Date(user.created_at).toLocaleDateString() : "Not available"}
                           </p>
-                          <p className="text-sm text-muted-foreground">Account Created</p>
+                          <p className="text-sm text-muted-foreground">Member Since</p>
                         </div>
                       </div>
                     </div>
@@ -570,7 +699,7 @@ export default function UserEditPage() {
                           height="100%"
                           frameBorder="0"
                           style={{ border: 0 }}
-                          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BcqzKOqiMSM&q=${encodeURIComponent(user.address)}`}
+                          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyAt0i9BNsrI7oW9fiXrDDiTJNkeEvokDXk&q=${encodeURIComponent(user.address)}`}
                           allowFullScreen
                         />
                       </div>
@@ -582,6 +711,18 @@ export default function UserEditPage() {
           </Card>
         </div>
       </section>
+
+      {/* Custom Delete Confirmation Dialog */}
+      <ConfirmDialog
+        open={showDeleteConfirm}
+        onOpenChange={setShowDeleteConfirm}
+        title="Delete User"
+        description="Are you sure you want to delete this user? This action cannot be undone."
+        confirmText="Delete"
+        cancelText="Cancel"
+        onConfirm={handleDeleteConfirm}
+        variant="destructive"
+      />
     </div>
   )
 }

@@ -198,6 +198,29 @@ export default function DashboardPage() {
                     </Button>
                   </CardContent>
                 </Card>
+
+                {/* Email Templates */}
+                <Card className="group hover:shadow-lg transition-all duration-300 cursor-pointer border-red-200">
+                  <CardHeader className="pb-4">
+                    <CardTitle className="flex items-center gap-3 text-red-600">
+                      <div className="w-12 h-12 bg-red-100 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                        <Mail className="w-6 h-6 text-red-600" />
+                      </div>
+                      Email Templates
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground mb-4">
+                      View and manage email templates used throughout the website.
+                    </p>
+                    <Button asChild className="w-full bg-red-600 hover:bg-red-700">
+                      <Link href="/admin/email-templates" className="flex items-center gap-2">
+                        <Mail className="w-4 h-4" />
+                        View Templates
+                      </Link>
+                    </Button>
+                  </CardContent>
+                </Card>
               </div>
             </div>
           )}
