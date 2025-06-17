@@ -1,12 +1,12 @@
 import type React from "react"
-import { Phone, Mail, MapPin, Clock } from "lucide-react"
+import { Phone, Mail, MapPin, Clock, MessageCircle } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { brandKit } from "@/lib/brand-kit"
 
 interface ContactInfoProps {
   title: string
   content: string
-  icon?: "phone" | "email" | "address" | "hours"
+  icon?: "phone" | "email" | "address" | "hours" | "message"
   href?: string
 }
 
@@ -15,6 +15,7 @@ const iconMap = {
   email: Mail,
   address: MapPin,
   hours: Clock,
+  message: MessageCircle,
 }
 
 export default function ContactInfo({ title, content, icon = "phone", href }: ContactInfoProps) {
