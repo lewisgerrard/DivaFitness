@@ -141,7 +141,7 @@ export default function HomePage() {
             <div className="relative">
               <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
                 <Image
-                  src="/images/studio-emma-sitting.jpg"
+                  src="/images/studio-emma-doorway.jpg"
                   alt="Emma Fisher in Diva Fitness Studio"
                   fill
                   className="object-cover"

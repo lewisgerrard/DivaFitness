@@ -25,6 +25,8 @@ interface User {
   address?: string
   date_of_birth?: string
   photo_url?: string
+  created_at?: string
+  updated_at?: string
 }
 
 export default function UserEditPage() {
@@ -40,6 +42,9 @@ export default function UserEditPage() {
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const [success, setSuccess] = useState<string | null>(null)
+  const [addressSuggestions, setAddressSuggestions] = useState<string[]>([])
+  const [showSuggestions, setShowSuggestions] = useState(false)
+  const [loadingSuggestions, setLoadingSuggestions] = useState(false)
 
   useEffect(() => {
     if (!loading && (!currentUser || currentUser.role !== "admin")) {
@@ -62,6 +67,7 @@ export default function UserEditPage() {
         phone: user.phone || "",
         address: user.address || "",
         date_of_birth: user.date_of_birth || "",
+        photo_url: user.photo_url || "",
         role: user.role,
       })
     }
@@ -97,6 +103,48 @@ export default function UserEditPage() {
 
   const handleSelectChange = (name: string, value: string) => {
     setFormData((prev) => ({ ...prev, [name]: value }))
+  }
+
+  const handleAddressChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    handleChange(e)
+
+    if (value.length > 2) {
+      try {
+        setLoadingSuggestions(true)
+        // Use our server-side API route instead of direct Google API call
+        const response = await fetch(`/api/places/autocomplete?input=${encodeURIComponent(value)}`)
+
+        if (response.ok) {
+          const data = await response.json()
+          if (data.predictions && data.predictions.length > 0) {
+            const suggestions = data.predictions.map((prediction: any) => prediction.description)
+            setAddressSuggestions(suggestions)
+            setShowSuggestions(true)
+          } else {
+            setAddressSuggestions([])
+            setShowSuggestions(false)
+          }
+        } else {
+          console.error("Places API error:", response.status)
+          setAddressSuggestions([])
+          setShowSuggestions(false)
+        }
+      } catch (error) {
+        console.error("Error fetching address suggestions:", error)
+        setAddressSuggestions([])
+        setShowSuggestions(false)
+      } finally {
+        setLoadingSuggestions(false)
+      }
+    } else {
+      setShowSuggestions(false)
+    }
+  }
+
+  const selectAddress = (address: string) => {
+    setFormData((prev) => ({ ...prev, address }))
+    setShowSuggestions(false)
   }
 
   const handleSave = async () => {
@@ -315,17 +363,67 @@ export default function UserEditPage() {
                         required
                       />
                     </div>
-                  </div>
 
-                  <div className="space-y-4">
                     <div className="space-y-2">
                       <Label htmlFor="phone">Phone Number</Label>
                       <Input id="phone" name="phone" value={formData.phone || ""} onChange={handleChange} />
                     </div>
 
                     <div className="space-y-2">
+                      <Label htmlFor="date_of_birth">Date of Birth</Label>
+                      <Input
+                        id="date_of_birth"
+                        name="date_of_birth"
+                        type="date"
+                        value={formData.date_of_birth || ""}
+                        onChange={handleChange}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="space-y-2">
                       <Label htmlFor="address">Address</Label>
-                      <Input id="address" name="address" value={formData.address || ""} onChange={handleChange} />
+                      <div className="relative">
+                        <Input
+                          id="address"
+                          name="address"
+                          value={formData.address || ""}
+                          onChange={handleAddressChange}
+                          onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
+                          placeholder="Start typing an address..."
+                        />
+                        {showSuggestions && (
+                          <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-auto">
+                            {loadingSuggestions ? (
+                              <div className="px-4 py-2 text-sm text-gray-500">
+                                <div className="flex items-center gap-2">
+                                  <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-primary"></div>
+                                  Loading suggestions...
+                                </div>
+                              </div>
+                            ) : addressSuggestions.length > 0 ? (
+                              addressSuggestions.map((suggestion, index) => (
+                                <div
+                                  key={index}
+                                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm"
+                                  onClick={() => selectAddress(suggestion)}
+                                >
+                                  <MapPin className="w-4 h-4 inline mr-2 text-gray-400" />
+                                  {suggestion}
+                                </div>
+                              ))
+                            ) : (
+                              <div className="px-4 py-2 text-sm text-gray-500">No addresses found</div>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="photo_url">Photo URL</Label>
+                      <Input id="photo_url" name="photo_url" value={formData.photo_url || ""} onChange={handleChange} />
                     </div>
 
                     <div className="space-y-2">
@@ -344,73 +442,140 @@ export default function UserEditPage() {
                         </SelectContent>
                       </Select>
                     </div>
+
+                    <div className="space-y-2">
+                      <Label>Account Created</Label>
+                      <div className="p-2 bg-muted/30 rounded text-sm text-muted-foreground">
+                        {user.created_at ? new Date(user.created_at).toLocaleDateString() : "Not available"}
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label>Last Updated</Label>
+                      <div className="p-2 bg-muted/30 rounded text-sm text-muted-foreground">
+                        {user.updated_at ? new Date(user.updated_at).toLocaleDateString() : "Not available"}
+                      </div>
+                    </div>
                   </div>
                 </div>
               ) : (
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <UserIcon className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="font-medium text-secondary">
-                          {user.first_name} {user.last_name}
-                        </p>
-                        <p className="text-sm text-muted-foreground">Full Name</p>
+                <div className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <UserIcon className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">
+                            {user.first_name} {user.last_name}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Full Name</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <Mail className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">{user.email}</p>
+                          <p className="text-sm text-muted-foreground">Email Address</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <Phone className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">{user.phone || "Not provided"}</p>
+                          <p className="text-sm text-muted-foreground">Phone Number</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <UserIcon className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">
+                            {user.date_of_birth ? new Date(user.date_of_birth).toLocaleDateString() : "Not provided"}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Date of Birth</p>
+                        </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <Mail className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="font-medium text-secondary">{user.email}</p>
-                        <p className="text-sm text-muted-foreground">Email Address</p>
+                    <div className="space-y-4">
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <MapPin className="w-5 h-5 text-primary" />
+                        <div className="flex-1">
+                          <p className="font-medium text-secondary">{user.address || "Not provided"}</p>
+                          <p className="text-sm text-muted-foreground">Address</p>
+                        </div>
+                        {user.address && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() =>
+                              window.open(
+                                `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(user.address)}`,
+                                "_blank",
+                              )
+                            }
+                          >
+                            View on Map
+                          </Button>
+                        )}
                       </div>
-                    </div>
 
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <Phone className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="font-medium text-secondary">{user.phone || "Not provided"}</p>
-                        <p className="text-sm text-muted-foreground">Phone Number</p>
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <div className="w-5 h-5 flex items-center justify-center">
+                          <span
+                            className={`w-3 h-3 rounded-full ${
+                              user.role === "admin"
+                                ? "bg-red-500"
+                                : user.role === "client"
+                                  ? "bg-blue-500"
+                                  : "bg-green-500"
+                            }`}
+                          ></span>
+                        </div>
+                        <div>
+                          <p className="font-medium text-secondary">{user.role}</p>
+                          <p className="text-sm text-muted-foreground">User Role</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <UserIcon className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">#{user.id}</p>
+                          <p className="text-sm text-muted-foreground">User ID</p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
+                        <UserIcon className="w-5 h-5 text-primary" />
+                        <div>
+                          <p className="font-medium text-secondary">
+                            {user.created_at ? new Date(user.created_at).toLocaleDateString() : "Not available"}
+                          </p>
+                          <p className="text-sm text-muted-foreground">Account Created</p>
+                        </div>
                       </div>
                     </div>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <MapPin className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="font-medium text-secondary">{user.address || "Not provided"}</p>
-                        <p className="text-sm text-muted-foreground">Address</p>
+                  {/* Google Maps Embed */}
+                  {user.address && (
+                    <div className="mt-6">
+                      <h3 className="text-lg font-semibold mb-3 text-primary">Location</h3>
+                      <div className="w-full h-64 rounded-lg overflow-hidden border">
+                        <iframe
+                          width="100%"
+                          height="100%"
+                          frameBorder="0"
+                          style={{ border: 0 }}
+                          src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBFw0Qbyq9zTFTd-tUY6dO_BcqzKOqiMSM&q=${encodeURIComponent(user.address)}`}
+                          allowFullScreen
+                        />
                       </div>
                     </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <div className="w-5 h-5 flex items-center justify-center">
-                        <span
-                          className={`w-3 h-3 rounded-full ${
-                            user.role === "admin"
-                              ? "bg-red-500"
-                              : user.role === "client"
-                                ? "bg-blue-500"
-                                : "bg-green-500"
-                          }`}
-                        ></span>
-                      </div>
-                      <div>
-                        <p className="font-medium text-secondary">{user.role}</p>
-                        <p className="text-sm text-muted-foreground">User Role</p>
-                      </div>
-                    </div>
-
-                    <div className="flex items-center gap-3 p-3 bg-muted/30 rounded-lg">
-                      <UserIcon className="w-5 h-5 text-primary" />
-                      <div>
-                        <p className="font-medium text-secondary">#{user.id}</p>
-                        <p className="text-sm text-muted-foreground">User ID</p>
-                      </div>
-                    </div>
-                  </div>
+                  )}
                 </div>
               )}
             </CardContent>
