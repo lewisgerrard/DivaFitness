@@ -17,7 +17,6 @@ interface User {
   email: string
   phone: string | null
   role: "admin" | "client" | "member"
-  created_at: string
 }
 
 export default function AdminPage() {
@@ -31,23 +30,43 @@ export default function AdminPage() {
   const [searchQuery, setSearchQuery] = useState("")
 
   useEffect(() => {
-    if (!loading && (!user || user.role !== "admin")) {
+    console.log("Auth state - loading:", loading, "user:", user)
+
+    // Only redirect if we're sure there's no user and loading is complete
+    if (!loading && !user) {
+      console.log("No user found, redirecting to login")
       router.push("/login")
     }
   }, [user, loading, router])
 
   useEffect(() => {
-    if (user && user.role === "admin") {
+    // Only fetch users if user exists and has admin role
+    if (!loading && user && user.role === "admin") {
+      console.log("Current user:", user) // Debug log
       fetchUsers()
     }
-  }, [user])
+  }, [user, loading])
 
   const fetchUsers = async () => {
     try {
-      const response = await fetch("/api/admin/users")
+      const response = await fetch("/api/admin/users", {
+        credentials: "include", // Ensure cookies are sent
+      })
+
+      if (response.status === 401) {
+        console.log("Not authenticated, redirecting to login")
+        router.push("/login")
+        return
+      }
+
       if (response.ok) {
         const data = await response.json()
-        setUsers(data.users)
+        console.log("Fetched users:", data) // Debug log
+        setUsers(data.users || [])
+      } else {
+        console.error("Failed to fetch users:", response.status, response.statusText)
+        const errorData = await response.json().catch(() => ({}))
+        console.error("Error details:", errorData)
       }
     } catch (error) {
       console.error("Failed to fetch users:", error)
@@ -76,14 +95,18 @@ export default function AdminPage() {
   const handleDeleteUser = async (userId: number) => {
     if (!confirm("Are you sure you want to delete this user?")) return
     try {
-      const response = await fetch(`/api/admin/clients/${userId}`, {
+      const response = await fetch(`/api/admin/users/${userId}`, {
         method: "DELETE",
       })
       if (response.ok) {
         setUsers((prev) => prev.filter((u) => u.id !== userId))
+        alert("User deleted successfully")
+      } else {
+        alert("Failed to delete user")
       }
     } catch (error) {
       console.error("Failed to delete user:", error)
+      alert("Failed to delete user")
     }
   }
 
@@ -98,8 +121,31 @@ export default function AdminPage() {
     )
   }
 
-  if (!user || user.role !== "admin") {
-    return null
+  if (!user && !loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <p className="text-muted-foreground">Redirecting to login...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!loading && user && user.role !== "admin") {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-red-600 mb-4">Access Denied</h1>
+          <p className="text-muted-foreground mb-4">You need admin privileges to access this page.</p>
+          <p className="text-sm text-muted-foreground mb-4">
+            Current user: {user.email} (Role: {user.role})
+          </p>
+          <Button asChild>
+            <Link href="/profile">← Back to Profile</Link>
+          </Button>
+        </div>
+      </div>
+    )
   }
 
   const adminUsers = users.filter((u) => u.role === "admin")
@@ -115,6 +161,16 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-primary/5 to-accent/5 py-8">
+      {/* Debug Authentication Info */}
+      {process.env.NODE_ENV === "development" && (
+        <div className="mb-4 p-4 bg-blue-100 rounded text-sm">
+          <p>
+            <strong>Debug Auth Info:</strong>
+          </p>
+          <p>Loading: {loading.toString()}</p>
+          <p>User: {user ? JSON.stringify(user, null, 2) : "null"}</p>
+        </div>
+      )}
       <div className="max-w-7xl mx-auto px-4">
         <div className="mb-8">
           <h1 className="font-heading text-3xl font-bold text-secondary mb-2">Admin Panel</h1>
@@ -225,7 +281,7 @@ export default function AdminPage() {
                     <th className="text-left py-3 px-4 font-medium text-secondary">Name</th>
                     <th className="text-left py-3 px-4 font-medium text-secondary">Email</th>
                     <th className="text-left py-3 px-4 font-medium text-secondary">Role</th>
-                    <th className="text-left py-3 px-4 font-medium text-secondary">Created</th>
+                    <th className="text-left py-3 px-4 font-medium text-secondary">ID</th>
                     <th className="text-left py-3 px-4 font-medium text-secondary">Status</th>
                     <th className="text-left py-3 px-4 font-medium text-secondary">Actions</th>
                   </tr>
@@ -271,9 +327,7 @@ export default function AdminPage() {
                           )}
                         </span>
                       </td>
-                      <td className="py-3 px-4 text-muted-foreground">
-                        {userData.created_at ? new Date(userData.created_at).toLocaleDateString() : "N/A"}
-                      </td>
+                      <td className="py-3 px-4 text-muted-foreground">{userData.id}</td>
                       <td className="py-3 px-4">
                         <span className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
                           <div className="w-2 h-2 bg-green-500 rounded-full mr-1"></div>

@@ -13,13 +13,23 @@ export async function GET(request: NextRequest) {
     }
 
     const { payload } = await jwtVerify(token, secret)
-    const user = await getUserById(payload.userId as number)
+    const userId = payload.userId as number
+
+    const user = await getUserById(userId)
 
     if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ user })
+    return NextResponse.json({
+      user: {
+        id: user.id,
+        email: user.email,
+        first_name: user.first_name,
+        last_name: user.last_name,
+        role: user.role,
+      },
+    })
   } catch (error) {
     console.error("Auth check error:", error)
     return NextResponse.json({ error: "Invalid token" }, { status: 401 })

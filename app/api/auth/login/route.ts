@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { authenticateUser } from "@/lib/auth"
 import { SignJWT } from "jose"
+import { authenticateUser } from "@/lib/auth"
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
@@ -9,7 +9,7 @@ export async function POST(request: NextRequest) {
     const { email, password } = await request.json()
 
     if (!email || !password) {
-      return NextResponse.json({ error: "Email and password required" }, { status: 400 })
+      return NextResponse.json({ error: "Email and password are required" }, { status: 400 })
     }
 
     const user = await authenticateUser(email, password)
@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
-    // Create JWT token for any authenticated user
+    // Create JWT token
     const token = await new SignJWT({
       userId: user.id,
       email: user.email,
@@ -28,6 +28,7 @@ export async function POST(request: NextRequest) {
       .setExpirationTime("24h")
       .sign(secret)
 
+    // Create response
     const response = NextResponse.json({
       user: {
         id: user.id,
@@ -38,17 +39,19 @@ export async function POST(request: NextRequest) {
       },
     })
 
-    // Set HTTP-only cookie
+    // Set cookie with proper options
     response.cookies.set("auth-token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 86400, // 24 hours
+      maxAge: 60 * 60 * 24, // 24 hours
+      path: "/",
     })
 
+    console.log("Login successful for user:", user.email, "Role:", user.role)
     return response
   } catch (error) {
     console.error("Login error:", error)
-    return NextResponse.json({ error: "Login failed" }, { status: 500 })
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
