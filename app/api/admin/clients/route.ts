@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
-import { sql } from "@/lib/database"
+import { getAllUsers, createUser } from "@/lib/auth"
 
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
@@ -18,16 +18,13 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
-    // Get all clients from the database
-    const clients = await sql`
-      SELECT * FROM clients 
-      ORDER BY created_at DESC
-    `
+    // Get all users from the consolidated users table
+    const users = await getAllUsers()
 
-    return NextResponse.json({ clients })
+    return NextResponse.json({ users })
   } catch (error) {
-    console.error("Get clients error:", error)
-    return NextResponse.json({ error: "Failed to fetch clients" }, { status: 500 })
+    console.error("Get users error:", error)
+    return NextResponse.json({ error: "Failed to fetch users" }, { status: 500 })
   }
 }
 
@@ -46,25 +43,51 @@ export async function POST(request: NextRequest) {
     }
 
     const body = await request.json()
-    const { name, email, phone, service_interest, status, notes } = body
+    const {
+      name,
+      first_name,
+      last_name,
+      email,
+      phone,
+      password,
+      role,
+      address,
+      date_of_birth,
+      emergency_contact_name,
+      emergency_contact_phone,
+      service_interest,
+      notes,
+    } = body
 
     // Validate required fields
-    if (!name || !email) {
-      return NextResponse.json({ error: "Name and email are required" }, { status: 400 })
+    if (!name || !email || !password) {
+      return NextResponse.json({ error: "Name, email, and password are required" }, { status: 400 })
     }
 
-    // Create new client in the database
-    const result = await sql`
-      INSERT INTO clients (name, email, phone, service_interest, status, notes)
-      VALUES (${name}, ${email}, ${phone || null}, ${service_interest || null}, ${status || "active"}, ${notes || null})
-      RETURNING *
-    `
+    // Create new user in the consolidated users table
+    const user = await createUser({
+      name,
+      first_name,
+      last_name,
+      email,
+      phone,
+      password,
+      role: role || "user",
+      address,
+      date_of_birth,
+      emergency_contact_name,
+      emergency_contact_phone,
+      service_interest,
+      notes,
+    })
 
-    const client = result[0]
+    if (!user) {
+      return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
+    }
 
-    return NextResponse.json({ client }, { status: 201 })
+    return NextResponse.json({ user }, { status: 201 })
   } catch (error) {
-    console.error("Create client error:", error)
-    return NextResponse.json({ error: "Failed to create client" }, { status: 500 })
+    console.error("Create user error:", error)
+    return NextResponse.json({ error: "Failed to create user" }, { status: 500 })
   }
 }

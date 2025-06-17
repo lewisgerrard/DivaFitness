@@ -11,14 +11,14 @@ import HeroSection from "@/components/hero-section"
 import AddClientModal from "@/components/add-client-modal"
 import { Input } from "@/components/ui/input"
 
-interface Client {
+interface User {
   id: number
   name: string
+  first_name?: string
+  last_name?: string
   email: string
   phone?: string
-  service_interest?: string
-  status: string
-  notes?: string
+  role: string
   created_at: string
 }
 
@@ -35,7 +35,7 @@ interface ContactSubmission {
 
 export default function ClientsPage() {
   const { user, loading } = useAuth()
-  const [clients, setClients] = useState<Client[]>([])
+  const [users, setUsers] = useState<User[]>([])
   const [submissions, setSubmissions] = useState<ContactSubmission[]>([])
   const [loadingData, setLoadingData] = useState(true)
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false)
@@ -51,20 +51,20 @@ export default function ClientsPage() {
 
   useEffect(() => {
     if (user && user.role === "admin") {
-      fetchClients()
+      fetchUsers()
       fetchContactSubmissions()
     }
   }, [user])
 
-  const fetchClients = async () => {
+  const fetchUsers = async () => {
     try {
       const response = await fetch("/api/admin/clients")
       if (response.ok) {
         const data = await response.json()
-        setClients(data.clients)
+        setUsers(data.users || data.clients || [])
       }
     } catch (error) {
-      console.error("Failed to fetch clients:", error)
+      console.error("Failed to fetch users:", error)
     } finally {
       setLoadingData(false)
     }
@@ -82,46 +82,53 @@ export default function ClientsPage() {
     }
   }
 
-  const handleAddClient = async (newClient: Omit<Client, "id" | "created_at">) => {
+  const handleAddUser = async (newUser: any) => {
     try {
       const response = await fetch("/api/admin/clients", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newClient),
+        body: JSON.stringify(newUser),
       })
 
       if (response.ok) {
         const data = await response.json()
-        setClients((prevClients) => [...prevClients, data.client])
+        setUsers((prevUsers) => [...prevUsers, data.user || data.client])
         setIsAddClientModalOpen(false)
       }
     } catch (error) {
-      console.error("Failed to add client:", error)
+      console.error("Failed to add user:", error)
     }
   }
 
-  const filteredClients = clients.filter(
-    (client) =>
-      client.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      client.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (client.phone && client.phone.includes(searchQuery)),
-  )
+  const getFilteredUsers = () => {
+    let filtered = users.filter(
+      (user) =>
+        user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (user.phone && user.phone.includes(searchQuery)),
+    )
 
-  const filteredSubmissions = submissions.filter(
-    (submission) =>
-      submission.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      submission.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      (submission.phone && submission.phone.includes(searchQuery)),
-  )
+    if (activeTab === "admins") {
+      filtered = filtered.filter((u) => u.role === "admin")
+    } else if (activeTab === "clients") {
+      filtered = filtered.filter((u) => u.role === "user" || u.role === "client")
+    } else if (activeTab === "members") {
+      filtered = filtered.filter((u) => u.role === "user" || u.role === "member")
+    }
+
+    return filtered
+  }
+
+  const filteredUsers = getFilteredUsers()
 
   if (loading || loadingData) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading clients...</p>
+          <p className="mt-2 text-muted-foreground">Loading users...</p>
         </div>
       </div>
     )
@@ -135,12 +142,12 @@ export default function ClientsPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <HeroSection
-        title="Client Management"
-        description="View and manage all clients and contact form submissions."
+        title="User Management"
+        description="View and manage all users who can log in to the website."
         badge="Admin Panel"
       />
 
-      {/* Clients Content */}
+      {/* Users Content */}
       <section className="py-16 bg-gradient-to-br from-white via-muted to-accent-light/20">
         <div className="max-w-7xl mx-auto px-4">
           {/* Back Button */}
@@ -162,8 +169,8 @@ export default function ClientsPage() {
                     <Users className="w-6 h-6 text-primary" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-secondary">{clients.length}</p>
-                    <p className="text-sm text-muted-foreground">Total Clients</p>
+                    <p className="text-2xl font-bold text-secondary">{users.length}</p>
+                    <p className="text-sm text-muted-foreground">Total Users</p>
                   </div>
                 </div>
               </CardContent>
@@ -176,8 +183,10 @@ export default function ClientsPage() {
                     <Mail className="w-6 h-6 text-green-600" />
                   </div>
                   <div>
-                    <p className="text-2xl font-bold text-secondary">{submissions.length}</p>
-                    <p className="text-sm text-muted-foreground">Contact Inquiries</p>
+                    <p className="text-2xl font-bold text-secondary">
+                      {users.filter((u) => u.role === "admin").length}
+                    </p>
+                    <p className="text-sm text-muted-foreground">Admins</p>
                   </div>
                 </div>
               </CardContent>
@@ -191,9 +200,9 @@ export default function ClientsPage() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
-                      {clients.filter((c) => c.status === "active").length}
+                      {users.filter((u) => u.role === "user" || u.role === "client").length}
                     </p>
-                    <p className="text-sm text-muted-foreground">Active Clients</p>
+                    <p className="text-sm text-muted-foreground">Members</p>
                   </div>
                 </div>
               </CardContent>
@@ -208,8 +217,8 @@ export default function ClientsPage() {
                   <div>
                     <p className="text-2xl font-bold text-secondary">
                       {
-                        clients.filter((c) => {
-                          const created = new Date(c.created_at)
+                        users.filter((u) => {
+                          const created = new Date(u.created_at)
                           const today = new Date()
                           const diffTime = Math.abs(today.getTime() - created.getTime())
                           const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
@@ -272,250 +281,136 @@ export default function ClientsPage() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
               </div>
-              {(activeTab === "clients" || activeTab === "all") && (
-                <Button
-                  onClick={() => setIsAddClientModalOpen(true)}
-                  className="bg-primary hover:bg-primary-dark flex items-center gap-2"
-                >
-                  <PlusCircle className="w-4 h-4" />
-                  Add Client
-                </Button>
-              )}
+              <Button
+                onClick={() => setIsAddClientModalOpen(true)}
+                className="bg-primary hover:bg-primary-dark flex items-center gap-2"
+              >
+                <PlusCircle className="w-4 h-4" />
+                Add
+              </Button>
             </div>
           </div>
 
-          {/* Clients Table */}
-          {activeTab === "clients" && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
-                  <Users className="w-5 h-5" />
-                  Registered Clients
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Name</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Contact</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Service Interest</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Notes</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Date</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Status</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {filteredClients.map((client) => (
-                        <tr key={client.id} className="border-b hover:bg-muted/50">
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                <span className="text-sm font-medium text-primary">
-                                  {client.name.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                              <span className="font-medium text-secondary">{client.name}</span>
+          {/* Users Table */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-primary">
+                <Users className="w-5 h-5" />
+                Users
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b">
+                      <th className="text-left py-3 px-4 font-medium text-secondary">First Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-secondary">Last Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-secondary">Type</th>
+                      <th className="text-left py-3 px-4 font-medium text-secondary">Contact</th>
+                      <th className="text-left py-3 px-4 font-medium text-secondary">Date</th>
+                      <th className="text-left py-3 px-4 font-medium text-secondary">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user) => (
+                      <tr key={user.id} className="border-b hover:bg-muted/50">
+                        <td className="py-3 px-4">
+                          <div className="flex items-center gap-3">
+                            <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                              <span className="text-sm font-medium text-primary">
+                                {(user.first_name || user.name)?.charAt(0).toUpperCase()}
+                              </span>
                             </div>
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="space-y-1">
+                            <span className="font-medium text-secondary">
+                              {user.first_name || user.name?.split(" ")[0] || "N/A"}
+                            </span>
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 font-medium text-secondary">
+                          {user.last_name || user.name?.split(" ").slice(1).join(" ") || "N/A"}
+                        </td>
+                        <td className="py-3 px-4">
+                          <span
+                            className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
+                              user.role === "admin" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
+                            }`}
+                          >
+                            {user.role === "admin" ? "Admin" : "Member"}
+                          </span>
+                        </td>
+                        <td className="py-3 px-4">
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2 text-sm">
+                              <Mail className="w-3 h-3 text-muted-foreground" />
+                              <a href={`mailto:${user.email}`} className="text-primary hover:underline">
+                                {user.email}
+                              </a>
+                            </div>
+                            {user.phone && (
                               <div className="flex items-center gap-2 text-sm">
-                                <Mail className="w-3 h-3 text-muted-foreground" />
-                                <a href={`mailto:${client.email}`} className="text-primary hover:underline">
-                                  {client.email}
+                                <Phone className="w-3 h-3 text-muted-foreground" />
+                                <a href={`tel:${user.phone}`} className="text-primary hover:underline">
+                                  {user.phone}
                                 </a>
                               </div>
-                              {client.phone && (
-                                <div className="flex items-center gap-2 text-sm">
-                                  <Phone className="w-3 h-3 text-muted-foreground" />
-                                  <a href={`tel:${client.phone}`} className="text-primary hover:underline">
-                                    {client.phone}
-                                  </a>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="py-3 px-4 text-muted-foreground">
-                            {client.service_interest || "Not specified"}
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="max-w-xs">
-                              <p className="text-sm text-muted-foreground line-clamp-2">{client.notes || "No notes"}</p>
-                            </div>
-                          </td>
-                          <td className="py-3 px-4 text-muted-foreground text-sm">
-                            {new Date(client.created_at).toLocaleDateString()}
-                          </td>
-                          <td className="py-3 px-4">
-                            <span
-                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                client.status === "active"
-                                  ? "bg-green-100 text-green-800"
-                                  : client.status === "inactive"
-                                    ? "bg-red-100 text-red-800"
-                                    : "bg-blue-100 text-blue-800"
-                              }`}
-                            >
-                              <div
-                                className={`w-2 h-2 rounded-full mr-1 ${
-                                  client.status === "active"
-                                    ? "bg-green-500"
-                                    : client.status === "inactive"
-                                      ? "bg-red-500"
-                                      : "bg-blue-500"
-                                }`}
-                              ></div>
-                              {client.status}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <Button variant="outline" size="sm" asChild>
-                              <Link href={`/admin/clients/${client.id}`}>View</Link>
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-
-                {filteredClients.length === 0 && (
-                  <div className="text-center py-8">
-                    <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No clients found</p>
-                    {searchQuery ? (
-                      <p className="text-sm text-muted-foreground mt-2">Try adjusting your search</p>
-                    ) : (
-                      <p className="text-sm text-muted-foreground mt-2">Add your first client to get started</p>
-                    )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
-
-          {/* Contact Submissions Table */}
-          {activeTab === "inquiries" && (
-            <Card>
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2 text-primary">
-                  <Mail className="w-5 h-5" />
-                  Contact Inquiries
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="border-b">
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Name</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Contact</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Service Interest</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Message</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Date</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Status</th>
-                        <th className="text-left py-3 px-4 font-medium text-secondary">Actions</th>
+                            )}
+                          </div>
+                        </td>
+                        <td className="py-3 px-4 text-muted-foreground text-sm">
+                          {new Date(user.created_at).toLocaleDateString()}
+                        </td>
+                        <td className="py-3 px-4">
+                          <Button variant="outline" size="sm" asChild>
+                            <Link href={`/admin/clients/${user.id}`}>View</Link>
+                          </Button>
+                        </td>
                       </tr>
-                    </thead>
-                    <tbody>
-                      {filteredSubmissions.map((submission) => (
-                        <tr key={submission.id} className="border-b hover:bg-muted/50">
-                          <td className="py-3 px-4">
-                            <div className="flex items-center gap-3">
-                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                <span className="text-sm font-medium text-primary">
-                                  {submission.name.charAt(0).toUpperCase()}
-                                </span>
-                              </div>
-                              <span className="font-medium text-secondary">{submission.name}</span>
-                            </div>
-                          </td>
-                          <td className="py-3 px-4">
-                            <div className="space-y-1">
-                              <div className="flex items-center gap-2 text-sm">
-                                <Mail className="w-3 h-3 text-muted-foreground" />
-                                <a href={`mailto:${submission.email}`} className="text-primary hover:underline">
-                                  {submission.email}
-                                </a>
-                              </div>
-                              {submission.phone && (
-                                <div className="flex items-center gap-2 text-sm">
-                                  <Phone className="w-3 h-3 text-muted-foreground" />
-                                  <a href={`tel:${submission.phone}`} className="text-primary hover:underline">
-                                    {submission.phone}
-                                  </a>
-                                </div>
-                              )}
-                            </div>
-                          </td>
-                          <td className="py-3 px-4 text-muted-foreground">{submission.service || "Not specified"}</td>
-                          <td className="py-3 px-4">
-                            <div className="max-w-xs">
-                              <p className="text-sm text-muted-foreground line-clamp-2">{submission.message}</p>
-                            </div>
-                          </td>
-                          <td className="py-3 px-4 text-muted-foreground text-sm">
-                            {new Date(submission.created_at).toLocaleDateString()}
-                          </td>
-                          <td className="py-3 px-4">
-                            <span
-                              className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                                submission.status === "new"
-                                  ? "bg-green-100 text-green-800"
-                                  : "bg-blue-100 text-blue-800"
-                              }`}
-                            >
-                              <div
-                                className={`w-2 h-2 rounded-full mr-1 ${
-                                  submission.status === "new" ? "bg-green-500" : "bg-blue-500"
-                                }`}
-                              ></div>
-                              {submission.status === "new" ? "New" : "Contacted"}
-                            </span>
-                          </td>
-                          <td className="py-3 px-4">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => {
-                                // Convert inquiry to client
-                                setIsAddClientModalOpen(true)
-                              }}
-                            >
-                              Convert to Client
-                            </Button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
 
-                {filteredSubmissions.length === 0 && (
-                  <div className="text-center py-8">
-                    <Mail className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No inquiries found</p>
-                    {searchQuery ? (
-                      <p className="text-sm text-muted-foreground mt-2">Try adjusting your search</p>
-                    ) : (
-                      <p className="text-sm text-muted-foreground mt-2">Contact form submissions will appear here</p>
+              {filteredUsers.length === 0 && (
+                <div className="text-center py-8">
+                  <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
+                  <p className="text-muted-foreground">No users found</p>
+                  <div className="mt-4 p-4 bg-gray-100 rounded text-left text-sm">
+                    <p>
+                      <strong>Debug Info:</strong>
+                    </p>
+                    <p>Total users fetched: {users.length}</p>
+                    <p>Filtered users: {filteredUsers.length}</p>
+                    <p>Active tab: {activeTab}</p>
+                    <p>Search query: "{searchQuery}"</p>
+                    <p>Loading data: {loadingData.toString()}</p>
+                    <p>Current user role: {user?.role}</p>
+                    {users.length > 0 && (
+                      <div className="mt-2">
+                        <p>
+                          <strong>Sample user data:</strong>
+                        </p>
+                        <pre className="text-xs">{JSON.stringify(users[0], null, 2)}</pre>
+                      </div>
                     )}
                   </div>
-                )}
-              </CardContent>
-            </Card>
-          )}
+                  {searchQuery ? (
+                    <p className="text-sm text-muted-foreground mt-2">Try adjusting your search</p>
+                  ) : (
+                    <p className="text-sm text-muted-foreground mt-2">Add your first user to get started</p>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </section>
 
-      {/* Add Client Modal */}
+      {/* Add User Modal */}
       <AddClientModal
         isOpen={isAddClientModalOpen}
         onClose={() => setIsAddClientModalOpen(false)}
-        onAddClient={handleAddClient}
+        onAddClient={handleAddUser}
       />
     </div>
   )
