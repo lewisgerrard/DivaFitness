@@ -38,12 +38,10 @@ export default function HeroSection({
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-        {badge && (
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4 animate-fade-in">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">{badge}</span>
-          </div>
-        )}
+        <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4 animate-fade-in">
+          <Sparkles className="w-4 h-4" />
+          <span className="text-sm font-medium">Dashboard</span>
+        </div>
 
         <h1 className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold mb-3 leading-tight animate-fade-in">
           {title}
