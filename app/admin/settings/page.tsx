@@ -2,8 +2,9 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Mail, Globe, Settings } from "lucide-react"
+import { Mail, Globe, Settings, Layers, Palette } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { AdminPageHeader } from "@/components/admin-page-header"
 
 export default function SettingsPage() {
   const router = useRouter()
@@ -80,33 +81,27 @@ export default function SettingsPage() {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header Section - matching admin portal exactly */}
-        <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-          <div className="flex items-center gap-4">
-            <div className="w-16 h-16 bg-gradient-to-br from-pink-400 to-pink-500 rounded-full flex items-center justify-center shadow-lg">
-              <Settings className="w-8 h-8 text-white" />
-            </div>
-            <div>
-              <h1 className="text-4xl font-bold text-pink-600 mb-1">Website Settings</h1>
-              <p className="text-lg text-pink-400">Configure website content and email templates</p>
-            </div>
-          </div>
-        </div>
+        <AdminPageHeader
+          icon={Settings}
+          title="Website Settings"
+          description="Configure website content and email templates"
+        />
 
         {/* Settings Cards Grid - exactly like admin portal */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-7xl">
           {/* Email Templates Card */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100">
-            <div className="text-center">
+          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100 flex flex-col h-full">
+            <div className="text-center flex-1 flex flex-col">
               <div className="w-20 h-20 bg-pink-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
                 <Mail className="w-10 h-10 text-pink-500" />
               </div>
               <h3 className="text-2xl font-bold text-pink-600 mb-4">Email Templates</h3>
-              <p className="text-gray-600 mb-8 text-base leading-relaxed">
+              <p className="text-gray-600 mb-8 text-base leading-relaxed flex-1">
                 Create and manage email templates for client communications
               </p>
               <Button
                 onClick={() => router.push("/admin/email-templates")}
-                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200"
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200 mt-auto"
               >
                 Manage Templates
               </Button>
@@ -114,20 +109,58 @@ export default function SettingsPage() {
           </div>
 
           {/* Website Structure Card */}
-          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100">
-            <div className="text-center">
+          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100 flex flex-col h-full">
+            <div className="text-center flex-1 flex flex-col">
               <div className="w-20 h-20 bg-pink-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
                 <Globe className="w-10 h-10 text-pink-500" />
               </div>
               <h3 className="text-2xl font-bold text-pink-600 mb-4">Website Structure</h3>
-              <p className="text-gray-600 mb-8 text-base leading-relaxed">
+              <p className="text-gray-600 mb-8 text-base leading-relaxed flex-1">
                 Configure website content, navigation, and settings
               </p>
               <Button
-                onClick={() => router.push("/admin/website-structure")}
-                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200"
+                onClick={() => router.push("/admin/page-structure")}
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200 mt-auto"
               >
-                Website Settings
+                View Page Structure
+              </Button>
+            </div>
+          </div>
+
+          {/* Components Card */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100 flex flex-col h-full">
+            <div className="text-center flex-1 flex flex-col">
+              <div className="w-20 h-20 bg-pink-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <Layers className="w-10 h-10 text-pink-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-pink-600 mb-4">Components</h3>
+              <p className="text-gray-600 mb-8 text-base leading-relaxed flex-1">
+                Manage reusable UI components and design elements
+              </p>
+              <Button
+                onClick={() => router.push("/admin/components")}
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200 mt-auto"
+              >
+                Manage Components
+              </Button>
+            </div>
+          </div>
+
+          {/* Branding Card */}
+          <div className="bg-white rounded-3xl shadow-lg p-8 border border-pink-100 flex flex-col h-full">
+            <div className="text-center flex-1 flex flex-col">
+              <div className="w-20 h-20 bg-pink-50 rounded-3xl flex items-center justify-center mx-auto mb-6">
+                <Palette className="w-10 h-10 text-pink-500" />
+              </div>
+              <h3 className="text-2xl font-bold text-pink-600 mb-4">Branding</h3>
+              <p className="text-gray-600 mb-8 text-base leading-relaxed flex-1">
+                Configure brand colors, fonts, and visual identity
+              </p>
+              <Button
+                onClick={() => router.push("/admin/branding")}
+                className="w-full bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700 text-white font-semibold py-4 px-6 rounded-2xl text-base transition-all duration-200 mt-auto"
+              >
+                Edit Branding
               </Button>
             </div>
           </div>
