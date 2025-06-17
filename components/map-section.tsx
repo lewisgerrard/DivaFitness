@@ -38,7 +38,7 @@ export default function MapSection({
       </div>
 
       <div className="text-center">
-        <h3 className="font-heading text-lg font-bold text-secondary mb-2">Visit the Garden Studio</h3>
+        <h3 className="font-heading text-lg font-bold text-secondary mb-2">Visit the Studio</h3>
         <p className="text-muted-foreground text-sm mb-4">{description}</p>
         <Button asChild size="sm" className="bg-primary hover:bg-primary-dark rounded-full w-full">
           <a
