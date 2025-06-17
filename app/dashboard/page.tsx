@@ -1,12 +1,10 @@
 "use client"
 
 import { useAuth } from "@/hooks/use-auth"
-import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import HeroSection from "@/components/hero-section"
+import { useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { User, Users } from "lucide-react"
 import Link from "next/link"
 
 export default function DashboardPage() {
@@ -20,14 +18,7 @@ export default function DashboardPage() {
   }, [user, loading, router])
 
   if (loading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-          <p className="mt-2 text-muted-foreground">Loading dashboard...</p>
-        </div>
-      </div>
-    )
+    return <div className="flex items-center justify-center min-h-screen">Loading...</div>
   }
 
   if (!user) {
@@ -35,73 +26,71 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <HeroSection
-        title={`Welcome back,`}
-        subtitle={user.name}
-        description="Access your account dashboard and manage your Diva Fitness experience."
-        badge="Dashboard"
-      />
+    <div className="min-h-screen bg-gradient-to-br from-primary/10 to-accent/10 p-4">
+      <div className="max-w-4xl mx-auto">
+        <div className="mb-8">
+          <h1 className="text-3xl font-heading text-primary mb-2">
+            Welcome, {user.first_name} {user.last_name}!
+          </h1>
+          <p className="text-muted-foreground">Role: {user.role}</p>
+        </div>
 
-      {/* Dashboard Content */}
-      <section className="py-16 bg-gradient-to-br from-white via-muted to-accent-light/20">
-        <div className="max-w-4xl mx-auto px-4">
-          {/* Members Section */}
-          <div className="mb-12">
-            <h2 className="font-heading text-2xl font-bold text-secondary mb-6">Members</h2>
-            <Card className="group hover:shadow-lg transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-primary">
-                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <User className="w-5 h-5 text-primary" />
-                  </div>
-                  My Profile
-                </CardTitle>
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {/* Profile Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>My Profile</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">View and update your personal information</p>
+              <Button asChild className="w-full">
+                <Link href="/profile">View Profile</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Appointments Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>My Appointments</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">View your upcoming and past appointments</p>
+              <Button asChild className="w-full">
+                <Link href="/profile/appointments">View Appointments</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Health Data Card */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Health Data</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-sm text-muted-foreground mb-4">Track your measurements and progress</p>
+              <Button asChild className="w-full">
+                <Link href="/profile/data">View Data</Link>
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Admin Panel Card - Only for admins */}
+          {user.role === "admin" && (
+            <Card>
+              <CardHeader>
+                <CardTitle>Admin Panel</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-muted-foreground mb-4">
-                  View and manage your personal account information, preferences, and settings.
-                </p>
-                <Button asChild className="bg-primary hover:bg-primary-dark">
-                  <Link href="/profile" className="flex items-center gap-2">
-                    <User className="w-4 h-4" />
-                    View Profile
-                  </Link>
+                <p className="text-sm text-muted-foreground mb-4">Manage clients and appointments</p>
+                <Button asChild className="w-full">
+                  <Link href="/admin">Admin Panel</Link>
                 </Button>
               </CardContent>
             </Card>
-          </div>
-
-          {/* Admin Section - Only show for admin users */}
-          {user.role === "admin" && (
-            <div>
-              <h2 className="font-heading text-2xl font-bold text-secondary mb-6">Admin</h2>
-              <Card className="group hover:shadow-lg transition-all duration-300">
-                <CardHeader className="pb-4">
-                  <CardTitle className="flex items-center gap-3 text-primary">
-                    <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
-                      <Users className="w-5 h-5 text-primary" />
-                    </div>
-                    Clients
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground mb-4">
-                    Manage client information, view contact submissions, and track client progress.
-                  </p>
-                  <Button asChild className="bg-primary hover:bg-primary-dark">
-                    <Link href="/admin/clients" className="flex items-center gap-2">
-                      <Users className="w-4 h-4" />
-                      Manage Clients
-                    </Link>
-                  </Button>
-                </CardContent>
-              </Card>
-            </div>
           )}
         </div>
-      </section>
+      </div>
     </div>
   )
 }

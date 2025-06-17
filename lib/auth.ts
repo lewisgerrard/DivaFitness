@@ -12,25 +12,49 @@ export interface User {
   date_of_birth?: string
   photo_url?: string
   role: "admin" | "client" | "member"
-  created_at: string
-  updated_at: string
+  created_at?: string
 }
 
 export async function authenticateUser(email: string, password: string): Promise<User | null> {
   try {
+    // Ensure we have a valid email and password
+    if (!email || !password) {
+      console.error("Email and password are required")
+      return null
+    }
+
+    // Check if database connection is available
+    if (!sql) {
+      console.error("Database connection not available")
+      return null
+    }
+
     const result = await sql`
       SELECT id, first_name, last_name, email, password_hash, address, phone, 
-             date_of_birth, photo_url, role, created_at, updated_at
+             date_of_birth, photo_url, role
       FROM users 
       WHERE email = ${email}
     `
 
-    if (result.length === 0) return null
+    if (result.length === 0) {
+      console.log("No user found with email:", email)
+      return null
+    }
 
     const user = result[0] as any
+
+    // Check if password_hash exists
+    if (!user.password_hash) {
+      console.error("No password hash found for user")
+      return null
+    }
+
     const isValidPassword = await bcrypt.compare(password, user.password_hash)
 
-    if (!isValidPassword) return null
+    if (!isValidPassword) {
+      console.log("Invalid password for user:", email)
+      return null
+    }
 
     // Return user without password_hash
     const { password_hash, ...userWithoutPassword } = user
@@ -43,11 +67,17 @@ export async function authenticateUser(email: string, password: string): Promise
 
 export async function getAllUsers(): Promise<User[]> {
   try {
+    // Check if database connection is available
+    if (!sql) {
+      console.error("Database connection not available")
+      return []
+    }
+
     const result = await sql`
       SELECT id, first_name, last_name, email, address, phone, 
-             date_of_birth, photo_url, role, created_at, updated_at
+             date_of_birth, photo_url, role
       FROM users 
-      ORDER BY created_at DESC
+      ORDER BY id DESC
     `
 
     return result as User[]
@@ -59,9 +89,14 @@ export async function getAllUsers(): Promise<User[]> {
 
 export async function getUserById(id: number): Promise<User | null> {
   try {
+    if (!sql) {
+      console.error("Database connection not available")
+      return null
+    }
+
     const result = await sql`
       SELECT id, first_name, last_name, email, address, phone,
-             date_of_birth, photo_url, role, created_at, updated_at
+             date_of_birth, photo_url, role
       FROM users 
       WHERE id = ${id}
     `
@@ -87,6 +122,11 @@ export async function createUser(data: {
   photo_url?: string
 }): Promise<User | null> {
   try {
+    if (!sql) {
+      console.error("Database connection not available")
+      return null
+    }
+
     const password_hash = await bcrypt.hash(data.password, 10)
 
     const result = await sql`
@@ -100,7 +140,7 @@ export async function createUser(data: {
         ${data.date_of_birth || null}, ${data.photo_url || null}
       )
       RETURNING id, first_name, last_name, email, address, phone, 
-                date_of_birth, photo_url, role, created_at, updated_at
+          date_of_birth, photo_url, role
     `
 
     if (result.length === 0) return null
@@ -112,11 +152,13 @@ export async function createUser(data: {
   }
 }
 
-export async function updateUser(
-  id: number,
-  data: Partial<Omit<User, "id" | "created_at" | "updated_at">>,
-): Promise<User | null> {
+export async function updateUser(id: number, data: Partial<Omit<User, "id">>): Promise<User | null> {
   try {
+    if (!sql) {
+      console.error("Database connection not available")
+      return null
+    }
+
     const result = await sql`
       UPDATE users 
       SET 
@@ -126,11 +168,10 @@ export async function updateUser(
         address = COALESCE(${data.address || null}, address),
         date_of_birth = COALESCE(${data.date_of_birth || null}, date_of_birth),
         photo_url = COALESCE(${data.photo_url || null}, photo_url),
-        role = COALESCE(${data.role || null}, role),
-        updated_at = CURRENT_TIMESTAMP
+        role = COALESCE(${data.role || null}, role)
       WHERE id = ${id}
       RETURNING id, first_name, last_name, email, address, phone,
-                date_of_birth, photo_url, role, created_at, updated_at
+          date_of_birth, photo_url, role
     `
 
     if (result.length === 0) return null
@@ -139,5 +180,24 @@ export async function updateUser(
   } catch (error) {
     console.error("Update user error:", error)
     return null
+  }
+}
+
+export async function deleteUser(id: number): Promise<boolean> {
+  try {
+    if (!sql) {
+      console.error("Database connection not available")
+      return false
+    }
+
+    const result = await sql`
+      DELETE FROM users 
+      WHERE id = ${id}
+    `
+
+    return true
+  } catch (error) {
+    console.error("Delete user error:", error)
+    return false
   }
 }

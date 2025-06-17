@@ -40,8 +40,8 @@ export default function LoginPage() {
     <div className="min-h-screen bg-gradient-to-br from-primary/10 to-accent/10 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <CardTitle className="text-2xl font-heading text-primary">Admin Login</CardTitle>
-          <p className="text-muted-foreground">Access the Diva Fitness admin panel</p>
+          <CardTitle className="text-2xl font-heading text-primary">Login</CardTitle>
+          <p className="text-muted-foreground">Access your Diva Fitness account</p>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -54,7 +54,7 @@ export default function LoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="mt-1"
-                placeholder="lewis.gerrard@outlook.com"
+                placeholder="Enter your email"
               />
             </div>
 

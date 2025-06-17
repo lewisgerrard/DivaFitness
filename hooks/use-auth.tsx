@@ -1,13 +1,13 @@
 "use client"
 
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react"
-import { useRouter } from "next/navigation"
 
 interface User {
   id: number
   email: string
-  name: string
-  role: "user" | "admin"
+  first_name?: string
+  last_name?: string
+  role: "admin" | "client" | "member"
 }
 
 interface AuthContextType {
@@ -22,7 +22,6 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const router = useRouter()
 
   useEffect(() => {
     checkAuth()
@@ -53,8 +52,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (response.ok) {
         const data = await response.json()
         setUser(data.user)
-        // Redirect to dashboard after successful login
-        router.push("/dashboard")
         return true
       }
       return false
@@ -68,7 +65,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     try {
       await fetch("/api/auth/logout", { method: "POST" })
       setUser(null)
-      router.push("/")
     } catch (error) {
       console.error("Logout failed:", error)
     }

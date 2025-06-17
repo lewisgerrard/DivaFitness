@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid credentials" }, { status: 401 })
     }
 
-    // Create JWT token
+    // Create JWT token for any authenticated user
     const token = await new SignJWT({
       userId: user.id,
       email: user.email,
@@ -32,7 +32,8 @@ export async function POST(request: NextRequest) {
       user: {
         id: user.id,
         email: user.email,
-        name: user.name,
+        first_name: user.first_name,
+        last_name: user.last_name,
         role: user.role,
       },
     })
