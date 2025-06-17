@@ -16,9 +16,8 @@
     "@radix-ui/react-label": "^2.0.2",
     "@radix-ui/react-slot": "^1.0.2",
     "@react-email/components": "latest",
-    "@remix-run/react": "latest",
-    "@sveltejs/kit": "latest",
-    "@vercel/analytics": "latest",
+    "@vercel/analytics": "^1.1.1",
+    "@vercel/speed-insights": "^1.0.12",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.454.0",
@@ -26,11 +25,8 @@
     "react": "^18",
     "react-dom": "^18",
     "resend": "latest",
-    "svelte": "latest",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7",
-    "vue": "latest",
-    "vue-router": "latest"
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@types/node": "^22",

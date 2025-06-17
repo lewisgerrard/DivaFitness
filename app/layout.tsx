@@ -4,8 +4,6 @@ import type { Metadata } from "next"
 import { Poppins, Roboto } from "next/font/google"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
-import { Analytics } from "@vercel/analytics/next"
-import { Suspense } from "react"
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,14 +40,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${poppins.variable} ${roboto.variable}`}>
+    <html lang="en" className={poppins.variable + " " + roboto.variable}>
       <body className="font-body bg-white text-secondary">
         <Navigation />
-        <Suspense fallback={`<div>Loading...</div>`}>
-          <main>{children}</main>
-        </Suspense>
+        <main>{children}</main>
         <Footer />
-        <Analytics />
       </body>
     </html>
   )

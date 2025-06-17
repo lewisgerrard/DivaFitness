@@ -1,21 +1,11 @@
-"use client"
-
-import { useState, useEffect } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { Award, Heart, Users, Zap, ArrowRight, Sparkles, Target, Trophy, Clock, Star } from "lucide-react"
+import { Award, Heart, Users, Zap, ArrowRight, Target, Trophy, Clock, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import HeroSection from "@/components/hero-section"
 
 export default function AboutPage() {
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener("scroll", handleScroll)
-    return () => window.removeEventListener("scroll", handleScroll)
-  }, [])
-
   const achievements = [
     { icon: Trophy, title: "National Fitness Awards 2024", subtitle: "Runner-Up", year: "2024" },
     { icon: Star, title: "500+ Women Transformed", subtitle: "Lives Changed", year: "2017-2024" },
@@ -24,76 +14,17 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen overflow-hidden">
-      {/* Immersive Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        {/* Parallax Background */}
-        <div className="absolute inset-0 scale-110" style={{ transform: `translateY(${scrollY * 0.5}px)` }}>
-          <Image
-            src="/images/studio-emma-sitting.jpg"
-            alt="Emma Fisher - Personal Trainer"
-            fill
-            className="object-cover"
-            priority
-          />
-        </div>
-
-        {/* Dynamic Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-dark/80 to-accent/70" />
-
-        {/* Floating Elements */}
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-2xl" />
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6 animate-fade-in">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Meet Your Trainer</span>
-          </div>
-
-          <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4 animate-fade-in leading-tight">
-            Emma
-            <span className="block bg-gradient-to-r from-white to-accent-light bg-clip-text text-transparent">
-              Fisher
-            </span>
-          </h1>
-
-          <p className="text-lg md:text-xl mb-6 animate-fade-in max-w-3xl mx-auto leading-relaxed opacity-90">
-            Empowering women since 2017 with personalized fitness journeys that transform bodies, minds, and lives.
-          </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in">
-            <Button
-              asChild
-              size="lg"
-              className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
-            >
-              <Link href="/contact" className="flex items-center gap-2">
-                Work With Emma
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </Button>
-          </div>
-
-          {/* Quick Stats */}
-          <div className="flex justify-center mt-12">
-            <div className="text-center bg-white/10 backdrop-blur-sm rounded-2xl p-4">
-              <div className="text-2xl font-bold mb-1">7+</div>
-              <div className="text-xs opacity-80">Years</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Scroll Indicator */}
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
-            <div className="w-1 h-3 bg-white/70 rounded-full mt-2 animate-pulse" />
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <HeroSection
+        title="Meet Emma"
+        subtitle="Fisher"
+        description="Empowering women since 2017 with personalized fitness journeys that transform bodies, minds, and lives."
+        primaryButtonText="Work With Emma"
+        primaryButtonHref="/contact"
+        badge="Your Personal Trainer"
+        stats={[{ value: "7+", label: "Years Experience" }]}
+      />
 
       {/* Story Section with Interactive Elements */}
       <section className="py-20 bg-gradient-to-br from-white via-muted to-accent/5 relative overflow-hidden">
@@ -281,41 +212,6 @@ export default function AboutPage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Immersive CTA */}
-      <section className="relative py-20 bg-gradient-to-br from-primary via-primary-dark to-accent overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-2xl" />
-        </div>
-
-        <div className="relative max-w-4xl mx-auto px-4 text-center text-white">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-6">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Ready to Start?</span>
-          </div>
-
-          <h2 className="font-heading text-4xl md:text-6xl font-bold mb-6 leading-tight">
-            Let's Begin Your
-            <span className="block">Transformation</span>
-          </h2>
-
-          <p className="text-xl mb-10 opacity-90 max-w-2xl mx-auto leading-relaxed">
-            Every great journey starts with a single step. Take yours today with a free consultation.
-          </p>
-
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-primary hover:bg-white/90 text-lg px-8 py-4 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
-          >
-            <Link href="/contact" className="flex items-center gap-2">
-              Book Your Free Consultation
-              <ArrowRight className="w-5 h-5" />
-            </Link>
-          </Button>
         </div>
       </section>
     </div>

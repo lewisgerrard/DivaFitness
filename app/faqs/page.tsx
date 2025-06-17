@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { ChevronDown, ChevronUp } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
+import HeroSection from "@/components/hero-section"
 
 export default function FAQsPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -67,16 +68,14 @@ export default function FAQsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-12 bg-muted text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-secondary mb-4">
-            Frequently Asked Questions
-          </h1>
-          <p className="text-lg text-muted-foreground">
-            Find answers to common questions about training at Diva Fitness
-          </p>
-        </div>
-      </section>
+      <HeroSection
+        title="Frequently Asked"
+        subtitle="Questions"
+        description="Find answers to common questions about training at Diva Fitness and discover how we can support your fitness journey."
+        primaryButtonText="Contact Emma"
+        primaryButtonHref="/contact"
+        badge="Got Questions?"
+      />
 
       {/* FAQs Section */}
       <section className="py-10 px-4 max-w-4xl mx-auto">

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Phone, Mail, MapPin, Instagram, Facebook, Linkedin } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -10,6 +9,7 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import Image from "next/image"
+import HeroSection from "@/components/hero-section"
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({
@@ -58,19 +58,20 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="py-12 bg-muted text-center">
-        <div className="max-w-4xl mx-auto px-4">
-          <h1 className="font-heading text-3xl md:text-4xl font-bold text-secondary mb-4">Get In Touch</h1>
-          <p className="text-lg text-muted-foreground">
-            Ready to start your fitness journey? Contact Emma today to book your free consultation.
-          </p>
-        </div>
-      </section>
+      <HeroSection
+        title="Get In Touch"
+        description="Ready to start your fitness journey? Contact Emma today to book your free consultation."
+        primaryButtonText="Call Now"
+        primaryButtonHref="tel:07966874821"
+        secondaryButtonText="Send Email"
+        secondaryButtonHref="mailto:info@diva-fitness.co.uk"
+        badge="Contact Emma"
+      />
 
       {/* Studio Showcase Section */}
       <section className="py-10 px-4 max-w-6xl mx-auto">
         <div className="text-center mb-8">
-          <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">Visit Our Studio</h2>
+          <h2 className="font-heading text-2xl md:text-3xl font-bold text-secondary mb-3">Visit the Studio</h2>
           <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             Step into your personal fitness sanctuary - a purpose-built garden studio designed for your comfort and
             success
@@ -175,7 +176,7 @@ export default function ContactPage() {
                     onChange={handleInputChange}
                     rows={3}
                     className="mt-1"
-                    placeholder="Tell me about your fitness goals and any questions you have..."
+                    placeholder="Tell Emma about your fitness goals and any questions you have..."
                   />
                 </div>
 
@@ -312,7 +313,7 @@ export default function ContactPage() {
       <section className="py-10 bg-muted">
         <div className="max-w-6xl mx-auto px-4">
           <div className="text-center mb-6">
-            <h2 className="font-heading text-2xl font-bold text-secondary mb-3">Find Us</h2>
+            <h2 className="font-heading text-2xl font-bold text-secondary mb-3">Find the Studio</h2>
             <p className="text-muted-foreground text-sm">
               Located in Chester, UK - exact address provided upon booking
             </p>

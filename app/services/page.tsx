@@ -3,9 +3,10 @@
 import { useState } from "react"
 import Link from "next/link"
 import Image from "next/image"
-import { User, Users, Leaf, Clock, Target, Heart, ArrowRight, Sparkles, Check, Star } from "lucide-react"
+import { User, Users, Leaf, Clock, Target, Heart, ArrowRight, Check, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import HeroSection from "@/components/hero-section"
 
 export default function ServicesPage() {
   const [activeService, setActiveService] = useState(0)
@@ -107,55 +108,16 @@ export default function ServicesPage() {
   const ActiveServiceIcon = services[activeService].icon
 
   return (
-    <div className="min-h-screen overflow-hidden">
-      {/* Compact Hero Section */}
-      <section className="relative h-[60vh] flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0">
-          <Image
-            src="/images/equipment-wide-shot.jpg"
-            alt="Professional Fitness Equipment"
-            fill
-            className="object-cover scale-110"
-            priority
-          />
-        </div>
-
-        <div className="absolute inset-0 bg-gradient-to-br from-primary/90 via-primary-dark/80 to-primary-light/70" />
-
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/20 rounded-full blur-2xl" />
-        </div>
-
-        <div className="relative z-10 text-center text-white px-4 max-w-4xl">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4 animate-fade-in">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Tailored for You</span>
-          </div>
-
-          <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4 animate-fade-in leading-tight">
-            Your Perfect
-            <span className="block bg-gradient-to-r from-white to-accent bg-clip-text text-transparent">
-              Fitness Journey
-            </span>
-          </h1>
-
-          <p className="text-lg md:text-xl mb-6 animate-fade-in max-w-2xl mx-auto leading-relaxed opacity-90">
-            Discover personalized services designed specifically for women's unique fitness needs and goals.
-          </p>
-
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300 animate-fade-in"
-          >
-            <Link href="#services" className="flex items-center gap-2">
-              Explore Services
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      {/* Hero Section */}
+      <HeroSection
+        title="Your Perfect"
+        subtitle="Fitness Journey"
+        description="Discover personalized services designed specifically for women's unique fitness needs and goals."
+        primaryButtonText="Explore Services"
+        primaryButtonHref="#services"
+        badge="Tailored for You"
+      />
 
       {/* Interactive Services Section */}
       <section
@@ -400,41 +362,6 @@ export default function ServicesPage() {
               </Card>
             ))}
           </div>
-        </div>
-      </section>
-
-      {/* Compact CTA */}
-      <section className="relative py-16 bg-gradient-to-br from-primary via-primary-dark to-primary-light overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-white/10 rounded-full blur-3xl animate-pulse" />
-          <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-white/5 rounded-full blur-2xl" />
-        </div>
-
-        <div className="relative max-w-4xl mx-auto px-4 text-center text-white">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Ready to Transform?</span>
-          </div>
-
-          <h2 className="font-heading text-3xl md:text-5xl font-bold mb-4 leading-tight">
-            Start Your Journey
-            <span className="block">Today</span>
-          </h2>
-
-          <p className="text-lg mb-8 opacity-90 max-w-2xl mx-auto leading-relaxed">
-            Contact Emma today to book your free consultation and discover which service is right for you.
-          </p>
-
-          <Button
-            asChild
-            size="lg"
-            className="bg-white text-primary hover:bg-white/90 px-6 py-3 rounded-full shadow-2xl transform hover:scale-105 transition-all duration-300"
-          >
-            <Link href="/contact" className="flex items-center gap-2">
-              Book Free Consultation
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </Button>
         </div>
       </section>
     </div>

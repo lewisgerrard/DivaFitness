@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Star, RefreshCw } from "lucide-react"
+import { Star, RefreshCw, ExternalLink } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 
@@ -193,6 +193,8 @@ export default function ReviewsGrid() {
     return () => clearInterval(interval)
   }, [])
 
+  const refreshButtonClass = `w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`
+
   return (
     <div className="space-y-6">
       {/* Header with refresh button */}
@@ -204,71 +206,56 @@ export default function ReviewsGrid() {
           </p>
         </div>
         <Button onClick={refreshReviews} disabled={isLoading} variant="outline" size="sm" className="rounded-full">
-          <RefreshCw className={`w-4 h-4 mr-2 ${isLoading ? "animate-spin" : ""}`} />
+          <RefreshCw className={refreshButtonClass} />
           {isLoading ? "Loading..." : "Refresh"}
         </Button>
       </div>
 
       {/* Reviews Grid */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {displayedReviews.map((review, index) => (
-          <Card
-            key={`${review.id}_${index}`}
-            className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/95 backdrop-blur-sm"
-          >
-            <CardContent className="p-6">
-              {/* Platform and Rating */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center gap-2">
-                  {review.platform === "google" ? (
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none">
-                      <path
-                        d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
-                        fill="#4285F4"
-                      />
-                      <path
-                        d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
-                        fill="#34A853"
-                      />
-                      <path
-                        d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
-                        fill="#FBBC05"
-                      />
-                      <path
-                        d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
-                        fill="#EA4335"
-                      />
-                    </svg>
-                  ) : (
-                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="#00B67A">
-                      <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                    </svg>
-                  )}
-                  <span className="text-xs font-medium text-muted-foreground capitalize">{review.platform}</span>
+        {displayedReviews.map((review, index) => {
+          const reviewKey = `${review.id}_${index}`
+
+          return (
+            <Card
+              key={reviewKey}
+              className="group relative overflow-hidden border-0 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 bg-white/95 backdrop-blur-sm"
+            >
+              <CardContent className="p-6">
+                {/* Platform and Rating */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center gap-2">
+                    {review.platform === "google" ? (
+                      <ExternalLink className="w-4 h-4 text-blue-600" />
+                    ) : (
+                      <Star className="w-4 h-4 text-green-600" />
+                    )}
+                    <span className="text-xs font-medium text-muted-foreground capitalize">{review.platform}</span>
+                  </div>
+                  <div className="flex space-x-0.5">
+                    {[...Array(5)].map((_, i) => (
+                      <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                    ))}
+                  </div>
                 </div>
-                <div className="flex space-x-0.5">
-                  {[...Array(5)].map((_, i) => (
-                    <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-                  ))}
+
+                {/* Review Text */}
+                <blockquote className="text-sm text-secondary leading-relaxed mb-4 line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
+                  "{review.text}"
+                </blockquote>
+
+                {/* Author and Date */}
+                <div className="flex items-center justify-between text-xs">
+                  <div className="font-semibold text-primary">— {review.name}</div>
+                  <div className="text-muted-foreground">{review.date}</div>
                 </div>
-              </div>
 
-              {/* Review Text */}
-              <blockquote className="text-sm text-secondary leading-relaxed mb-4 line-clamp-4 group-hover:line-clamp-none transition-all duration-300">
-                "{review.text}"
-              </blockquote>
-
-              {/* Author and Date */}
-              <div className="flex items-center justify-between text-xs">
-                <div className="font-semibold text-primary">— {review.name}</div>
-                <div className="text-muted-foreground">{review.date}</div>
-              </div>
-
-              {/* Hover Effect Gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
-            </CardContent>
-          </Card>
-        ))}
+                {/* Hover Effect Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
+              </CardContent>
+            </Card>
+          )
+        })}
       </div>
 
       {/* Loading State */}
