@@ -1,18 +1,12 @@
 import Image from "next/image"
 import Link from "next/link"
-import { Award, Heart, Users, Zap, ArrowRight, Target, Trophy, Clock, Star } from "lucide-react"
+import { Award, Heart, Users, Zap, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import HeroSection from "@/components/hero-section"
+import { brandKit, brandClasses } from "@/lib/brand-kit"
 
 export default function AboutPage() {
-  const achievements = [
-    { icon: Trophy, title: "National Fitness Awards 2024", subtitle: "Runner-Up", year: "2024" },
-    { icon: Star, title: "500+ Women Transformed", subtitle: "Lives Changed", year: "2017-2024" },
-    { icon: Target, title: "100% Success Rate", subtitle: "Goal Achievement", year: "Ongoing" },
-    { icon: Clock, title: "7+ Years Experience", subtitle: "Dedicated Service", year: "Since 2017" },
-  ]
-
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
@@ -22,28 +16,27 @@ export default function AboutPage() {
         description="Empowering women since 2017 with personalized fitness journeys that transform bodies, minds, and lives."
         primaryButtonText="Work With Emma"
         primaryButtonHref="/contact"
+        secondaryButtonText="View Services"
+        secondaryButtonHref="/services"
+        tertiaryButtonText="See Reviews"
+        tertiaryButtonHref="/#reviews"
         badge="Your Personal Trainer"
         stats={[{ value: "7+", label: "Years Experience" }]}
       />
 
-      {/* Story Section with Interactive Elements */}
-      <section className="py-20 bg-gradient-to-br from-white via-muted to-accent/5 relative overflow-hidden">
-        <div className="absolute inset-0">
-          <div className="absolute top-20 left-20 w-32 h-32 bg-primary/10 rounded-full blur-xl" />
-          <div className="absolute bottom-20 right-20 w-48 h-48 bg-accent/10 rounded-full blur-2xl" />
-        </div>
-
-        <div className="relative max-w-6xl mx-auto px-4">
+      {/* Story Section */}
+      <section className={`${brandKit.spacing.section.lg} ${brandKit.gradients.background}`}>
+        <div className={brandKit.components.section.container}>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
-              <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2">
+              <div className={brandKit.components.section.badge}>
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                 <span className="text-primary font-medium text-sm">My Journey</span>
               </div>
 
-              <h2 className="font-heading text-4xl md:text-5xl font-bold text-secondary leading-tight">
+              <h2 className={brandClasses.sectionTitle}>
                 From Vision to
-                <span className="block text-primary">Reality</span>
+                <span className={brandKit.components.section.subtitle}>Reality</span>
               </h2>
 
               <div className="space-y-6 text-lg leading-relaxed text-secondary">
@@ -64,7 +57,7 @@ export default function AboutPage() {
                 </p>
               </div>
 
-              <Button asChild size="lg" className="bg-primary hover:bg-primary-dark rounded-full px-8">
+              <Button asChild size="lg" className={brandClasses.buttonPrimary}>
                 <Link href="/services" className="flex items-center gap-2">
                   Explore My Services
                   <ArrowRight className="w-5 h-5" />
@@ -73,37 +66,109 @@ export default function AboutPage() {
             </div>
 
             <div className="relative">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-4">
-                  <div className="relative h-48 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-500">
-                    <Image
-                      src="/images/studio-exterior-cropped.jpg"
-                      alt="Studio Exterior"
-                      fill
-                      className="object-cover"
-                    />
+              {/* Journey Timeline */}
+              <div className="space-y-8">
+                {/* Timeline Line */}
+                <div className="absolute left-8 top-16 bottom-16 w-0.5 bg-gradient-to-b from-primary via-primary-light to-primary-dark hidden md:block"></div>
+
+                {/* Journey Step 1 - Beginning */}
+                <div className="flex items-center gap-6">
+                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">2017</span>
                   </div>
-                  <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-500">
-                    <Image
-                      src="/images/equipment-wide-shot.jpg"
-                      alt="Professional Equipment"
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="flex-1">
+                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                      <Image
+                        src="/images/studio-exterior-full.jpg"
+                        alt="The beginning - Studio concept"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary/20 to-transparent"></div>
+                      <div className="absolute bottom-2 left-3 text-white">
+                        <p className="text-xs font-semibold">The Vision Begins</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <div className="space-y-4 mt-8">
-                  <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-500">
-                    <Image src="/images/weights-close-up.jpg" alt="Training Equipment" fill className="object-cover" />
+
+                {/* Journey Step 2 - Building */}
+                <div className="flex items-center gap-6">
+                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary-light to-primary rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">2018</span>
                   </div>
-                  <div className="relative h-48 rounded-2xl overflow-hidden shadow-lg transform hover:scale-105 transition-transform duration-500">
-                    <Image
-                      src="/images/action-training-session.jpg"
-                      alt="Training Session"
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="flex-1">
+                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                      <Image
+                        src="/images/studio-garden-pathway.jpg"
+                        alt="Building the dream - Garden pathway"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary-light/20 to-transparent"></div>
+                      <div className="absolute bottom-2 left-3 text-white">
+                        <p className="text-xs font-semibold">Creating the Space</p>
+                      </div>
+                    </div>
                   </div>
+                </div>
+
+                {/* Journey Step 3 - Equipment & Setup */}
+                <div className="flex items-center gap-6">
+                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-white font-bold text-sm">2019</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="relative h-32 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300">
+                      <Image
+                        src="/images/equipment-wide-shot.jpg"
+                        alt="Professional equipment setup"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-primary-dark/20 to-transparent"></div>
+                      <div className="absolute bottom-2 left-3 text-white">
+                        <p className="text-xs font-semibold">Professional Setup</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Journey Step 4 - Today */}
+                <div className="flex items-center gap-6">
+                  <div className="relative z-10 w-16 h-16 bg-gradient-to-br from-primary-light to-accent rounded-full flex items-center justify-center shadow-lg animate-pulse">
+                    <span className="text-white font-bold text-sm">Now</span>
+                  </div>
+                  <div className="flex-1">
+                    <div className="relative h-40 rounded-2xl overflow-hidden shadow-lg hover:scale-105 transition-transform duration-300 ring-2 ring-primary/30">
+                      <Image
+                        src="/images/action-training-session.jpg"
+                        alt="Today - Empowering women through fitness"
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-r from-accent/20 to-transparent"></div>
+                      <div className="absolute bottom-2 left-3 text-white">
+                        <p className="text-xs font-semibold">Empowering Women Today</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Journey Stats */}
+              <div className="mt-8 grid grid-cols-3 gap-4 p-6 bg-gradient-to-r from-primary/5 to-accent/5 rounded-2xl">
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">7+</div>
+                  <div className="text-xs text-muted-foreground">Years Journey</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">100+</div>
+                  <div className="text-xs text-muted-foreground">Women Empowered</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-2xl font-bold text-primary">∞</div>
+                  <div className="text-xs text-muted-foreground">Dreams Realized</div>
                 </div>
               </div>
             </div>
@@ -111,19 +176,19 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Interactive Values Section */}
-      <section className="py-20 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-primary/10 rounded-full px-4 py-2 mb-6">
+      {/* Values Section */}
+      <section className={`${brandKit.spacing.section.lg} bg-white`}>
+        <div className={brandKit.components.section.container}>
+          <div className={brandKit.components.section.header}>
+            <div className={brandKit.components.section.badge}>
               <Heart className="w-4 h-4 text-primary" />
               <span className="text-primary font-medium text-sm">My Philosophy</span>
             </div>
-            <h2 className="font-heading text-4xl md:text-5xl font-bold text-secondary mb-6">
+            <h2 className={brandClasses.sectionTitle}>
               What Drives
-              <span className="block text-primary">Everything I Do</span>
+              <span className={brandKit.components.section.subtitle}>Everything I Do</span>
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className={brandClasses.sectionDescription}>
               Every aspect of my approach is designed with women's unique needs, challenges, and strengths in mind.
             </p>
           </div>
@@ -134,80 +199,42 @@ export default function AboutPage() {
                 icon: Heart,
                 title: "Supportive",
                 description: "Creating a non-judgmental space where you feel comfortable and encouraged to grow.",
-                color: "from-accent to-primary",
+                color: brandKit.gradients.accent,
               },
               {
                 icon: Users,
                 title: "Personal",
                 description: "Tailored programs that adapt to your lifestyle, preferences, and individual goals.",
-                color: "from-primary to-accent",
+                color: brandKit.gradients.primary,
               },
               {
                 icon: Zap,
                 title: "Holistic",
                 description: "Combining fitness, nutrition, and wellness for comprehensive, lasting transformation.",
-                color: "from-primary to-primary-dark",
+                color: brandKit.gradients.secondary,
               },
               {
                 icon: Award,
                 title: "Professional",
                 description: "Qualified, experienced, and committed to ongoing education and development.",
-                color: "from-accent to-accent-dark",
+                color: brandKit.gradients.accent,
               },
             ].map((value, index) => (
-              <Card
-                key={index}
-                className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2"
-              >
+              <Card key={index} className={brandClasses.cardBase}>
                 <div
-                  className={`absolute inset-0 bg-gradient-to-br ${value.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                  className={`absolute inset-0 ${value.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
                 />
 
-                <CardContent className="p-8 text-center relative z-10">
+                <CardContent className={brandKit.components.card.content}>
                   <div
-                    className={`w-16 h-16 bg-gradient-to-br ${value.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}
+                    className={`w-16 h-16 ${value.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}
                   >
                     <value.icon className="w-8 h-8 text-white" />
                   </div>
 
-                  <h3 className="font-heading text-xl font-bold text-secondary mb-4 group-hover:text-primary transition-colors duration-300">
-                    {value.title}
-                  </h3>
+                  <h3 className={brandKit.components.card.title}>{value.title}</h3>
 
-                  <p className="text-muted-foreground leading-relaxed">{value.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Achievements Timeline */}
-      <section className="py-20 bg-gradient-to-br from-muted via-accent/5 to-white relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold text-secondary mb-6">
-              Milestones &<span className="block text-primary">Achievements</span>
-            </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              A journey of dedication, growth, and countless success stories.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {achievements.map((achievement, index) => (
-              <Card
-                key={index}
-                className="group relative overflow-hidden border-0 shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 bg-white/80 backdrop-blur-sm"
-              >
-                <CardContent className="p-8 text-center">
-                  <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary-light rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <achievement.icon className="w-8 h-8 text-white" />
-                  </div>
-
-                  <div className="text-sm text-primary font-semibold mb-2">{achievement.year}</div>
-                  <h3 className="font-heading text-lg font-bold text-secondary mb-2">{achievement.title}</h3>
-                  <p className="text-muted-foreground text-sm">{achievement.subtitle}</p>
+                  <p className={brandKit.components.card.description}>{value.description}</p>
                 </CardContent>
               </Card>
             ))}

@@ -114,8 +114,12 @@ export default function ServicesPage() {
         title="Your Perfect"
         subtitle="Fitness Journey"
         description="Discover personalized services designed specifically for women's unique fitness needs and goals."
-        primaryButtonText="Explore Services"
-        primaryButtonHref="#services"
+        primaryButtonText="Book Consultation"
+        primaryButtonHref="/contact"
+        secondaryButtonText="Meet Emma"
+        secondaryButtonHref="/about"
+        tertiaryButtonText="View Packages"
+        tertiaryButtonHref="#packages"
         badge="Tailored for You"
       />
 
@@ -229,7 +233,7 @@ export default function ServicesPage() {
       </section>
 
       {/* Immersive Packages Section */}
-      <section className="py-16 bg-white relative overflow-hidden">
+      <section id="packages" className="py-16 bg-white relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 bg-accent/20 rounded-full px-4 py-2 mb-4">

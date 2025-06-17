@@ -9,6 +9,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
+import { brandKit, brandClasses } from "@/lib/brand-kit"
 
 export default function HomePage() {
   const services = [
@@ -84,8 +85,10 @@ export default function HomePage() {
         description="Experience personalized training in a stunning garden studio designed exclusively for women's wellness and empowerment."
         primaryButtonText="Start Your Journey"
         primaryButtonHref="/services"
-        secondaryButtonText="View Services"
-        secondaryButtonHref="/services"
+        secondaryButtonText="Meet Emma"
+        secondaryButtonHref="/about"
+        tertiaryButtonText="Get In Touch"
+        tertiaryButtonHref="/contact"
         badge="Award-Winning Personal Training"
         stats={[
           { value: "7+", label: "Years Experience" },
@@ -94,18 +97,18 @@ export default function HomePage() {
       />
 
       {/* About Section */}
-      <section className="relative py-16 bg-gradient-to-br from-muted via-white to-accent-light/20 overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4">
+      <section className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
+        <div className={brandKit.components.section.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
-              <div className="inline-flex items-center gap-2 bg-accent/20 rounded-full px-4 py-2">
+              <div className={brandKit.components.section.badge}>
                 <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
                 <span className="text-primary font-medium text-sm">Since 2017</span>
               </div>
 
-              <h2 className="font-heading text-3xl md:text-4xl font-bold text-secondary leading-tight">
+              <h2 className={brandClasses.sectionTitle}>
                 Your Personal
-                <span className="block text-primary">Fitness Sanctuary</span>
+                <span className={brandKit.components.section.subtitle}>Fitness Sanctuary</span>
               </h2>
 
               <p className="text-lg text-muted-foreground leading-relaxed">
@@ -115,14 +118,14 @@ export default function HomePage() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary-light rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <div className={`${brandKit.components.card.icon} ${brandKit.gradients.primary} mb-3`}>
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-secondary mb-2">1-to-1 Focus</h3>
                   <p className="text-sm text-muted-foreground">Completely personalized attention</p>
                 </div>
                 <div className="group">
-                  <div className="w-12 h-12 bg-gradient-to-br from-primary-light to-primary rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <div className={`${brandKit.components.card.icon} ${brandKit.gradients.secondary} mb-3`}>
                     <Leaf className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-secondary mb-2">Holistic Approach</h3>
@@ -130,7 +133,7 @@ export default function HomePage() {
                 </div>
               </div>
 
-              <Button asChild size="lg" className="bg-primary hover:bg-primary-dark rounded-full px-8">
+              <Button asChild size="lg" className={brandClasses.buttonPrimary}>
                 <Link href="/about" className="flex items-center gap-2">
                   Meet Emma
                   <ArrowRight className="w-5 h-5" />
@@ -139,7 +142,7 @@ export default function HomePage() {
             </div>
 
             <div className="relative">
-              <div className="relative h-80 rounded-3xl overflow-hidden shadow-2xl transform hover:scale-105 transition-transform duration-500">
+              <div className={`relative h-80 rounded-3xl overflow-hidden shadow-2xl ${brandKit.animations.scaleHover}`}>
                 <Image
                   src="/images/studio-emma-doorway.jpg"
                   alt="Emma Fisher in Diva Fitness Studio"
@@ -154,8 +157,8 @@ export default function HomePage() {
       </section>
 
       {/* Services Section */}
-      <section className="py-16 bg-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className={`${brandKit.components.section.base} bg-white`}>
+        <div className={brandKit.components.section.container}>
           <SectionHeader
             badge="Tailored Services"
             badgeIcon={Sparkles}
@@ -173,8 +176,8 @@ export default function HomePage() {
       </section>
 
       {/* Reviews Section */}
-      <section className="py-16 bg-gradient-to-br from-accent-light/20 via-muted to-accent/10 relative overflow-hidden">
-        <div className="relative max-w-7xl mx-auto px-4">
+      <section id="reviews" className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
+        <div className={brandKit.components.section.container}>
           <SectionHeader
             title="Stories of"
             subtitle="Transformation"
