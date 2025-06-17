@@ -44,11 +44,7 @@ export default function ContactPageClient() {
             </div>
             <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
               <div>
-                <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardContent className="p-8">
-                    <ContactForm />
-                  </CardContent>
-                </Card>
+                <ContactForm />
               </div>
               <div>
                 <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -62,64 +58,70 @@ export default function ContactPageClient() {
             {/* Contact Details Card */}
             <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
               <CardContent className="p-8">
-                <div className="grid md:grid-cols-4 gap-8">
+                <div className="flex flex-wrap justify-between items-start gap-8">
                   {/* Phone */}
-                  <div className="text-center">
+                  <div className="flex items-center gap-4">
                     <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center mx-auto mb-4`}
+                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
                     >
                       <Phone className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="font-heading font-semibold text-secondary mb-2">Phone</h3>
-                    <a href="tel:07966874821" className="text-muted-foreground hover:text-primary transition-colors">
-                      07966 874 821
-                    </a>
+                    <div>
+                      <h3 className="font-heading font-semibold text-secondary mb-1">Phone</h3>
+                      <a href="tel:07966874821" className="text-muted-foreground hover:text-primary transition-colors">
+                        07966 874 821
+                      </a>
+                    </div>
                   </div>
 
                   {/* Email */}
-                  <div className="text-center">
+                  <div className="flex items-center gap-4">
                     <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center mx-auto mb-4`}
+                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
                     >
                       <Mail className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="font-heading font-semibold text-secondary mb-2">Email</h3>
-                    <a
-                      href="mailto:info@diva-fitness.co.uk"
-                      className="text-muted-foreground hover:text-primary transition-colors"
-                    >
-                      info@diva-fitness.co.uk
-                    </a>
+                    <div>
+                      <h3 className="font-heading font-semibold text-secondary mb-1">Email</h3>
+                      <a
+                        href="mailto:info@diva-fitness.co.uk"
+                        className="text-muted-foreground hover:text-primary transition-colors"
+                      >
+                        info@diva-fitness.co.uk
+                      </a>
+                    </div>
                   </div>
 
                   {/* Address */}
-                  <div className="text-center">
+                  <div className="flex items-center gap-4">
                     <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center mx-auto mb-4`}
+                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
                     >
                       <MapPin className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="font-heading font-semibold text-secondary mb-2">Address</h3>
-                    <p className="text-muted-foreground">
-                      Chester, UK
-                      <br />
-                      <span className="text-sm">Exact address provided upon booking</span>
-                    </p>
+                    <div>
+                      <h3 className="font-heading font-semibold text-secondary mb-1">Address</h3>
+                      <div className="text-muted-foreground">
+                        <p>Chester, UK</p>
+                      </div>
+                    </div>
                   </div>
 
                   {/* Opening Times */}
-                  <div className="text-center">
+                  <div className="flex items-start gap-4 min-w-[200px]">
                     <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center mx-auto mb-4`}
+                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center flex-shrink-0`}
                     >
                       <Clock className="w-6 h-6 text-white" />
                     </div>
-                    <h3 className="font-heading font-semibold text-secondary mb-2">Opening Times</h3>
-                    <div className="text-muted-foreground text-sm">
-                      <p>Mon-Thu: 6AM-8PM</p>
-                      <p>Fri: 6AM-7PM</p>
-                      <p>Sat: 8AM-4PM</p>
-                      <p>Sun: Closed</p>
+                    <div>
+                      <h3 className="font-heading font-semibold text-secondary mb-2">Opening Times</h3>
+                      <div className="text-muted-foreground text-sm space-y-1">
+                        <p>Mon-Thu: 6AM-8PM</p>
+                        <p>Fri: 6AM-7PM</p>
+                        <p>Sat: 8AM-4PM</p>
+                        <p>Sun: Closed</p>
+                      </div>
                     </div>
                   </div>
                 </div>

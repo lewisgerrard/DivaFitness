@@ -65,26 +65,18 @@ export default function Navigation() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10">
+                  <Button variant="ghost" size="sm" className="bg-white text-purple-600 hover:bg-purple-50 font-medium">
                     <User className="w-4 h-4 mr-2" />
-                    {user.name}
+                    {user.first_name || (user.name ? user.name.split(" ")[0] : user.email?.split("@")[0] || "User")}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-48">
                   <DropdownMenuItem asChild>
-                    <Link href="/profile" className="flex items-center">
+                    <Link href="/dashboard" className="flex items-center">
                       <User className="w-4 h-4 mr-2" />
-                      My Profile
+                      Dashboard
                     </Link>
                   </DropdownMenuItem>
-                  {user.role === "admin" && (
-                    <DropdownMenuItem asChild>
-                      <Link href="/admin" className="flex items-center">
-                        <User className="w-4 h-4 mr-2" />
-                        Admin Panel
-                      </Link>
-                    </DropdownMenuItem>
-                  )}
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleLogout} className="flex items-center text-red-600">
                     <LogOut className="w-4 h-4 mr-2" />
