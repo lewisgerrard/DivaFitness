@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -20,13 +19,14 @@ interface AddClientModalProps {
   isOpen: boolean
   onClose: () => void
   onAddClient: (user: {
-    name: string
     first_name: string
     last_name: string
     email: string
     phone?: string
     password: string
     role: string
+    address?: string
+    date_of_birth?: string
   }) => void
 }
 
@@ -37,7 +37,9 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
     email: "",
     phone: "",
     password: "",
-    role: "user",
+    role: "member",
+    address: "",
+    date_of_birth: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
 
@@ -61,17 +63,7 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
       return
     }
 
-    const userData = {
-      name: `${formData.first_name} ${formData.last_name}`,
-      first_name: formData.first_name,
-      last_name: formData.last_name,
-      email: formData.email,
-      phone: formData.phone,
-      password: formData.password,
-      role: formData.role,
-    }
-
-    onAddClient(userData)
+    onAddClient(formData)
     setIsSubmitting(false)
     resetForm()
   }
@@ -83,7 +75,9 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
       email: "",
       phone: "",
       password: "",
-      role: "user",
+      role: "member",
+      address: "",
+      date_of_birth: "",
     })
   }
 
@@ -147,10 +141,27 @@ export default function AddClientModal({ isOpen, onClose, onAddClient }: AddClie
                 <SelectValue placeholder="Select role" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="user">Member</SelectItem>
+                <SelectItem value="member">Member</SelectItem>
+                <SelectItem value="client">Client</SelectItem>
                 <SelectItem value="admin">Admin</SelectItem>
               </SelectContent>
             </Select>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="address">Address</Label>
+            <Input id="address" name="address" value={formData.address} onChange={handleChange} />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="date_of_birth">Date of Birth</Label>
+            <Input
+              id="date_of_birth"
+              name="date_of_birth"
+              type="date"
+              value={formData.date_of_birth}
+              onChange={handleChange}
+            />
           </div>
 
           <DialogFooter>

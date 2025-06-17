@@ -13,7 +13,6 @@ import { Input } from "@/components/ui/input"
 
 interface User {
   id: number
-  name: string
   first_name?: string
   last_name?: string
   email: string
@@ -22,21 +21,9 @@ interface User {
   created_at: string
 }
 
-interface ContactSubmission {
-  id: number
-  name: string
-  email: string
-  phone?: string
-  service?: string
-  message: string
-  status: string
-  created_at: string
-}
-
 export default function ClientsPage() {
   const { user, loading } = useAuth()
   const [users, setUsers] = useState<User[]>([])
-  const [submissions, setSubmissions] = useState<ContactSubmission[]>([])
   const [loadingData, setLoadingData] = useState(true)
   const [isAddClientModalOpen, setIsAddClientModalOpen] = useState(false)
   const [searchQuery, setSearchQuery] = useState("")
@@ -52,7 +39,6 @@ export default function ClientsPage() {
   useEffect(() => {
     if (user && user.role === "admin") {
       fetchUsers()
-      fetchContactSubmissions()
     }
   }, [user])
 
@@ -61,24 +47,12 @@ export default function ClientsPage() {
       const response = await fetch("/api/admin/clients")
       if (response.ok) {
         const data = await response.json()
-        setUsers(data.users || data.clients || [])
+        setUsers(data.users || [])
       }
     } catch (error) {
       console.error("Failed to fetch users:", error)
     } finally {
       setLoadingData(false)
-    }
-  }
-
-  const fetchContactSubmissions = async () => {
-    try {
-      const response = await fetch("/api/admin/contact-submissions")
-      if (response.ok) {
-        const data = await response.json()
-        setSubmissions(data.submissions)
-      }
-    } catch (error) {
-      console.error("Failed to fetch contact submissions:", error)
     }
   }
 
@@ -94,7 +68,7 @@ export default function ClientsPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setUsers((prevUsers) => [...prevUsers, data.user || data.client])
+        setUsers((prevUsers) => [...prevUsers, data.user])
         setIsAddClientModalOpen(false)
       }
     } catch (error) {
@@ -105,7 +79,8 @@ export default function ClientsPage() {
   const getFilteredUsers = () => {
     let filtered = users.filter(
       (user) =>
-        user.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.first_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        user.last_name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
         user.email.toLowerCase().includes(searchQuery.toLowerCase()) ||
         (user.phone && user.phone.includes(searchQuery)),
     )
@@ -113,9 +88,9 @@ export default function ClientsPage() {
     if (activeTab === "admins") {
       filtered = filtered.filter((u) => u.role === "admin")
     } else if (activeTab === "clients") {
-      filtered = filtered.filter((u) => u.role === "user" || u.role === "client")
+      filtered = filtered.filter((u) => u.role === "client")
     } else if (activeTab === "members") {
-      filtered = filtered.filter((u) => u.role === "user" || u.role === "member")
+      filtered = filtered.filter((u) => u.role === "member")
     }
 
     return filtered
@@ -200,9 +175,9 @@ export default function ClientsPage() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
-                      {users.filter((u) => u.role === "user" || u.role === "client").length}
+                      {users.filter((u) => u.role === "client").length}
                     </p>
-                    <p className="text-sm text-muted-foreground">Members</p>
+                    <p className="text-sm text-muted-foreground">Clients</p>
                   </div>
                 </div>
               </CardContent>
@@ -216,17 +191,9 @@ export default function ClientsPage() {
                   </div>
                   <div>
                     <p className="text-2xl font-bold text-secondary">
-                      {
-                        users.filter((u) => {
-                          const created = new Date(u.created_at)
-                          const today = new Date()
-                          const diffTime = Math.abs(today.getTime() - created.getTime())
-                          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-                          return diffDays <= 30
-                        }).length
-                      }
+                      {users.filter((u) => u.role === "member").length}
                     </p>
-                    <p className="text-sm text-muted-foreground">New This Month</p>
+                    <p className="text-sm text-muted-foreground">Members</p>
                   </div>
                 </div>
               </CardContent>
@@ -319,24 +286,24 @@ export default function ClientsPage() {
                           <div className="flex items-center gap-3">
                             <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                               <span className="text-sm font-medium text-primary">
-                                {(user.first_name || user.name)?.charAt(0).toUpperCase()}
+                                {user.first_name?.charAt(0).toUpperCase() || "?"}
                               </span>
                             </div>
-                            <span className="font-medium text-secondary">
-                              {user.first_name || user.name?.split(" ")[0] || "N/A"}
-                            </span>
+                            <span className="font-medium text-secondary">{user.first_name || "N/A"}</span>
                           </div>
                         </td>
-                        <td className="py-3 px-4 font-medium text-secondary">
-                          {user.last_name || user.name?.split(" ").slice(1).join(" ") || "N/A"}
-                        </td>
+                        <td className="py-3 px-4 font-medium text-secondary">{user.last_name || "N/A"}</td>
                         <td className="py-3 px-4">
                           <span
                             className={`inline-flex items-center px-2 py-1 rounded-full text-xs font-medium ${
-                              user.role === "admin" ? "bg-red-100 text-red-800" : "bg-blue-100 text-blue-800"
+                              user.role === "admin"
+                                ? "bg-red-100 text-red-800"
+                                : user.role === "client"
+                                  ? "bg-green-100 text-green-800"
+                                  : "bg-blue-100 text-blue-800"
                             }`}
                           >
-                            {user.role === "admin" ? "Admin" : "Member"}
+                            {user.role.charAt(0).toUpperCase() + user.role.slice(1)}
                           </span>
                         </td>
                         <td className="py-3 px-4">
@@ -375,25 +342,6 @@ export default function ClientsPage() {
                 <div className="text-center py-8">
                   <Users className="w-12 h-12 text-muted-foreground mx-auto mb-4" />
                   <p className="text-muted-foreground">No users found</p>
-                  <div className="mt-4 p-4 bg-gray-100 rounded text-left text-sm">
-                    <p>
-                      <strong>Debug Info:</strong>
-                    </p>
-                    <p>Total users fetched: {users.length}</p>
-                    <p>Filtered users: {filteredUsers.length}</p>
-                    <p>Active tab: {activeTab}</p>
-                    <p>Search query: "{searchQuery}"</p>
-                    <p>Loading data: {loadingData.toString()}</p>
-                    <p>Current user role: {user?.role}</p>
-                    {users.length > 0 && (
-                      <div className="mt-2">
-                        <p>
-                          <strong>Sample user data:</strong>
-                        </p>
-                        <pre className="text-xs">{JSON.stringify(users[0], null, 2)}</pre>
-                      </div>
-                    )}
-                  </div>
                   {searchQuery ? (
                     <p className="text-sm text-muted-foreground mt-2">Try adjusting your search</p>
                   ) : (
