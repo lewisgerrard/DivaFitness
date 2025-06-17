@@ -1,7 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
+import { usePathname } from "next/navigation"
 
 interface HeroSectionProps {
   title: string
@@ -33,6 +36,20 @@ function HeroSection({
   badge,
   stats,
 }: HeroSectionProps) {
+  const pathname = usePathname()
+
+  // Don't render hero on non-public pages
+  const isPublicPage =
+    pathname === "/" ||
+    pathname === "/about" ||
+    pathname === "/services" ||
+    pathname === "/contact" ||
+    pathname === "/faqs"
+
+  if (!isPublicPage) {
+    return null
+  }
+
   return (
     <section className={brandKit.components.hero.container}>
       {/* Decorative Elements */}

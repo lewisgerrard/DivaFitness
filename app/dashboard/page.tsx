@@ -1,24 +1,29 @@
 import Link from "next/link"
-import { HeroSection } from "@/components/hero-section"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { User, Users, Shield, Calendar, MessageSquare, Settings, BarChart3, Activity, BookOpen } from "lucide-react"
+import {
+  User,
+  Users,
+  Shield,
+  Calendar,
+  MessageSquare,
+  Settings,
+  BarChart3,
+  Activity,
+  BookOpen,
+  LayoutDashboard,
+} from "lucide-react"
 import { brandKit } from "@/lib/brand-kit"
+import { AdminPageHeader } from "@/components/admin-page-header"
 
 export default function Dashboard() {
   return (
     <div className="min-h-screen">
-      {/* Hero Section */}
-      <HeroSection
-        title="Welcome to Your Dashboard"
+      {/* Admin Page Header */}
+      <AdminPageHeader
+        icon={LayoutDashboard}
+        title="Dashboard"
         description="Your central hub for managing your fitness journey, tracking progress, and accessing all platform features."
-        badge="Dashboard"
-        primaryButtonText="Member Portal"
-        primaryButtonHref="#member-portal"
-        secondaryButtonText="Client Portal"
-        secondaryButtonHref="#client-portal"
-        tertiaryButtonText="Admin Panel"
-        tertiaryButtonHref="#admin-panel"
       />
 
       {/* Dashboard Content */}
