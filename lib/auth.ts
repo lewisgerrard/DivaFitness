@@ -22,13 +22,33 @@ export interface User {
 
 export async function authenticateUser(email: string, password: string): Promise<User | null> {
   try {
-    const result = await sql`
-      SELECT id, email, password_hash, name, role, first_name, last_name, phone, address, 
-             date_of_birth, emergency_contact_name, emergency_contact_phone, 
-             service_interest, notes, status, created_at, updated_at
-      FROM users 
-      WHERE email = ${email}
+    // Check if the consolidated table structure exists
+    const tableCheck = await sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'users' AND column_name = 'first_name'
     `
+
+    const hasConsolidatedFields = tableCheck.length > 0
+
+    let result
+    if (hasConsolidatedFields) {
+      // Use consolidated table structure
+      result = await sql`
+        SELECT id, email, password_hash, name, role, first_name, last_name, phone, address, 
+               date_of_birth, emergency_contact_name, emergency_contact_phone, 
+               service_interest, notes, status, created_at, updated_at
+        FROM users 
+        WHERE email = ${email}
+      `
+    } else {
+      // Use original table structure
+      result = await sql`
+        SELECT id, email, password_hash, name, role, created_at, updated_at
+        FROM users 
+        WHERE email = ${email}
+      `
+    }
 
     if (result.length === 0) return null
 
@@ -37,9 +57,21 @@ export async function authenticateUser(email: string, password: string): Promise
 
     if (!isValidPassword) return null
 
-    // Return user without password_hash
+    // Return user without password_hash, with default values for missing fields
     const { password_hash, ...userWithoutPassword } = user
-    return userWithoutPassword as User
+    return {
+      ...userWithoutPassword,
+      first_name: user.first_name || null,
+      last_name: user.last_name || null,
+      phone: user.phone || null,
+      address: user.address || null,
+      date_of_birth: user.date_of_birth || null,
+      emergency_contact_name: user.emergency_contact_name || null,
+      emergency_contact_phone: user.emergency_contact_phone || null,
+      service_interest: user.service_interest || null,
+      notes: user.notes || null,
+      status: user.status || "active",
+    } as User
   } catch (error) {
     console.error("Authentication error:", error)
     return null
@@ -48,15 +80,45 @@ export async function authenticateUser(email: string, password: string): Promise
 
 export async function getAllUsers(): Promise<User[]> {
   try {
-    const result = await sql`
-      SELECT id, email, name, role, first_name, last_name, phone, address, 
-             date_of_birth, emergency_contact_name, emergency_contact_phone, 
-             service_interest, notes, status, created_at, updated_at
-      FROM users 
-      ORDER BY created_at DESC
+    // Check if consolidated table exists
+    const tableCheck = await sql`
+      SELECT column_name 
+      FROM information_schema.columns 
+      WHERE table_name = 'users' AND column_name = 'first_name'
     `
 
-    return result as User[]
+    const hasConsolidatedFields = tableCheck.length > 0
+
+    let result
+    if (hasConsolidatedFields) {
+      result = await sql`
+        SELECT id, email, name, role, first_name, last_name, phone, address, 
+               date_of_birth, emergency_contact_name, emergency_contact_phone, 
+               service_interest, notes, status, created_at, updated_at
+        FROM users 
+        ORDER BY created_at DESC
+      `
+    } else {
+      result = await sql`
+        SELECT id, email, name, role, created_at, updated_at
+        FROM users 
+        ORDER BY created_at DESC
+      `
+    }
+
+    return result.map((user: any) => ({
+      ...user,
+      first_name: user.first_name || null,
+      last_name: user.last_name || null,
+      phone: user.phone || null,
+      address: user.address || null,
+      date_of_birth: user.date_of_birth || null,
+      emergency_contact_name: user.emergency_contact_name || null,
+      emergency_contact_phone: user.emergency_contact_phone || null,
+      service_interest: user.service_interest || null,
+      notes: user.notes || null,
+      status: user.status || "active",
+    })) as User[]
   } catch (error) {
     console.error("Get users error:", error)
     return []
