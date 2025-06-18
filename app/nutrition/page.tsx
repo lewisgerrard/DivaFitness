@@ -244,23 +244,6 @@ export default function NutritionPage() {
                       </li>
                     </ul>
                   </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Bank Details:</h3>
-                    <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Bank:</span>
-                        <span className="font-medium text-gray-900">Santander</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Sort Code:</span>
-                        <span className="font-medium text-gray-900">09-06-66</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Account:</span>
-                        <span className="font-medium text-gray-900">42233950</span>
-                      </div>
-                    </div>
-                  </div>
                 </div>
               </CardContent>
             </Card>
