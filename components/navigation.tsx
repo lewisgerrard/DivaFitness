@@ -67,7 +67,11 @@ export function Navigation() {
               {/* Services Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center">
+                  <button
+                    className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
                     Services
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
