@@ -4,7 +4,6 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
   User,
@@ -19,12 +18,9 @@ import {
   Globe,
   Layers,
   Palette,
-  Bell,
-  Settings,
-  LogOut,
-  Sparkles,
 } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
+import HeroDashboard from "@/components/hero-dashboard"
 
 export default function Dashboard() {
   const router = useRouter()
@@ -163,69 +159,7 @@ export default function Dashboard() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Purple Hero Section */}
-      <section className="relative bg-primary h-[300px] flex items-center justify-center overflow-hidden">
-        {/* Decorative Elements */}
-        <div className="absolute inset-0">
-          <div
-            className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-            style={{
-              backgroundImage: "url('/images/studio-exterior-full.jpg')",
-            }}
-          />
-          <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-primary-dark/90" />
-        </div>
-
-        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center text-white">
-          <div className="inline-flex items-center gap-2 bg-white/20 backdrop-blur-sm rounded-full px-4 py-2 mb-4">
-            <Sparkles className="w-4 h-4" />
-            <span className="text-sm font-medium">Welcome Back</span>
-          </div>
-
-          <h1 className="font-heading text-3xl md:text-4xl font-bold mb-3 leading-tight">
-            {getGreeting()},{" "}
-            <span className="bg-gradient-to-r from-white to-accent-light bg-clip-text text-transparent">
-              {user.first_name || user.name}!
-            </span>
-          </h1>
-
-          <p className="text-lg md:text-xl mb-6 max-w-2xl mx-auto leading-relaxed opacity-90">
-            Your personal fitness portal - manage your profile, track progress, and access all platform features
-          </p>
-
-          <div className="flex items-center justify-center gap-4 text-sm">
-            <Badge variant="secondary" className="bg-white/20 text-white border-white/30">
-              {user.role}
-            </Badge>
-            <span className="text-white/80">
-              {currentTime.toLocaleDateString("en-GB", {
-                weekday: "long",
-                year: "numeric",
-                month: "long",
-                day: "numeric",
-              })}
-            </span>
-            <span className="text-white/80">
-              {currentTime.toLocaleTimeString("en-GB", {
-                hour: "2-digit",
-                minute: "2-digit",
-              })}
-            </span>
-          </div>
-        </div>
-
-        {/* Header Controls */}
-        <div className="absolute top-4 right-4 flex items-center gap-3">
-          <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-            <Bell className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="sm" className="text-white hover:bg-white/20">
-            <Settings className="w-4 h-4" />
-          </Button>
-          <Button variant="ghost" size="sm" onClick={handleLogout} className="text-white hover:bg-white/20">
-            <LogOut className="w-4 h-4" />
-          </Button>
-        </div>
-      </section>
+      <HeroDashboard />
 
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-6 py-12">

@@ -1,5 +1,5 @@
 import { User, Users, Leaf, Sparkles } from "lucide-react"
-import HeroSection from "@/components/hero-section"
+import HeroHome from "@/components/hero-home"
 import SectionHeader from "@/components/section-header"
 import ServiceCard from "@/components/service-card"
 import ReviewCard from "@/components/review-card"
@@ -79,7 +79,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <HeroSection
+      <HeroHome
         title="Transform Your"
         subtitle="Fitness Journey"
         description="Experience personalized training in a stunning garden studio designed exclusively for women's wellness and empowerment."

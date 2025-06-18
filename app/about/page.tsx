@@ -3,14 +3,14 @@ import Link from "next/link"
 import { Award, Heart, Users, Zap, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import HeroSection from "@/components/hero-section"
+import HeroPage from "@/components/hero-page"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <HeroSection
+      <HeroPage
         title="Meet Emma"
         subtitle="Fisher"
         description="Empowering women since 2017 with personalised fitness journeys that transform bodies, minds, and lives."
@@ -21,7 +21,6 @@ export default function AboutPage() {
         tertiaryButtonText="See Reviews"
         tertiaryButtonHref="/#reviews"
         badge="Your Personal Trainer"
-        stats={[{ value: "7+", label: "Years Experience" }]}
       />
 
       {/* Story Section */}

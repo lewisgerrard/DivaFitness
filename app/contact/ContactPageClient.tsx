@@ -1,137 +1,41 @@
 "use client"
+import type { Metadata } from "next"
 
-import HeroSection from "@/components/hero-section"
-import ContactForm from "@/components/contact-form"
-import GoogleMap from "@/components/google-map"
-import { brandKit } from "@/lib/brand-kit"
-import { Phone, Mail, MapPin, Clock } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import Container from "@/components/container"
+import Section from "@/components/section"
+import { ContactForm } from "@/components/contact-form"
+import HeroPage from "@/components/hero-page"
 
-export default function ContactPageClient() {
-  const scrollToForm = () => {
-    const formSection = document.getElementById("contact-form-section")
-    if (formSection) {
-      formSection.scrollIntoView({ behavior: "smooth" })
-    }
-  }
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Contact Emma at Diva Fitness",
+}
 
+const ContactPageClient = () => {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <HeroSection
-        title="Get In Touch"
-        description="Ready to start your fitness journey? Contact Emma today to book your free consultation."
-        primaryButtonText="Call Now"
-        primaryButtonHref="tel:07966874821"
-        secondaryButtonText="Send Email"
-        secondaryButtonHref="mailto:info@diva-fitness.co.uk"
-        tertiaryButtonText="Message"
-        tertiaryButtonOnClick={scrollToForm}
-        badge="Contact Emma"
-      />
+    <>
+      <Section className="pt-0">
+        <Container>
+          <HeroPage
+            title="Get In"
+            subtitle="Touch"
+            description="Ready to start your fitness journey? Contact Emma today to discuss your goals and book your consultation."
+            primaryButtonText="Call Now"
+            primaryButtonHref="tel:07966874821"
+            secondaryButtonText="Send Email"
+            secondaryButtonHref="mailto:info@diva-fitness.co.uk"
+            badge="Contact Emma"
+          />
+        </Container>
+      </Section>
 
-      {/* Main Content Area */}
-      <section className={`${brandKit.spacing.section.lg} bg-white`}>
-        <div className={brandKit.components.section.container}>
-          {/* Contact Form Section */}
-          <div id="contact-form-section" className="mb-20">
-            <div className="text-center mb-12">
-              <h2 className="font-heading text-3xl font-bold text-secondary mb-4">Send Us a Message</h2>
-              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                Ready to transform your fitness journey? Fill out the form below and Emma will get back to you within 24
-                hours.
-              </p>
-            </div>
-            <div className="grid lg:grid-cols-2 gap-12 items-start mb-12">
-              <div>
-                <ContactForm />
-              </div>
-              <div>
-                <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-                  <CardContent className="p-0">
-                    <GoogleMap />
-                  </CardContent>
-                </Card>
-              </div>
-            </div>
-
-            {/* Contact Details Card */}
-            <Card className="border-primary/20 shadow-lg hover:shadow-xl transition-all duration-300">
-              <CardContent className="p-8">
-                <div className="flex flex-wrap justify-between items-start gap-8">
-                  {/* Phone */}
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
-                    >
-                      <Phone className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-secondary mb-1">Phone</h3>
-                      <a href="tel:07966874821" className="text-muted-foreground hover:text-primary transition-colors">
-                        07966 874 821
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Email */}
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
-                    >
-                      <Mail className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-secondary mb-1">Email</h3>
-                      <a
-                        href="mailto:info@diva-fitness.co.uk"
-                        className="text-muted-foreground hover:text-primary transition-colors"
-                      >
-                        info@diva-fitness.co.uk
-                      </a>
-                    </div>
-                  </div>
-
-                  {/* Address */}
-                  <div className="flex items-center gap-4">
-                    <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center`}
-                    >
-                      <MapPin className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-secondary mb-1">Address</h3>
-                      <div className="text-muted-foreground">
-                        <p>Chester, UK</p>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Opening Times */}
-                  <div className="flex items-start gap-4 min-w-[200px]">
-                    <div
-                      className={`w-12 h-12 ${brandKit.gradients.primary} rounded-xl flex items-center justify-center flex-shrink-0`}
-                    >
-                      <Clock className="w-6 h-6 text-white" />
-                    </div>
-                    <div>
-                      <h3 className="font-heading font-semibold text-secondary mb-2">Opening Times</h3>
-                      <div className="text-muted-foreground text-sm space-y-1">
-                        <p>Mon-Thu: 6AM-8PM</p>
-                        <p>Fri: 6AM-7PM</p>
-                        <p>Sat: 8AM-4PM</p>
-                        <p>Sun: Closed</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Studio Showcase */}
-        </div>
-      </section>
-    </div>
+      <Section>
+        <Container>
+          <ContactForm />
+        </Container>
+      </Section>
+    </>
   )
 }
+
+export default ContactPageClient

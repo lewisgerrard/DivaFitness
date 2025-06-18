@@ -3,7 +3,7 @@
 import { useState } from "react"
 import { ChevronDown, ChevronUp, Search, X } from "lucide-react"
 import { Card, CardContent } from "@/components/ui/card"
-import HeroSection from "@/components/hero-section"
+import HeroPage from "@/components/hero-page"
 
 export default function FAQsPage() {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null)
@@ -75,7 +75,7 @@ export default function FAQsPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <HeroSection
+      <HeroPage
         title="Frequently Asked"
         subtitle="Questions"
         description="Find answers to common questions about training at Diva Fitness and discover how we can support your fitness journey."

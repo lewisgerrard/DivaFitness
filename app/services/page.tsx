@@ -4,7 +4,7 @@ import Image from "next/image"
 import { User, Users, Leaf, Clock, Target, Heart, ArrowRight, Check, Star } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import HeroSection from "@/components/hero-section"
+import HeroPage from "@/components/hero-page"
 
 export default function ServicesPage() {
   const services = [
@@ -104,7 +104,7 @@ export default function ServicesPage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <HeroSection
+      <HeroPage
         title="Your Perfect"
         subtitle="Fitness Journey"
         description="Discover personalised services designed specifically for women's unique fitness needs and goals."
