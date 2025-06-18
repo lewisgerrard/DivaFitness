@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
-import { Component, X, Copy, Eye } from "lucide-react"
+import { Component, X, Copy, Eye, Dumbbell } from "lucide-react"
 import { useState } from "react"
 import { HeroSection } from "@/components/hero-section"
 import { Navigation } from "@/components/navigation"
@@ -96,26 +96,33 @@ export default function TestimonialsSection() {
     title: "Service Card",
     description: "Individual service display card with image and description",
     code: `import { ServiceCard } from "@/components/service-card"
+import { Dumbbell } from 'lucide-react'
 
 export default function ServicesGrid() {
   return (
     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
       <ServiceCard 
+        icon={Dumbbell}
         title="Personal Training"
         description="One-on-one sessions tailored to your goals"
-        image="/images/personal-training.jpg"
-        price="£60/session"
+        features={["Personalized workout plans", "Nutrition guidance", "Progress tracking"]}
+        buttonText="Book Now"
+        buttonHref="/contact"
       />
     </div>
   )
 }`,
     component: (
-      <ServiceCard
-        title="Personal Training"
-        description="One-on-one sessions"
-        image="/images/action-training-session.jpg"
-        price="£60"
-      />
+      <div className="max-w-sm">
+        <ServiceCard
+          icon={Dumbbell}
+          title="Personal Training"
+          description="One-on-one sessions tailored to your goals"
+          features={["Personalized workout plans", "Nutrition guidance", "Progress tracking"]}
+          buttonText="Book Now"
+          buttonHref="/contact"
+        />
+      </div>
     ),
   },
   {
@@ -181,11 +188,24 @@ export default function HomePage() {
       <CTASection 
         title="Ready to Start Your Journey?"
         subtitle="Book your consultation today"
+        description="Transform your body and mind with personalized fitness training"
+        primaryButtonText="Get Started"
+        primaryButtonHref="/contact"
       />
     </>
   )
 }`,
-    component: <CTASection title="Ready to Start?" subtitle="Book your consultation" />,
+    component: (
+      <div className="max-w-2xl">
+        <CTASection
+          title="Ready to Start Your Journey?"
+          subtitle="Book your consultation today"
+          description="Transform your body and mind with personalized fitness training"
+          primaryButtonText="Get Started"
+          primaryButtonHref="/contact"
+        />
+      </div>
+    ),
   },
   {
     title: "Opening Hours",
@@ -325,7 +345,9 @@ export default function AdminComponentsPage() {
                     </h3>
                   </div>
                   <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 overflow-auto">
-                    <div className="scale-75 origin-top-left w-[133%] h-[133%]">{selectedComponent.component}</div>
+                    <div className="w-full h-full flex items-center justify-center">
+                      <div className="w-full max-w-full overflow-hidden">{selectedComponent.component}</div>
+                    </div>
                   </div>
                 </div>
               </div>
