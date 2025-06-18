@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import HeroPage from "@/components/hero-page"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
+import { siteImages, imageAlts } from "@/lib/images"
 
 export default function AboutPage() {
   return (
@@ -71,8 +72,8 @@ export default function AboutPage() {
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/studio-exterior-cropped.jpg"
-                      alt="Studio Exterior"
+                      src={siteImages.emma.studioPortrait || "/placeholder.svg"}
+                      alt={imageAlts.emma.studioPortrait}
                       fill
                       className="object-cover"
                     />
@@ -81,8 +82,8 @@ export default function AboutPage() {
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/equipment-wide-shot.jpg"
-                      alt="Professional Equipment"
+                      src={siteImages.equipment.professionalDumbbells || "/placeholder.svg"}
+                      alt={imageAlts.equipment.professionalDumbbells}
                       fill
                       className="object-cover"
                     />
@@ -92,14 +93,19 @@ export default function AboutPage() {
                   <div
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
-                    <Image src="/images/weights-close-up.jpg" alt="Training Equipment" fill className="object-cover" />
+                    <Image
+                      src={siteImages.emma.kettlebellTraining || "/placeholder.svg"}
+                      alt={imageAlts.emma.kettlebellTraining}
+                      fill
+                      className="object-cover"
+                    />
                   </div>
                   <div
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/action-training-session.jpg"
-                      alt="Training Session"
+                      src={siteImages.training.actionSession || "/placeholder.svg"}
+                      alt={imageAlts.training.actionSession}
                       fill
                       className="object-cover"
                     />
@@ -205,25 +211,29 @@ export default function AboutPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 relative">
             {[
               {
-                image: "/images/journey-before.jpg",
+                image: siteImages.journey.before,
+                alt: imageAlts.journey.before,
                 caption: "The empty garden - where it all began!",
                 rotation: "-rotate-3",
                 marginTop: "mt-8",
               },
               {
-                image: "/images/journey-plan.jpg",
+                image: siteImages.journey.plan,
+                alt: imageAlts.journey.plan,
                 caption: "Planning every detail on paper",
                 rotation: "rotate-2",
                 marginTop: "mt-4",
               },
               {
-                image: "/images/journey-construction.jpg",
+                image: siteImages.journey.construction,
+                alt: imageAlts.journey.construction,
                 caption: "Hard work with my furry helpers!",
                 rotation: "-rotate-1",
                 marginTop: "mt-12",
               },
               {
-                image: "/images/journey-complete.jpg",
+                image: siteImages.journey.complete,
+                alt: imageAlts.journey.complete,
                 caption: "The dream studio is complete! ✨",
                 rotation: "rotate-3",
                 marginTop: "mt-6",
@@ -244,7 +254,7 @@ export default function AboutPage() {
                 >
                   {/* Photo */}
                   <div className="relative h-64 w-full bg-gray-100 overflow-hidden">
-                    <Image src={photo.image || "/placeholder.svg"} alt={photo.caption} fill className="object-cover" />
+                    <Image src={photo.image || "/placeholder.svg"} alt={photo.alt} fill className="object-cover" />
                   </div>
 
                   {/* Caption */}
