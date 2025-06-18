@@ -32,19 +32,20 @@ export function Navigation() {
   }
 
   return (
-    <nav className="bg-black sticky top-0 z-50">
+    <nav className="bg-gray-50 sticky top-0 z-50 border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - Left Side */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/diva-logo-new.png"
+              src="/diva-logo-fitness.png"
               alt="Diva Fitness"
-              width={120}
-              height={40}
-              className="h-10 w-auto"
+              width={50}
+              height={50}
+              className="h-12 w-12"
               priority
             />
+            <span className="font-heading font-bold text-xl text-black">Diva Fitness</span>
           </Link>
 
           {/* Desktop Navigation - Right Side */}
@@ -54,7 +55,7 @@ export function Navigation() {
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-white/90 hover:text-white transition-colors duration-200 font-medium text-sm"
+                  className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
                 >
                   {item.label}
                 </Link>
@@ -64,7 +65,7 @@ export function Navigation() {
             {user ? (
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="bg-white text-purple-600 hover:bg-purple-50 font-medium">
+                  <Button variant="ghost" size="sm" className="bg-primary text-white hover:bg-primary/90 font-medium">
                     <User className="w-4 h-4 mr-2" />
                     {user.first_name || (user.name ? user.name.split(" ")[0] : user.email?.split("@")[0] || "User")}
                   </Button>
@@ -84,7 +85,7 @@ export function Navigation() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button asChild size="sm" className="bg-white text-primary hover:bg-white/90 font-semibold">
+              <Button asChild size="sm" className="bg-primary text-white hover:bg-primary/90 font-semibold">
                 <Link href="/login">Login</Link>
               </Button>
             )}
@@ -92,7 +93,7 @@ export function Navigation() {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white hover:text-white/80 transition-colors">
+            <button onClick={() => setIsOpen(!isOpen)} className="text-black hover:text-black/80 transition-colors">
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -101,12 +102,12 @@ export function Navigation() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black border-t border-white/20">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 border-t border-gray-200">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="block px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors duration-200 text-sm"
+                  className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   {item.label}
@@ -117,27 +118,27 @@ export function Navigation() {
                   <div className="space-y-2">
                     <Link
                       href="/profile"
-                      className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                      className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
                     >
                       My Profile
                     </Link>
                     {user.role === "admin" && (
                       <Link
                         href="/admin"
-                        className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                        className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
                       >
                         Admin Panel
                       </Link>
                     )}
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-3 py-2 text-white/90 hover:text-white hover:bg-white/10 rounded-md transition-colors text-sm"
+                      className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
                     >
                       Logout
                     </button>
                   </div>
                 ) : (
-                  <Button asChild size="sm" className="w-full bg-white text-primary hover:bg-white/90 font-semibold">
+                  <Button asChild size="sm" className="w-full bg-primary text-white hover:bg-primary/90 font-semibold">
                     <Link href="/login">Login</Link>
                   </Button>
                 )}
