@@ -5,6 +5,7 @@ import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
 import { usePathname } from "next/navigation"
+import Image from "next/image"
 
 interface HeroSectionProps {
   title: string
@@ -54,11 +55,14 @@ function HeroSection({
     <section className={`${brandKit.components.hero.container} ${pathname === "/" ? "min-h-screen" : ""}`}>
       {/* Decorative Elements */}
       <div className="absolute inset-0">
-        <div
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: "url('/images/studio-exterior-full.jpg')",
-          }}
+        <Image
+          src="/images/studio-exterior-full.jpg"
+          alt="Diva Fitness Studio Exterior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+          quality={85}
         />
         <div className="absolute inset-0 bg-black/40" />
       </div>
