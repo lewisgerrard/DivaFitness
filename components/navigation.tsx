@@ -16,6 +16,7 @@ import Image from "next/image"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
+  const [servicesOpen, setServicesOpen] = useState(false)
   const { user, logout } = useAuth()
 
   const navItems = [
@@ -65,32 +66,41 @@ export function Navigation() {
               </Link>
 
               {/* Services Dropdown */}
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center h-auto p-0 hover:bg-transparent"
-                  >
-                    Services
-                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                    </svg>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-40 z-50">
-                  <DropdownMenuItem asChild>
-                    <Link href="/training" className="flex items-center cursor-pointer">
+              <div className="relative">
+                <button
+                  onClick={() => setServicesOpen(!servicesOpen)}
+                  className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center"
+                  onBlur={(e) => {
+                    // Close dropdown when clicking outside
+                    if (!e.currentTarget.contains(e.relatedTarget)) {
+                      setTimeout(() => setServicesOpen(false), 150)
+                    }
+                  }}
+                >
+                  Services
+                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </button>
+                {servicesOpen && (
+                  <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
+                    <Link
+                      href="/training"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      onClick={() => setServicesOpen(false)}
+                    >
                       Training
                     </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuItem asChild>
-                    <Link href="/nutrition" className="flex items-center cursor-pointer">
+                    <Link
+                      href="/nutrition"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                      onClick={() => setServicesOpen(false)}
+                    >
                       Nutrition
                     </Link>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </div>
+                )}
+              </div>
 
               {/* Render FAQs and Contact */}
               <Link
