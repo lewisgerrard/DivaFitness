@@ -107,3 +107,15 @@ export async function POST(request: NextRequest) {
     )
   }
 }
+
+export async function GET(request: NextRequest) {
+  return NextResponse.json(
+    {
+      message: "This is an API endpoint. Use POST to create users.",
+      endpoints: {
+        POST: "/api/admin/clients - Create a new user",
+      },
+    },
+    { status: 200 },
+  )
+}

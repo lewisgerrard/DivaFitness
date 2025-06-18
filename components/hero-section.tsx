@@ -51,12 +51,16 @@ function HeroSection({
   }
 
   return (
-    <section className={brandKit.components.hero.container}>
+    <section className={`${brandKit.components.hero.container} ${pathname === "/" ? "min-h-screen" : ""}`}>
       {/* Decorative Elements */}
       <div className="absolute inset-0">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary-dark/20 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute bottom-1/4 right-1/4 w-64 h-64 bg-primary-light/10 rounded-full blur-2xl" />
-        <div className="absolute top-1/2 right-1/3 w-32 h-32 bg-accent/20 rounded-full blur-xl" />
+        <div
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+          style={{
+            backgroundImage: "url(/images/studio-exterior-full.jpg)",
+          }}
+        />
+        <div className="absolute inset-0 bg-black/40" />
       </div>
 
       <div className={brandKit.components.hero.content}>

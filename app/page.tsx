@@ -16,7 +16,7 @@ export default function HomePage() {
     {
       icon: User,
       title: "1-to-1 Training",
-      description: "Completely personalized sessions designed around your unique goals and preferences.",
+      description: "Completely personalised sessions designed around your unique goals and preferences.",
       features: ["Custom workout plans", "Form correction", "Progress tracking"],
       colorScheme: "primary" as const,
     },
@@ -122,7 +122,7 @@ export default function HomePage() {
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-secondary mb-2">1-to-1 Focus</h3>
-                  <p className="text-sm text-muted-foreground">Completely personalized attention</p>
+                  <p className="text-sm text-muted-foreground">Completely personalised attention</p>
                 </div>
                 <div className="group">
                   <div className={`${brandKit.components.card.icon} ${brandKit.gradients.secondary} mb-3`}>

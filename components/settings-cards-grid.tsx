@@ -13,25 +13,25 @@ export function SettingsCardsGrid() {
       icon: Mail,
       title: "Email Templates",
       description: "Create and manage email templates for client communications",
-      href: "/admin/email-templates",
+      href: "/dashboard/admin/email-templates",
     },
     {
       icon: Globe,
       title: "Website Structure",
       description: "Configure website content, navigation, and settings",
-      href: "/admin/page-structure",
+      href: "/dashboard/admin/page-structure",
     },
     {
       icon: Layers,
       title: "Components",
       description: "Manage reusable UI components and design elements",
-      href: "/admin/components",
+      href: "/dashboard/admin/components",
     },
     {
       icon: Palette,
       title: "Branding",
       description: "Configure brand colors, fonts, and visual identity",
-      href: "/admin/branding",
+      href: "/dashboard/admin/branding",
     },
   ]
 

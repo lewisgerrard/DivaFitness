@@ -7,11 +7,14 @@ import {
   Shield,
   Calendar,
   MessageSquare,
-  Settings,
   BarChart3,
   Activity,
   BookOpen,
   LayoutDashboard,
+  Mail,
+  Globe,
+  Layers,
+  Palette,
 } from "lucide-react"
 import { brandKit } from "@/lib/brand-kit"
 import { AdminPageHeader } from "@/components/admin-page-header"
@@ -50,7 +53,7 @@ export default function Dashboard() {
                     Manage your personal information and preferences
                   </p>
                   <Button asChild className="w-full bg-purple-400 hover:bg-purple-500 mt-auto">
-                    <Link href="/profile">View Profile</Link>
+                    <Link href="/dashboard/member/profile">View Profile</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -166,14 +169,58 @@ export default function Dashboard() {
               </div>
             </div>
 
-            <div className="grid md:grid-cols-3 gap-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
               <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
                 <CardContent className="p-6 text-center h-full flex flex-col">
                   <Users className="w-8 h-8 text-pink-600 mx-auto mb-4" />
                   <h3 className="font-heading font-semibold text-pink-800 mb-2">User Management</h3>
                   <p className="text-pink-600 text-sm mb-4 flex-grow">Add, edit, and manage user accounts</p>
                   <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
-                    <Link href="/admin/users">Manage Users</Link>
+                    <Link href="/dashboard/admin/user-management">Manage Users</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
+                <CardContent className="p-6 text-center h-full flex flex-col">
+                  <Mail className="w-8 h-8 text-pink-600 mx-auto mb-4" />
+                  <h3 className="font-heading font-semibold text-pink-800 mb-2">Email Templates</h3>
+                  <p className="text-pink-600 text-sm mb-4 flex-grow">Create and manage email templates</p>
+                  <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
+                    <Link href="/dashboard/admin/email-templates">Manage Templates</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
+                <CardContent className="p-6 text-center h-full flex flex-col">
+                  <Globe className="w-8 h-8 text-pink-600 mx-auto mb-4" />
+                  <h3 className="font-heading font-semibold text-pink-800 mb-2">Website Structure</h3>
+                  <p className="text-pink-600 text-sm mb-4 flex-grow">Configure website content and navigation</p>
+                  <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
+                    <Link href="/dashboard/admin/website-structure">Manage Structure</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
+                <CardContent className="p-6 text-center h-full flex flex-col">
+                  <Layers className="w-8 h-8 text-pink-600 mx-auto mb-4" />
+                  <h3 className="font-heading font-semibold text-pink-800 mb-2">Components</h3>
+                  <p className="text-pink-600 text-sm mb-4 flex-grow">Manage reusable UI components</p>
+                  <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
+                    <Link href="/dashboard/admin/components">Manage Components</Link>
+                  </Button>
+                </CardContent>
+              </Card>
+
+              <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
+                <CardContent className="p-6 text-center h-full flex flex-col">
+                  <Palette className="w-8 h-8 text-pink-600 mx-auto mb-4" />
+                  <h3 className="font-heading font-semibold text-pink-800 mb-2">Branding</h3>
+                  <p className="text-pink-600 text-sm mb-4 flex-grow">Configure brand colors and visual identity</p>
+                  <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
+                    <Link href="/dashboard/admin/branding">Manage Branding</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -188,17 +235,6 @@ export default function Dashboard() {
                   <p className="text-pink-500 text-sm mb-4 flex-grow opacity-60">Schedule and manage fitness classes</p>
                   <Button disabled className="w-full bg-gray-300 text-gray-500 cursor-not-allowed mt-auto">
                     Coming Soon
-                  </Button>
-                </CardContent>
-              </Card>
-
-              <Card className="border-pink-200 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-br from-pink-50 to-pink-100 h-full">
-                <CardContent className="p-6 text-center h-full flex flex-col">
-                  <Settings className="w-8 h-8 text-pink-600 mx-auto mb-4" />
-                  <h3 className="font-heading font-semibold text-pink-800 mb-2">Website Settings</h3>
-                  <p className="text-pink-600 text-sm mb-4 flex-grow">Configure website content and settings</p>
-                  <Button asChild className="w-full bg-pink-500 hover:bg-pink-600 mt-auto">
-                    <Link href="/admin/settings">Website Settings</Link>
                   </Button>
                 </CardContent>
               </Card>

@@ -13,7 +13,7 @@ export default function AboutPage() {
       <HeroSection
         title="Meet Emma"
         subtitle="Fisher"
-        description="Empowering women since 2017 with personalized fitness journeys that transform bodies, minds, and lives."
+        description="Empowering women since 2017 with personalised fitness journeys that transform bodies, minds, and lives."
         primaryButtonText="Work With Emma"
         primaryButtonHref="/contact"
         secondaryButtonText="View Services"
@@ -47,7 +47,7 @@ export default function AboutPage() {
 
                 <p>
                   My journey began with a simple realization: traditional gyms weren't serving women's unique needs. Too
-                  many brilliant women were holding back, feeling uncomfortable, or simply not getting the personalized
+                  many brilliant women were holding back, feeling uncomfortable, or simply not getting the personalised
                   attention they deserved.
                 </p>
 
@@ -140,7 +140,7 @@ export default function AboutPage() {
               {
                 icon: Users,
                 title: "Personal",
-                description: "Tailored programs that adapt to your lifestyle, preferences, and individual goals.",
+                description: "Tailored programmes that adapt to your lifestyle, preferences, and individual goals.",
                 color: brandKit.gradients.primary,
               },
               {

@@ -12,9 +12,9 @@ export default function ServicesPage() {
       icon: User,
       title: "1-to-1 Personal Training",
       description:
-        "Completely personalized training sessions designed around your goals, fitness level, and preferences.",
+        "Completely personalised training sessions designed around your goals, fitness level, and preferences.",
       features: [
-        "Customized workout plans",
+        "Customised workout plans",
         "Form correction and technique guidance",
         "Progress tracking and adjustments",
         "Flexible scheduling",
@@ -45,7 +45,7 @@ export default function ServicesPage() {
       title: "Nutrition Coaching",
       description: "Comprehensive nutritional guidance including meal planning and interactive cooking sessions.",
       features: [
-        "Personalized meal plans",
+        "Personalised meal plans",
         "Interactive cooking sessions",
         "Nutritional education",
         "Sustainable habit formation",
@@ -107,7 +107,7 @@ export default function ServicesPage() {
       <HeroSection
         title="Your Perfect"
         subtitle="Fitness Journey"
-        description="Discover personalized services designed specifically for women's unique fitness needs and goals."
+        description="Discover personalised services designed specifically for women's unique fitness needs and goals."
         primaryButtonText="Book Consultation"
         primaryButtonHref="/contact"
         secondaryButtonText="Meet Emma"

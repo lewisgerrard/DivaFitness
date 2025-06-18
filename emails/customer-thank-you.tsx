@@ -36,7 +36,7 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
           </Text>
 
           <Section style={bulletPoints}>
-            <Text style={bulletPoint}>✨ A personalized response tailored to your goals</Text>
+            <Text style={bulletPoint}>✨ A personalised response tailored to your goals</Text>
             <Text style={bulletPoint}>🏋️‍♀️ Information about our services and approach</Text>
             <Text style={bulletPoint}>📅 Options to schedule your free consultation</Text>
             <Text style={bulletPoint}>💜 A warm welcome to the Diva Fitness community</Text>
