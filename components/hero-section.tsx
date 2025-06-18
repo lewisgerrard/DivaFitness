@@ -57,7 +57,7 @@ function HeroSection({
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
           style={{
-            backgroundImage: "url(/images/studio-exterior-full.jpg)",
+            backgroundImage: "url('/images/studio-exterior-full.jpg')",
           }}
         />
         <div className="absolute inset-0 bg-black/40" />
