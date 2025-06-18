@@ -1,63 +1,37 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import { getBrandingSettings, generateCSSVariables } from "@/lib/branding"
+import type React from "react"
 
-export function DynamicStyles() {
-  const [cssVariables, setCssVariables] = useState("")
+import { useEffect } from "react"
 
+interface DynamicStylesProps {
+  primaryColor: string
+  secondaryColor: string
+}
+
+const DynamicStyles: React.FC<DynamicStylesProps> = ({ primaryColor, secondaryColor }) => {
   useEffect(() => {
-    async function loadBranding() {
-      try {
-        const settings = await getBrandingSettings()
-        const css = generateCSSVariables(settings)
-        setCssVariables(css)
-      } catch (error) {
-        console.error("Error loading branding settings:", error)
-      }
-    }
-
-    loadBranding()
-  }, [])
-
-  if (!cssVariables) return null
+    // Dynamically set CSS variables
+    document.documentElement.style.setProperty("--primary-color", primaryColor)
+    document.documentElement.style.setProperty("--secondary-color", secondaryColor)
+  }, [primaryColor, secondaryColor])
 
   return (
-    <style jsx global>{`
-      ${cssVariables}
-      
-      /* Apply dynamic styles */
-      .dynamic-primary-bg {
-        background-color: var(--primary-color) !important;
-      }
-      
-      .dynamic-primary-text {
-        color: var(--primary-color) !important;
-      }
-      
-      .dynamic-primary-border {
-        border-color: var(--primary-color) !important;
-      }
-      
-      .dynamic-heading-font {
-        font-family: var(--heading-font), sans-serif !important;
-      }
-      
-      .dynamic-body-font {
-        font-family: var(--body-font), sans-serif !important;
-      }
-      
-      .dynamic-border-radius {
-        border-radius: var(--border-radius) !important;
-      }
-      
-      .dynamic-card-padding {
-        padding: var(--card-padding) !important;
-      }
-      
-      .dynamic-transition {
-        transition: all var(--transition-duration) ease !important;
-      }
-    `}</style>
+    <div className="max-w-7xl mx-auto px-4">
+      <div className="py-8">
+        {/* Content will inherit styles from CSS variables */}
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100">Dynamic Styles Example</h1>
+        <p className="mt-4 text-gray-500 dark:text-gray-400">
+          This content is styled using CSS variables set dynamically. The primary color is{" "}
+          <span style={{ color: primaryColor }}>{primaryColor}</span> and the secondary color is{" "}
+          <span style={{ color: secondaryColor }}>{secondaryColor}</span>.
+        </p>
+        <button className="mt-6 px-4 py-2 bg-primary-color text-white rounded hover:bg-primary-color-dark">
+          Styled Button
+        </button>
+      </div>
+    </div>
   )
 }
+
+export default DynamicStyles
