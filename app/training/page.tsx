@@ -263,10 +263,6 @@ export default function TrainingPage() {
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              
-            </div>
-
             <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
                 <div className="grid md:grid-cols-2 gap-6">
