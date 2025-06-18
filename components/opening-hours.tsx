@@ -11,7 +11,7 @@ const schedule = [
   { day: "Sunday", hours: "Closed", available: false },
 ]
 
-export default function OpeningHours() {
+export function OpeningHours() {
   return (
     <Card className="border-primary/20 shadow-lg">
       <CardHeader className="bg-gradient-to-r from-primary/5 to-accent/5">
@@ -52,3 +52,5 @@ export default function OpeningHours() {
     </Card>
   )
 }
+
+export default OpeningHours

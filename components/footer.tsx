@@ -2,7 +2,7 @@ import Link from "next/link"
 import { Instagram, Facebook, Linkedin, Phone, Mail, MapPin } from "lucide-react"
 import Image from "next/image"
 
-export default function Footer() {
+export function Footer() {
   return (
     <footer className="bg-primary text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
@@ -132,3 +132,5 @@ export default function Footer() {
     </footer>
   )
 }
+
+export default Footer

@@ -5,7 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { brandClasses } from "@/lib/brand-kit"
 
-export default function GoogleMap() {
+export function GoogleMap() {
   const mapUrl =
     "https://www.google.com/maps/embed/v1/search?key=AIzaSyAt0i9BNsrI7oW9fiXrDDiTJNkeEvokDXk&q=Diva+Fitness+Chester+UK&zoom=15"
   const directionsUrl = "https://g.co/kgs/M2SZQkb"
@@ -75,3 +75,5 @@ export default function GoogleMap() {
     </Card>
   )
 }
+
+export default GoogleMap

@@ -15,7 +15,7 @@ interface ImageGalleryProps {
   className?: string
 }
 
-export default function ImageGallery({ images, className = "" }: ImageGalleryProps) {
+export function ImageGallery({ images, className = "" }: ImageGalleryProps) {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
 
   const openLightbox = (index: number) => {
@@ -102,3 +102,5 @@ export default function ImageGallery({ images, className = "" }: ImageGalleryPro
     </>
   )
 }
+
+export default ImageGallery

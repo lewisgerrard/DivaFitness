@@ -25,7 +25,7 @@ const socialLinks = [
   },
 ]
 
-export default function SocialLinks() {
+export function SocialLinks() {
   return (
     <div className="grid md:grid-cols-3 gap-6">
       {socialLinks.map((social) => (
@@ -56,3 +56,5 @@ export default function SocialLinks() {
     </div>
   )
 }
+
+export default SocialLinks

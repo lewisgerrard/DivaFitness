@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 
-export default function Navigation() {
+export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const { user, logout } = useAuth()
 
@@ -150,3 +150,5 @@ export default function Navigation() {
     </nav>
   )
 }
+
+export default Navigation

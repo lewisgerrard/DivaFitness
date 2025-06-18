@@ -65,7 +65,7 @@ const sampleReviews: Review[] = [
   },
 ]
 
-export default function ReviewCarousel() {
+export function ReviewCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isAutoPlaying, setIsAutoPlaying] = useState(true)
 
@@ -195,3 +195,5 @@ export default function ReviewCarousel() {
     </div>
   )
 }
+
+export default ReviewCarousel

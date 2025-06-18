@@ -14,7 +14,7 @@ interface CTASectionProps {
   showContactInfo?: boolean
 }
 
-export default function CTASection({
+export function CTASection({
   badge,
   title,
   subtitle,
@@ -95,3 +95,5 @@ export default function CTASection({
     </section>
   )
 }
+
+export default CTASection

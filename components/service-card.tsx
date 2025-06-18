@@ -14,7 +14,7 @@ interface ServiceCardProps {
   colorScheme?: "primary" | "secondary" | "accent"
 }
 
-export default function ServiceCard({
+export function ServiceCard({
   icon: Icon,
   title,
   description,
@@ -69,3 +69,5 @@ export default function ServiceCard({
     </Card>
   )
 }
+
+export default ServiceCard
