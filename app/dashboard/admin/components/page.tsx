@@ -1,12 +1,12 @@
 "use client"
 
-import { DashboardLayout } from "@/components/dashboard-layout"
+import { useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Component, X, Copy, Eye, Dumbbell } from "lucide-react"
-import { useState } from "react"
+import { HeroDashboard } from "@/components/dashboard-hero"
 import { HeroSection } from "@/components/hero-section"
 import { Navigation } from "@/components/navigation"
 import { ContactForm } from "@/components/contact-form"
@@ -264,97 +264,100 @@ export default function AdminComponentsPage() {
   }
 
   return (
-    <DashboardLayout
-      title="Website Components"
-      description="Manage and view all website components and their configurations"
-      icon={Component}
-      breadcrumbs={[{ label: "Admin", href: "/dashboard/admin" }, { label: "Components" }]}
-    >
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-purple-900">Component Library</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="font-semibold text-purple-900">Title</TableHead>
-                  <TableHead className="font-semibold text-purple-900">Description</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {components.map((component, index) => (
-                  <TableRow
-                    key={index}
-                    className="hover:bg-purple-50 cursor-pointer"
-                    onClick={() => setSelectedComponent(component)}
-                  >
-                    <TableCell className="font-medium text-purple-800">{component.title}</TableCell>
-                    <TableCell className="text-gray-700">{component.description}</TableCell>
+    <div className="min-h-screen bg-gray-50">
+      <HeroDashboard
+        title="Website Components"
+        description="Manage and view all website components and their configurations"
+        showUserGreeting={false}
+      />
+
+      <section className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle className="text-purple-900">Component Library</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead className="font-semibold text-purple-900">Title</TableHead>
+                    <TableHead className="font-semibold text-purple-900">Description</TableHead>
                   </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
-
-        <Dialog open={!!selectedComponent} onOpenChange={() => setSelectedComponent(null)}>
-          <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden">
-            <DialogHeader>
-              <DialogTitle className="flex items-center justify-between">
-                <span className="text-purple-900">{selectedComponent?.title}</span>
-                <Button variant="ghost" size="sm" onClick={() => setSelectedComponent(null)}>
-                  <X className="h-4 w-4" />
-                </Button>
-              </DialogTitle>
-            </DialogHeader>
-
-            {selectedComponent && (
-              <div className="grid grid-cols-2 gap-6 h-[70vh]">
-                {/* Code Panel */}
-                <div className="flex flex-col">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-purple-900 flex items-center gap-2">
-                      <Component className="h-5 w-5" />
-                      Code
-                    </h3>
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => copyToClipboard(selectedComponent.code)}
-                      className="border-purple-200 text-purple-700 hover:bg-purple-50"
+                </TableHeader>
+                <TableBody>
+                  {components.map((component, index) => (
+                    <TableRow
+                      key={index}
+                      className="hover:bg-purple-50 cursor-pointer"
+                      onClick={() => setSelectedComponent(component)}
                     >
-                      <Copy className="h-4 w-4 mr-2" />
-                      Copy
-                    </Button>
-                  </div>
-                  <div className="flex-1 bg-gray-900 rounded-lg p-4 overflow-auto">
-                    <pre className="text-sm text-gray-100">
-                      <code>{selectedComponent.code}</code>
-                    </pre>
-                  </div>
-                </div>
+                      <TableCell className="font-medium text-purple-800">{component.title}</TableCell>
+                      <TableCell className="text-gray-700">{component.description}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
 
-                {/* Preview Panel */}
-                <div className="flex flex-col">
-                  <div className="flex items-center mb-4">
-                    <h3 className="text-lg font-semibold text-purple-900 flex items-center gap-2">
-                      <Eye className="h-5 w-5" />
-                      Preview
-                    </h3>
+          <Dialog open={!!selectedComponent} onOpenChange={() => setSelectedComponent(null)}>
+            <DialogContent className="max-w-7xl max-h-[90vh] overflow-hidden">
+              <DialogHeader>
+                <DialogTitle className="flex items-center justify-between">
+                  <span className="text-purple-900">{selectedComponent?.title}</span>
+                  <Button variant="ghost" size="sm" onClick={() => setSelectedComponent(null)}>
+                    <X className="h-4 w-4" />
+                  </Button>
+                </DialogTitle>
+              </DialogHeader>
+
+              {selectedComponent && (
+                <div className="grid grid-cols-2 gap-6 h-[70vh]">
+                  {/* Code Panel */}
+                  <div className="flex flex-col">
+                    <div className="flex items-center justify-between mb-4">
+                      <h3 className="text-lg font-semibold text-purple-900 flex items-center gap-2">
+                        <Component className="h-5 w-5" />
+                        Code
+                      </h3>
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        onClick={() => copyToClipboard(selectedComponent.code)}
+                        className="border-purple-200 text-purple-700 hover:bg-purple-50"
+                      >
+                        <Copy className="h-4 w-4 mr-2" />
+                        Copy
+                      </Button>
+                    </div>
+                    <div className="flex-1 bg-gray-900 rounded-lg p-4 overflow-auto">
+                      <pre className="text-sm text-gray-100">
+                        <code>{selectedComponent.code}</code>
+                      </pre>
+                    </div>
                   </div>
-                  <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 overflow-auto">
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="w-full max-w-full overflow-hidden">{selectedComponent.component}</div>
+
+                  {/* Preview Panel */}
+                  <div className="flex flex-col">
+                    <div className="flex items-center mb-4">
+                      <h3 className="text-lg font-semibold text-purple-900 flex items-center gap-2">
+                        <Eye className="h-5 w-5" />
+                        Preview
+                      </h3>
+                    </div>
+                    <div className="flex-1 bg-white border border-gray-200 rounded-lg p-4 overflow-auto">
+                      <div className="w-full h-full flex items-center justify-center">
+                        <div className="w-full max-w-full overflow-hidden">{selectedComponent.component}</div>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-            )}
-          </DialogContent>
-        </Dialog>
-      </div>
-    </DashboardLayout>
+              )}
+            </DialogContent>
+          </Dialog>
+        </div>
+      </section>
+    </div>
   )
 }

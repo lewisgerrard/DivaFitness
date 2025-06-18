@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Search, Plus, Edit, Trash2, Users } from "lucide-react"
-import { AdminPageHeader } from "@/components/admin-page-header"
+import { HeroDashboard } from "@/components/dashboard-hero"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { useAuth } from "@/hooks/use-auth"
 import AddClientModal from "@/components/add-client-modal"
@@ -94,10 +94,10 @@ export default function UserManagementPage() {
 
   if (loading || isLoading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading user management...</p>
+      <div className="min-h-screen bg-gray-50">
+        <HeroDashboard title="User Management" description="Loading user management..." showUserGreeting={false} />
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-pink-500"></div>
         </div>
       </div>
     )
@@ -108,105 +108,106 @@ export default function UserManagementPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-pink-50 to-white">
-      <div className="container mx-auto px-4 py-8">
-        <AdminPageHeader
-          title="User Management"
-          description="Manage client accounts, profiles, and permissions"
-          icon={Users}
-          onBack={() => router.push("/dashboard")}
-        />
+    <div className="min-h-screen bg-gray-50">
+      <HeroDashboard
+        title="User Management"
+        description="Manage client accounts, profiles, and permissions"
+        showUserGreeting={false}
+      />
 
-        {/* Search and Add User */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-            <Input
-              placeholder="Search users by name or email..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="pl-10"
-            />
+      <section className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Search and Add User */}
+          <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+              <Input
+                placeholder="Search users by name or email..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
+            </div>
+            <Button
+              onClick={() => setShowAddModal(true)}
+              className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add User
+            </Button>
           </div>
-          <Button
-            onClick={() => setShowAddModal(true)}
-            className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
-          >
-            <Plus className="w-4 h-4 mr-2" />
-            Add User
-          </Button>
-        </div>
 
-        {/* Users Grid */}
-        <div className="grid gap-6">
-          {filteredUsers.length === 0 ? (
-            <Card>
-              <CardContent className="text-center py-12">
-                <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                <h3 className="text-lg font-semibold text-gray-600 mb-2">
-                  {searchTerm ? "No users found" : "No users yet"}
-                </h3>
-                <p className="text-gray-500 mb-4">
-                  {searchTerm ? "Try adjusting your search terms" : "Add your first user to get started"}
-                </p>
-                {!searchTerm && (
-                  <Button
-                    onClick={() => setShowAddModal(true)}
-                    className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Add User
-                  </Button>
-                )}
-              </CardContent>
-            </Card>
-          ) : (
-            filteredUsers.map((user) => (
-              <Card key={user.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <CardTitle className="text-lg">{user.name}</CardTitle>
-                      <CardDescription>{user.email}</CardDescription>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
-                      <Badge variant={user.status === "active" ? "default" : "destructive"}>{user.status}</Badge>
-                    </div>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-between">
-                    <div className="text-sm text-gray-600">
-                      <p>Created: {new Date(user.created_at).toLocaleDateString()}</p>
-                      {user.last_login && <p>Last login: {new Date(user.last_login).toLocaleDateString()}</p>}
-                    </div>
-                    <div className="flex gap-2">
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => router.push(`/dashboard/admin/user-management/${user.id}`)}
-                      >
-                        <Edit className="w-4 h-4 mr-1" />
-                        Edit
-                      </Button>
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        onClick={() => setUserToDelete(user)}
-                        className="text-red-600 hover:text-red-700"
-                      >
-                        <Trash2 className="w-4 h-4 mr-1" />
-                        Delete
-                      </Button>
-                    </div>
-                  </div>
+          {/* Users Grid */}
+          <div className="grid gap-6">
+            {filteredUsers.length === 0 ? (
+              <Card>
+                <CardContent className="text-center py-12">
+                  <Users className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+                  <h3 className="text-lg font-semibold text-gray-600 mb-2">
+                    {searchTerm ? "No users found" : "No users yet"}
+                  </h3>
+                  <p className="text-gray-500 mb-4">
+                    {searchTerm ? "Try adjusting your search terms" : "Add your first user to get started"}
+                  </p>
+                  {!searchTerm && (
+                    <Button
+                      onClick={() => setShowAddModal(true)}
+                      className="bg-gradient-to-r from-pink-500 to-pink-600 hover:from-pink-600 hover:to-pink-700"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add User
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
-            ))
-          )}
+            ) : (
+              filteredUsers.map((user) => (
+                <Card key={user.id} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <CardTitle className="text-lg">{user.name}</CardTitle>
+                        <CardDescription>{user.email}</CardDescription>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant={user.role === "admin" ? "default" : "secondary"}>{user.role}</Badge>
+                        <Badge variant={user.status === "active" ? "default" : "destructive"}>{user.status}</Badge>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="flex items-center justify-between">
+                      <div className="text-sm text-gray-600">
+                        <p>Created: {new Date(user.created_at).toLocaleDateString()}</p>
+                        {user.last_login && <p>Last login: {new Date(user.last_login).toLocaleDateString()}</p>}
+                      </div>
+                      <div className="flex gap-2">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => router.push(`/dashboard/admin/user-management/${user.id}`)}
+                        >
+                          <Edit className="w-4 h-4 mr-1" />
+                          Edit
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => setUserToDelete(user)}
+                          className="text-red-600 hover:text-red-700"
+                        >
+                          <Trash2 className="w-4 h-4 mr-1" />
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
+              ))
+            )}
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* Add User Modal */}
       <AddClientModal

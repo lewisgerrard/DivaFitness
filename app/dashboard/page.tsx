@@ -20,7 +20,7 @@ import {
   Palette,
 } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
-import HeroDashboard from "@/components/hero-dashboard"
+import HeroDashboard from "@/components/dashboard-hero"
 
 export default function Dashboard() {
   const router = useRouter()

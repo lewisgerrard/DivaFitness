@@ -2,9 +2,8 @@
 
 import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { Settings } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { AdminPageHeader } from "@/components/admin-page-header"
+import { HeroDashboard } from "@/components/dashboard-hero"
 import { SettingsCardsGrid } from "@/components/settings-cards-grid"
 
 export default function AdminSettingsPage() {
@@ -57,10 +56,10 @@ export default function AdminSettingsPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Loading...</p>
+      <div className="min-h-screen bg-gray-50">
+        <HeroDashboard title="Website Settings" description="Loading settings..." showUserGreeting={false} />
+        <div className="flex items-center justify-center py-20">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-purple-600"></div>
         </div>
       </div>
     )
@@ -68,10 +67,13 @@ export default function AdminSettingsPage() {
 
   if (!user || user.role !== "admin") {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-2xl font-bold text-gray-900 mb-4">Access Denied</h1>
-          <p className="text-gray-600 mb-6">You don't have permission to access this page.</p>
+      <div className="min-h-screen bg-gray-50">
+        <HeroDashboard
+          title="Access Denied"
+          description="You don't have permission to access this page"
+          showUserGreeting={false}
+        />
+        <div className="text-center py-20">
           <Button onClick={() => router.push("/dashboard")}>Go to Dashboard</Button>
         </div>
       </div>
@@ -79,29 +81,30 @@ export default function AdminSettingsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-8">
-      <div className="max-w-7xl mx-auto">
-        {/* Header Section - matching admin portal exactly */}
-        <AdminPageHeader
-          icon={Settings}
-          title="Website Settings"
-          description="Configure website content and email templates"
-        />
+    <div className="min-h-screen bg-gray-50">
+      <HeroDashboard
+        title="Website Settings"
+        description="Configure website content and email templates"
+        showUserGreeting={false}
+      />
 
-        {/* Settings Cards Grid Section */}
-        <SettingsCardsGrid />
+      <section className="py-8 px-4">
+        <div className="max-w-7xl mx-auto">
+          {/* Settings Cards Grid Section */}
+          <SettingsCardsGrid />
 
-        {/* Back to Dashboard */}
-        <div className="mt-12 text-center">
-          <Button
-            variant="outline"
-            onClick={() => router.push("/dashboard")}
-            className="border-pink-200 text-pink-600 hover:bg-pink-50 px-8 py-3 rounded-xl"
-          >
-            ← Back to Dashboard
-          </Button>
+          {/* Back to Dashboard */}
+          <div className="mt-12 text-center">
+            <Button
+              variant="outline"
+              onClick={() => router.push("/dashboard")}
+              className="border-pink-200 text-pink-600 hover:bg-pink-50 px-8 py-3 rounded-xl"
+            >
+              ← Back to Dashboard
+            </Button>
+          </div>
         </div>
-      </div>
+      </section>
     </div>
   )
 }
