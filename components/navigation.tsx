@@ -21,7 +21,6 @@ export function Navigation() {
   const navItems = [
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
-    { href: "/services", label: "Services" },
     { href: "/faqs", label: "FAQs" },
     { href: "/contact", label: "Contact" },
   ]
@@ -51,15 +50,57 @@ export function Navigation() {
           {/* Desktop Navigation - Right Side */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {/* Render Home and About */}
+              <Link
+                href="/"
+                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+              >
+                About
+              </Link>
+
+              {/* Services Dropdown */}
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <button className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center">
+                    Services
+                    <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                    </svg>
+                  </button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="start" className="w-40">
+                  <DropdownMenuItem asChild>
+                    <Link href="/training" className="flex items-center">
+                      Training
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link href="/nutrition" className="flex items-center">
+                      Nutrition
+                    </Link>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+
+              {/* Render FAQs and Contact */}
+              <Link
+                href="/faqs"
+                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+              >
+                FAQs
+              </Link>
+              <Link
+                href="/contact"
+                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+              >
+                Contact
+              </Link>
             </div>
 
             {user ? (
@@ -103,16 +144,55 @@ export function Navigation() {
         {isOpen && (
           <div className="md:hidden">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-gray-50 border-t border-gray-200">
-              {navItems.map((item) => (
+              {/* Mobile Navigation Items */}
+              <Link
+                href="/"
+                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                onClick={() => setIsOpen(false)}
+              >
+                Home
+              </Link>
+              <Link
+                href="/about"
+                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                onClick={() => setIsOpen(false)}
+              >
+                About
+              </Link>
+
+              {/* Mobile Services Links */}
+              <div className="px-3 py-1">
+                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Services</div>
                 <Link
-                  key={item.href}
-                  href={item.href}
+                  href="/training"
                   className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
-                  {item.label}
+                  Training
                 </Link>
-              ))}
+                <Link
+                  href="/nutrition"
+                  className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                  onClick={() => setIsOpen(false)}
+                >
+                  Nutrition
+                </Link>
+              </div>
+
+              <Link
+                href="/faqs"
+                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                onClick={() => setIsOpen(false)}
+              >
+                FAQs
+              </Link>
+              <Link
+                href="/contact"
+                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                onClick={() => setIsOpen(false)}
+              >
+                Contact
+              </Link>
               <div className="px-3 py-2">
                 {user ? (
                   <div className="space-y-2">

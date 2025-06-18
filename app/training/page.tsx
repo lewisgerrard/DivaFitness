@@ -1,14 +1,14 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { User, Clock, Heart, ArrowRight, Check, CreditCard, Users, Utensils, Trophy, Home } from "lucide-react"
+import { User, Clock, Heart, ArrowRight, Check, CreditCard, Users, Trophy, Home } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import HeroPage from "@/components/hero-page"
 
-export default function ServicesPage() {
-  const services = [
+export default function TrainingPage() {
+  const trainingServices = [
     {
       id: "personal-training",
       title: "One-to-One Personal Training",
@@ -108,45 +108,6 @@ export default function ServicesPage() {
       ),
     },
     {
-      id: "nutrition",
-      title: "Nutrition Coaching for Real Life",
-      description: "Practical nutrition guidance tailored to your lifestyle, preferences, and goals.",
-      icon: Utensils,
-      image: "/images/studio-emma-sitting.jpg",
-      content: (
-        <div className="space-y-6">
-          <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead className="bg-gray-50">
-                  <tr>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Session</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Duration</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Price</th>
-                    <th className="px-4 py-3 text-left font-semibold text-gray-900">Add-ons</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-gray-100">
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-4 py-3 font-medium text-gray-900">Basic (Food diary review)</td>
-                    <td className="px-4 py-3 text-gray-700">75 mins</td>
-                    <td className="px-4 py-3 text-2xl font-bold text-primary">£65</td>
-                    <td className="px-4 py-3 text-gray-700">-</td>
-                  </tr>
-                  <tr className="hover:bg-gray-50/50 transition-colors">
-                    <td className="px-4 py-3 font-medium text-gray-900">Advanced (Goal setting + full review)</td>
-                    <td className="px-4 py-3 text-gray-700">2 hrs</td>
-                    <td className="px-4 py-3 text-2xl font-bold text-primary">£99</td>
-                    <td className="px-4 py-3 text-gray-700">Personalised Report: £45</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      ),
-    },
-    {
       id: "transformation",
       title: "The 12-Week Transformation",
       description: "A comprehensive program designed to completely transform your body and lifestyle over 12 weeks.",
@@ -185,7 +146,17 @@ export default function ServicesPage() {
       icon: Home,
       image: "/images/studio-exterior-cropped.jpg",
       price: "£15/45mins",
-      content: null,
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">
+            Perfect for personal trainers or clients who want private access to professional fitness equipment and
+            space.
+          </p>
+          <div className="bg-primary/10 rounded-xl p-4">
+            <p className="text-primary font-medium">Available: 6:45–7:00am daily</p>
+          </div>
+        </div>
+      ),
     },
   ]
 
@@ -193,13 +164,13 @@ export default function ServicesPage() {
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <HeroPage
-        title="Transform Your Body."
-        subtitle="Empower Your Mind."
-        description="One-to-one coaching and small group sessions tailored exclusively for women."
+        title="Personal Training"
+        subtitle="& Fitness Programs"
+        description="Personalised training sessions and comprehensive fitness programs designed exclusively for women."
         primaryButtonText="Book a Free Discovery Call"
         primaryButtonHref="/contact"
-        secondaryButtonText="View Services"
-        secondaryButtonHref="#services"
+        secondaryButtonText="View Nutrition"
+        secondaryButtonHref="/nutrition"
         badge="Women-Only Training"
       />
 
@@ -208,19 +179,19 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-lg text-gray-700 leading-relaxed">
-              At Diva Fitness, I offer personalised training and nutrition services designed to help women feel
-              stronger, healthier, and more confident. Whether you're new to fitness or looking to take your training to
-              the next level, there's something here for you.
+              Transform your body with personalised training programs designed specifically for women. From one-to-one
+              sessions to small group training, find the perfect approach to reach your fitness goals in a supportive,
+              female-led environment.
             </p>
           </div>
         </div>
       </section>
 
-      {/* All Services */}
+      {/* Training Services */}
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-16">
-            {services.map((service, index) => (
+            {trainingServices.map((service, index) => (
               <div
                 key={service.id}
                 id={service.id}
@@ -345,14 +316,22 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Ready to get started? Let's chat about your goals and how I can help.
+              Ready to start your fitness journey? Let's chat about your goals and how I can help.
             </h2>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg" asChild>
-              <Link href="/contact" className="flex items-center gap-2">
-                Book Your Free Consultation
-                <ArrowRight className="w-5 h-5" />
-              </Link>
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg" asChild>
+                <Link href="/contact" className="flex items-center gap-2">
+                  Book Your Free Consultation
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </Button>
+              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg" asChild>
+                <Link href="/nutrition" className="flex items-center gap-2">
+                  View Nutrition Services
+                  <ArrowRight className="w-5 h-5" />
+                </Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
