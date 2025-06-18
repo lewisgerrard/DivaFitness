@@ -67,25 +67,25 @@ export function Navigation() {
               {/* Services Dropdown */}
               <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                  <button
-                    className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-sm"
-                    aria-expanded="false"
-                    aria-haspopup="true"
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center h-auto p-0 hover:bg-transparent"
                   >
                     Services
                     <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
                     </svg>
-                  </button>
+                  </Button>
                 </DropdownMenuTrigger>
-                <DropdownMenuContent align="start" className="w-40">
+                <DropdownMenuContent align="start" className="w-40 z-50">
                   <DropdownMenuItem asChild>
-                    <Link href="/training" className="flex items-center">
+                    <Link href="/training" className="flex items-center cursor-pointer">
                       Training
                     </Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem asChild>
-                    <Link href="/nutrition" className="flex items-center">
+                    <Link href="/nutrition" className="flex items-center cursor-pointer">
                       Nutrition
                     </Link>
                   </DropdownMenuItem>
