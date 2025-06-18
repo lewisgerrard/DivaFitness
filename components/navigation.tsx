@@ -32,20 +32,19 @@ export function Navigation() {
   }
 
   return (
-    <nav className="bg-primary sticky top-0 z-50">
+    <nav className="bg-black sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           {/* Logo - Left Side */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/logo-icon.png"
+              src="/diva-logo-new.png"
               alt="Diva Fitness"
-              width={40}
+              width={120}
               height={40}
-              className="h-10 w-10 brightness-0 invert"
+              className="h-10 w-auto"
               priority
             />
-            <span className="font-heading font-bold text-xl text-white">Diva Fitness</span>
           </Link>
 
           {/* Desktop Navigation - Right Side */}
@@ -102,7 +101,7 @@ export function Navigation() {
         {/* Mobile Navigation */}
         {isOpen && (
           <div className="md:hidden">
-            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-primary border-t border-white/20">
+            <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black border-t border-white/20">
               {navItems.map((item) => (
                 <Link
                   key={item.href}

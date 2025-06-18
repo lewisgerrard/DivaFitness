@@ -4,20 +4,13 @@ import Image from "next/image"
 
 export function Footer() {
   return (
-    <footer className="bg-primary text-white">
+    <footer className="bg-black text-white">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid md:grid-cols-4 gap-6">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
-              <Image
-                src="/logo-icon.png"
-                alt="Diva Fitness"
-                width={32}
-                height={32}
-                className="h-8 w-8 brightness-0 invert"
-              />
-              <span className="font-heading font-bold text-lg">Diva Fitness</span>
+              <Image src="/diva-logo-new.png" alt="Diva Fitness" width={100} height={32} className="h-8 w-auto" />
             </div>
             <p className="text-white/80 text-sm leading-relaxed">
               Empowering women to achieve their health and fitness goals in a supportive, private environment since
