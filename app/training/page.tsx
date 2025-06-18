@@ -264,7 +264,7 @@ export default function TrainingPage() {
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Booking & Payment</h2>
+              
             </div>
 
             <Card className="border-0 shadow-lg">
