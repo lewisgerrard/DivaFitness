@@ -13,7 +13,7 @@ export default function NutritionPage() {
       title: "Nutrition Coaching for Real Life",
       description: "Practical nutrition guidance tailored to your lifestyle, preferences, and goals.",
       icon: Utensils,
-      image: "/images/nutrition-pantry-organization.jpg",
+      image: "/images/nutrition-body-measurement.jpg",
       content: (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -223,56 +223,42 @@ export default function NutritionPage() {
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Nutrition in Action</h2>
               <p className="text-lg text-gray-600">
-                See how proper nutrition and tracking can transform your health journey
+                See how proper nutrition planning and healthy choices make a difference
               </p>
             </div>
 
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div className="relative group">
-                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
-                  <Image
-                    src="/images/nutrition-healthy-breakfast.jpg"
-                    alt="Healthy breakfast bowl with fruits and yogurt"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <h3 className="text-lg font-bold">Balanced Meals</h3>
-                    <p className="text-sm opacity-90">Nutritious breakfast ideas</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative group">
-                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
-                  <Image
-                    src="/images/nutrition-body-measurement.jpg"
-                    alt="Body composition tracking with measuring tape"
-                    fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <h3 className="text-lg font-bold">Progress Tracking</h3>
-                    <p className="text-sm opacity-90">Monitor your journey</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="relative group md:col-span-2 lg:col-span-1">
-                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-4">
+                <div className="relative h-80 rounded-3xl overflow-hidden shadow-xl">
                   <Image
                     src="/images/nutrition-pantry-organization.jpg"
-                    alt="Organized pantry with healthy ingredients in glass jars"
+                    alt="Organized healthy pantry with glass jars containing various nutritious foods"
                     fill
-                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                    className="object-cover"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                  <div className="absolute bottom-4 left-4 text-white">
-                    <h3 className="text-lg font-bold">Meal Prep</h3>
-                    <p className="text-sm opacity-90">Organization tips</p>
-                  </div>
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Organized Nutrition</h3>
+                  <p className="text-gray-600">
+                    Learn how to organize your pantry for success with healthy, accessible ingredients
+                  </p>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                <div className="relative h-80 rounded-3xl overflow-hidden shadow-xl">
+                  <Image
+                    src="/images/nutrition-healthy-breakfast.jpg"
+                    alt="Healthy breakfast bowl with yogurt, fresh fruits, and nutritious toppings"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                <div className="text-center">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Balanced Meals</h3>
+                  <p className="text-gray-600">
+                    Discover how to create nutritious, satisfying meals that fuel your body and goals
+                  </p>
                 </div>
               </div>
             </div>
