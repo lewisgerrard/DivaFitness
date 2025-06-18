@@ -13,7 +13,7 @@ export default function NutritionPage() {
       title: "Nutrition Coaching for Real Life",
       description: "Practical nutrition guidance tailored to your lifestyle, preferences, and goals.",
       icon: Utensils,
-      image: "/images/studio-emma-sitting.jpg",
+      image: "/images/nutrition-pantry-organization.jpg",
       content: (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -216,13 +216,75 @@ export default function NutritionPage() {
         </div>
       </section>
 
+      {/* Nutrition Gallery Section */}
+      <section className="py-12 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Nutrition in Action</h2>
+              <p className="text-lg text-gray-600">
+                See how proper nutrition and tracking can transform your health journey
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              <div className="relative group">
+                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/images/nutrition-healthy-breakfast.jpg"
+                    alt="Healthy breakfast bowl with fruits and yogurt"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-lg font-bold">Balanced Meals</h3>
+                    <p className="text-sm opacity-90">Nutritious breakfast ideas</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group">
+                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/images/nutrition-body-measurement.jpg"
+                    alt="Body composition tracking with measuring tape"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-lg font-bold">Progress Tracking</h3>
+                    <p className="text-sm opacity-90">Monitor your journey</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="relative group md:col-span-2 lg:col-span-1">
+                <div className="relative h-80 rounded-3xl overflow-hidden shadow-lg">
+                  <Image
+                    src="/images/nutrition-pantry-organization.jpg"
+                    alt="Organized pantry with healthy ingredients in glass jars"
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform duration-300"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                  <div className="absolute bottom-4 left-4 text-white">
+                    <h3 className="text-lg font-bold">Meal Prep</h3>
+                    <p className="text-sm opacity-90">Organization tips</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Payment Details */}
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Booking & Payment</h2>
-            </div>
+            <div className="text-center mb-8"></div>
 
             <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
