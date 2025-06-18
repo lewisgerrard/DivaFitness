@@ -10,6 +10,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
+import { siteImages, imageAlts } from "@/lib/images"
 
 export default function HomePage() {
   const services = [
@@ -96,7 +97,7 @@ export default function HomePage() {
         ]}
       />
 
-      {/* About Section */}
+      {/* About Section - UPDATED: Using new Emma portrait */}
       <section className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
         <div className={brandKit.components.section.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -144,8 +145,8 @@ export default function HomePage() {
             <div className="relative">
               <div className={`relative h-80 rounded-3xl overflow-hidden shadow-2xl ${brandKit.animations.scaleHover}`}>
                 <Image
-                  src="/images/studio-emma-doorway.jpg"
-                  alt="Emma Fisher in Diva Fitness Studio"
+                  src={siteImages.emma.studioPortrait || "/placeholder.svg"}
+                  alt={imageAlts.emma.studioPortrait}
                   fill
                   className="object-cover"
                 />
@@ -156,7 +157,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Services Section */}
+      {/* Services Section - UPDATED: Using kettlebell training image */}
       <section className={`${brandKit.components.section.base} bg-white`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
@@ -167,10 +168,27 @@ export default function HomePage() {
             description="Every journey is unique. Discover the perfect service that aligns with your goals and lifestyle."
           />
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-3 gap-6 mb-12">
             {services.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}
+          </div>
+
+          {/* Services Preview Image - NEW: Using kettlebell training */}
+          <div className="text-center">
+            <div className="relative h-64 md:h-80 rounded-3xl overflow-hidden shadow-xl mx-auto max-w-2xl">
+              <Image
+                src={siteImages.emma.kettlebellTraining || "/placeholder.svg"}
+                alt={imageAlts.emma.kettlebellTraining}
+                fill
+                className="object-cover"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              <div className="absolute bottom-6 left-6 right-6 text-white">
+                <h3 className="text-xl font-bold mb-2">Professional Training</h3>
+                <p className="text-sm opacity-90">Experience expert guidance with every session</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

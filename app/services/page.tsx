@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import HeroPage from "@/components/hero-page"
+import { siteImages, imageAlts } from "@/lib/images"
 
 export default function ServicesPage() {
   const services = [
@@ -15,7 +16,8 @@ export default function ServicesPage() {
       description:
         "Experience completely personalised training sessions designed around your unique goals, fitness level, and preferences.",
       icon: User,
-      image: "/images/action-training-session.jpg",
+      image: siteImages.training.actionSession, // UNIQUE to services page
+      alt: imageAlts.training.actionSession,
       content: (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -59,7 +61,8 @@ export default function ServicesPage() {
       description:
         "A comprehensive 2.5-hour session that combines fitness assessment, nutrition consultation, and personalized training.",
       icon: Heart,
-      image: "/images/studio-emma-exterior.jpg",
+      image: siteImages.emma.exterior, // UNIQUE to services page
+      alt: imageAlts.emma.exterior,
       price: "£175",
       content: (
         <div className="space-y-4">
@@ -86,7 +89,8 @@ export default function ServicesPage() {
       description:
         "Affordable training with built-in accountability. Train with like-minded women in a supportive environment.",
       icon: Users,
-      image: "/images/studio-emma-doorway.jpg",
+      image: siteImages.equipment.equipmentWideShot, // UNIQUE to services page
+      alt: imageAlts.equipment.equipmentWideShot,
       price: "£30/session",
       content: (
         <div className="space-y-4">
@@ -112,7 +116,8 @@ export default function ServicesPage() {
       title: "Nutrition Coaching for Real Life",
       description: "Practical nutrition guidance tailored to your lifestyle, preferences, and goals.",
       icon: Utensils,
-      image: "/images/studio-emma-sitting.jpg",
+      image: siteImages.nutrition.bodyMeasurement, // UNIQUE to services page
+      alt: imageAlts.nutrition.bodyMeasurement,
       content: (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -151,7 +156,8 @@ export default function ServicesPage() {
       title: "The 12-Week Transformation",
       description: "A comprehensive program designed to completely transform your body and lifestyle over 12 weeks.",
       icon: Trophy,
-      image: "/images/weights-close-up.jpg",
+      image: siteImages.equipment.weightsCloseUp, // UNIQUE to services page
+      alt: imageAlts.equipment.weightsCloseUp,
       price: "£999",
       premium: true,
       content: (
@@ -183,7 +189,8 @@ export default function ServicesPage() {
       title: "Hire My Studio",
       description: "Private hire available between 6:45–7:00am for PTs or clients wanting space.",
       icon: Home,
-      image: "/images/studio-exterior-cropped.jpg",
+      image: siteImages.studio.gardenPathway, // UNIQUE to services page
+      alt: imageAlts.studio.gardenPathway,
       price: "£15/45mins",
       content: null,
     },
@@ -274,7 +281,7 @@ export default function ServicesPage() {
                     <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl">
                       <Image
                         src={service.image || "/placeholder.svg"}
-                        alt={service.title}
+                        alt={service.alt || service.title}
                         fill
                         className="object-cover"
                       />
@@ -345,7 +352,8 @@ export default function ServicesPage() {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Ready to get started? Let's chat about your goals and how I can help.
+              Ready to get started? Let's chat about your goals and how I can help.ted? Let's chat about your goals and
+              how I can help.
             </h2>
             <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg" asChild>
               <Link href="/contact" className="flex items-center gap-2">
