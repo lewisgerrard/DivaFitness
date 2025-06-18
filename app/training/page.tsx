@@ -263,9 +263,7 @@ export default function TrainingPage() {
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">Booking & Payment</h2>
-            </div>
+            <div className="text-center mb-8"></div>
 
             <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
@@ -286,23 +284,6 @@ export default function TrainingPage() {
                         <span className="text-gray-700">Card payments available in person or by link</span>
                       </li>
                     </ul>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Bank Details:</h3>
-                    <div className="bg-gray-50 rounded-xl p-4 space-y-3">
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Bank:</span>
-                        <span className="font-medium text-gray-900">Santander</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Sort Code:</span>
-                        <span className="font-medium text-gray-900">09-06-66</span>
-                      </div>
-                      <div className="flex justify-between">
-                        <span className="text-gray-600">Account:</span>
-                        <span className="font-medium text-gray-900">42233950</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               </CardContent>
