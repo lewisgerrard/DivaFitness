@@ -74,34 +74,3 @@ export async function getContactSubmissions() {
     return []
   }
 }
-
-// Add a query function that matches the expected API
-export async function query(text: string, params?: any[]) {
-  try {
-    if (!sql) {
-      throw new Error("Database connection not available")
-    }
-
-    // Convert the query to use Neon's SQL template format
-    if (params && params.length > 0) {
-      // For parameterized queries, we need to handle them differently with Neon
-      // This is a simplified approach - in production you'd want more robust parameter handling
-      let processedQuery = text
-      params.forEach((param, index) => {
-        const placeholder = `$${index + 1}`
-        processedQuery = processedQuery.replace(
-          placeholder,
-          typeof param === "string" ? `'${param.replace(/'/g, "''")}'` : String(param),
-        )
-      })
-      const result = await sql(processedQuery)
-      return { rows: result }
-    } else {
-      const result = await sql(text)
-      return { rows: result }
-    }
-  } catch (error) {
-    console.error("Database query error:", error)
-    throw error
-  }
-}

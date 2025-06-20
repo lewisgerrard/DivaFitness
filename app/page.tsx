@@ -18,7 +18,7 @@ export default function HomePage() {
       title: "1-to-1 Training",
       description: "Completely personalised sessions designed around your unique goals and preferences.",
       features: ["Custom workout plans", "Form correction", "Progress tracking"],
-      colorScheme: "accent" as const,
+      colorScheme: "primary" as const,
     },
     {
       icon: Users,
@@ -26,7 +26,7 @@ export default function HomePage() {
       description: "Train with like-minded women in a supportive small group environment.",
       features: ["Max 4 people", "Social motivation", "Cost-effective"],
       popular: true,
-      colorScheme: "accent" as const,
+      colorScheme: "secondary" as const,
     },
     {
       icon: Leaf,
@@ -102,8 +102,8 @@ export default function HomePage() {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
               <div className={brandKit.components.section.badge}>
-                <div className="w-2 h-2 bg-accent rounded-full animate-pulse" />
-                <span className="text-accent font-medium text-sm">Since 2017</span>
+                <div className="w-2 h-2 bg-primary rounded-full animate-pulse" />
+                <span className="text-primary font-medium text-sm">Since 2017</span>
               </div>
 
               <h2 className={brandClasses.sectionTitle}>
@@ -149,7 +149,7 @@ export default function HomePage() {
                   fill
                   className="object-cover"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-accent/20 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
               </div>
             </div>
           </div>
