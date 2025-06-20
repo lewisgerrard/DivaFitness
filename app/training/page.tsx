@@ -101,11 +101,11 @@ export default function TrainingPage() {
           <ul className="space-y-3">
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Tuesdays & Thursdays – 7:00pm</span>
+              <span className="text-gray-700">Tuesdays – 17:30 & 19:00</span>
             </li>
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Thursdays – 7:00am</span>
+              <span className="text-gray-700">Thursday – 17:30 & 19:00</span>
             </li>
           </ul>
           <div className="bg-primary/10 rounded-xl p-4">
