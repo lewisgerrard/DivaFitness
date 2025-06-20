@@ -5,10 +5,23 @@ export const brandKit = {
   // Color Palette
   colors: {
     primary: {
-      DEFAULT: "#e0c3fc", // Changed from deep purple to pale purple
-      dark: "#d4b3f7", // Slightly darker pale purple
-      light: "#f0e6ff", // Very light pale purple
-      lighter: "#fefcff", // Even lighter pale purple
+      DEFAULT: "#7b329b", // Changed from pale purple to deep purple
+      dark: "#6b2c87", // Darker deep purple
+      light: "#9d4edd", // Lighter deep purple
+      lighter: "#c77dff", // Even lighter deep purple
+      50: "#faf7fc",
+      100: "#f3ecf8",
+      200: "#e9ddf2",
+      300: "#d9c2e8",
+      400: "#c77dff",
+      500: "#9d4edd",
+      600: "#7b329b",
+      700: "#6b2c87",
+      800: "#5a2472",
+      900: "#4a1d5e",
+    },
+    secondary: {
+      DEFAULT: "#e0c3fc", // Changed from dark to pale purple
       50: "#fefcff",
       100: "#f9f5ff",
       200: "#f0e6ff",
@@ -20,33 +33,20 @@ export const brandKit = {
       800: "#7c2d92",
       900: "#581c87",
     },
-    secondary: {
-      DEFAULT: "#1A1A1A",
-      50: "#f8f9fa",
-      100: "#e9ecef",
-      200: "#dee2e6",
-      300: "#ced4da",
-      400: "#6c757d",
-      500: "#495057",
-      600: "#343a40",
-      700: "#212529",
-      800: "#1A1A1A",
-      900: "#0d1117",
-    },
     accent: {
-      DEFAULT: "#7b329b", // Changed from pale purple to deep purple
-      dark: "#6b2c87", // Darker deep purple
-      light: "#9d4edd", // Lighter deep purple
-      50: "#faf7fc",
-      100: "#f3ecf8",
-      200: "#e9ddf2",
-      300: "#d9c2e8",
-      400: "#c77dff",
-      500: "#9d4edd",
-      600: "#7b329b",
-      700: "#6b2c87",
-      800: "#5a2472",
-      900: "#4a1d5e",
+      DEFAULT: "#374151", // Changed to charcoal gray
+      dark: "#1f2937", // Darker charcoal
+      light: "#6b7280", // Lighter charcoal
+      50: "#f9fafb",
+      100: "#f3f4f6",
+      200: "#e5e7eb",
+      300: "#d1d5db",
+      400: "#9ca3af",
+      500: "#6b7280",
+      600: "#4b5563",
+      700: "#374151",
+      800: "#1f2937",
+      900: "#111827",
     },
     muted: {
       DEFAULT: "#F8F9FA",
