@@ -31,13 +31,13 @@ export function HeroPage({
   badge,
 }: HeroPageProps) {
   return (
-    <section className="relative min-h-[60vh] flex items-center justify-center px-4 py-16 md:py-24">
+    <section className={`${brandKit.components.hero.container} py-16 md:py-24`}>
       {/* Decorative Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7b329b] to-[#5a1a75]" />
       </div>
 
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
+      <div className={brandKit.components.hero.content}>
         <div className={brandKit.components.hero.badge}>
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">{badge || title}</span>
