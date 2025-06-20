@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@neondatabase/serverless": "latest",
+    "@next/third-parties": "latest",
     "@radix-ui/react-accordion": "^1.1.2",
     "@radix-ui/react-alert-dialog": "^1.0.5",
     "@radix-ui/react-avatar": "^1.0.4",
@@ -21,7 +22,9 @@
     "@radix-ui/react-slot": "latest",
     "@radix-ui/react-toast": "latest",
     "@react-email/components": "latest",
-    "@vercel/analytics": "^1.1.1",
+    "@remix-run/react": "latest",
+    "@sveltejs/kit": "latest",
+    "@vercel/analytics": "latest",
     "@vercel/speed-insights": "^1.0.12",
     "bcryptjs": "latest",
     "class-variance-authority": "^0.7.1",
@@ -33,8 +36,11 @@
     "react": "^18",
     "react-dom": "^18",
     "resend": "latest",
+    "svelte": "latest",
     "tailwind-merge": "^2.5.5",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "vue": "latest",
+    "vue-router": "latest"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
