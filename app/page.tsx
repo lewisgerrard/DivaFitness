@@ -268,7 +268,7 @@ export default function HomePage() {
             className="text-secondary"
           />
 
-          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 gap-8">
             {/* Training Tile */}
             <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer">
               <Image
