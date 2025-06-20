@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import HeroPage from "@/components/hero-page"
-import { useEffect, useRef } from "react"
 
 export default function TrainingPage() {
   const trainingServices = [
@@ -161,33 +160,6 @@ export default function TrainingPage() {
     },
   ]
 
-  const sectionRefs = useRef<(HTMLElement | null)[]>([])
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fadeIn")
-          }
-        })
-      },
-      {
-        threshold: 0.1,
-      },
-    )
-
-    sectionRefs.current.forEach((ref) => {
-      if (ref) observer.observe(ref)
-    })
-
-    return () => {
-      sectionRefs.current.forEach((ref) => {
-        if (ref) observer.unobserve(ref)
-      })
-    }
-  }, [])
-
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -219,75 +191,70 @@ export default function TrainingPage() {
       <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-16">
-            {trainingServices.map((service, index) => {
-              return (
+            {trainingServices.map((service, index) => (
+              <div
+                key={service.id}
+                id={service.id}
+                className={`scroll-mt-20 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"}`}
+              >
                 <div
-                  key={service.id}
-                  id={service.id}
-                  ref={(el) => (sectionRefs.current[index] = el)}
-                  className={`group/service scroll-mt-20 transition-all duration-500 transform bg-white rounded-3xl p-8 hover:scale-102 hover:shadow-2xl`}
+                  className={`grid lg:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
                 >
-                  <div
-                    className={`grid lg:grid-cols-2 gap-8 items-center ${
-                      index % 2 === 1 ? "lg:grid-flow-col-dense" : ""
-                    }`}
-                  >
-                    <div className={`space-y-6 ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                            <service.icon className="w-6 h-6 text-primary" />
-                          </div>
-                          {service.premium && <Badge className="bg-primary text-white">Premium Package</Badge>}
+                  <div className={`space-y-6 ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
+                    <div className="space-y-3">
+                      <div className="flex items-center gap-3">
+                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+                          <service.icon className="w-6 h-6 text-primary" />
                         </div>
+                        {service.premium && <Badge className="bg-primary text-white">Premium Package</Badge>}
+                      </div>
 
-                        <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{service.title}</h2>
+                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{service.title}</h2>
 
-                        {service.price && <div className="text-3xl font-bold text-primary">{service.price}</div>}
+                      {service.price && <div className="text-3xl font-bold text-primary">{service.price}</div>}
 
-                        <p className="text-base text-gray-600 leading-relaxed">{service.description}</p>
+                      <p className="text-base text-gray-600 leading-relaxed">{service.description}</p>
 
-                        {service.features && (
-                          <div className="flex flex-wrap gap-4 mt-4">
-                            {service.features.map((feature, idx) => (
-                              <div key={idx} className="flex items-center gap-2">
-                                <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                  <Check className="w-4 h-4 text-primary" />
-                                </div>
-                                <span className="text-sm font-medium text-gray-700">{feature}</span>
+                      {service.features && (
+                        <div className="flex flex-wrap gap-4 mt-4">
+                          {service.features.map((feature, idx) => (
+                            <div key={idx} className="flex items-center gap-2">
+                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <Check className="w-4 h-4 text-primary" />
                               </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-
-                      {service.content && <div className="mt-6">{service.content}</div>}
-
-                      <div className="pt-4">
-                        <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
-                          <Link href="/contact" className="flex items-center gap-2">
-                            Book Now
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </Button>
-                      </div>
+                              <span className="text-sm font-medium text-gray-700">{feature}</span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
 
-                    <div className={`relative ${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
-                      <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl">
-                        <Image
-                          src={service.image || "/placeholder.svg"}
-                          alt={service.title}
-                          fill
-                          className="object-cover"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
-                      </div>
+                    {service.content && <div className="mt-6">{service.content}</div>}
+
+                    <div className="pt-4">
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
+                        <Link href="/contact" className="flex items-center gap-2">
+                          Book Now
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                    </div>
+                  </div>
+
+                  <div className={`relative ${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
+                    <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl">
+                      <Image
+                        src={service.image || "/placeholder.svg"}
+                        alt={service.title}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
                   </div>
                 </div>
-              )
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>

@@ -118,28 +118,22 @@ export default function FAQsPage() {
             filteredFaqs.map((faq, index) => {
               const originalIndex = faqs.indexOf(faq)
               return (
-                <Card
-                  key={originalIndex}
-                  className="overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-[1.02] animate-on-scroll opacity-0 translate-y-4"
-                  style={{ transitionDelay: `${index * 100}ms` }}
-                >
+                <Card key={originalIndex} className="overflow-hidden">
                   <CardContent className="p-0">
                     <button
                       onClick={() => toggleFAQ(originalIndex)}
-                      className="w-full p-4 text-left flex justify-between items-center hover:bg-muted transition-all duration-300 group"
+                      className="w-full p-4 text-left flex justify-between items-center hover:bg-muted transition-colors"
                     >
-                      <h3 className="font-heading text-base font-semibold text-secondary pr-4 group-hover:text-primary transition-colors duration-300">
-                        {faq.question}
-                      </h3>
+                      <h3 className="font-heading text-base font-semibold text-secondary pr-4">{faq.question}</h3>
                       {openFAQ === originalIndex ? (
-                        <ChevronUp className="w-4 h-4 text-primary flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                        <ChevronUp className="w-4 h-4 text-primary flex-shrink-0" />
                       ) : (
-                        <ChevronDown className="w-4 h-4 text-primary flex-shrink-0 group-hover:scale-110 transition-transform duration-300" />
+                        <ChevronDown className="w-4 h-4 text-primary flex-shrink-0" />
                       )}
                     </button>
 
                     {openFAQ === originalIndex && (
-                      <div className="px-4 pb-4 animate-fade-in">
+                      <div className="px-4 pb-4">
                         <p className="text-muted-foreground leading-relaxed text-sm">{faq.answer}</p>
                       </div>
                     )}

@@ -2,9 +2,8 @@
 
 import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
-import Image from "next/image"
+import { Button } from "@/components/ui/button"
 
 interface HeroHomeProps {
   title: string
@@ -37,21 +36,9 @@ export function HeroHome({
   stats,
 }: HeroHomeProps) {
   return (
-    <section className={`${brandKit.components.hero.container} min-h-screen`}>
-      {/* Decorative Elements */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/studio-exterior-full.jpg"
-          alt="Diva Fitness Studio Exterior"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={85}
-        />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
-
+    <section
+      className={`${brandKit.components.hero.container} min-h-screen bg-[url('/images/studio-exterior-full.jpg')] bg-cover bg-center bg-no-repeat`}
+    >
       <div className={brandKit.components.hero.content}>
         <div className={brandKit.components.hero.badge}>
           <Sparkles className="w-4 h-4" />
@@ -68,28 +55,39 @@ export function HeroHome({
         {(primaryButtonText || secondaryButtonText || tertiaryButtonText) && (
           <div className={brandKit.components.hero.buttonContainer}>
             {primaryButtonText && primaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={primaryButtonHref} className="flex items-center gap-2 justify-center">
+              <Button
+                asChild
+                className="bg-accent text-white font-semibold hover:bg-accent-dark shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                <Link href={primaryButtonHref} className="inline-flex items-center gap-2">
                   {primaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
             )}
 
             {secondaryButtonText && secondaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={secondaryButtonHref} className="flex items-center gap-2 justify-center">
+              <Button
+                asChild
+                variant="outline"
+                className="bg-white text-accent font-semibold hover:bg-gray-50 shadow-lg hover:shadow-xl transform hover:scale-105 border-2 border-accent"
+              >
+                <Link href={secondaryButtonHref} className="inline-flex items-center gap-2">
                   {secondaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
             )}
 
             {tertiaryButtonText && tertiaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={tertiaryButtonHref} className="flex items-center gap-2 justify-center">
+              <Button
+                asChild
+                variant="ghost"
+                className="bg-transparent text-white font-semibold hover:bg-white/10 border-2 border-white"
+              >
+                <Link href={tertiaryButtonHref} className="inline-flex items-center gap-2">
                   {tertiaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
             )}

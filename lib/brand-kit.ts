@@ -5,20 +5,20 @@ export const brandKit = {
   // Color Palette
   colors: {
     primary: {
-      DEFAULT: "#7b329b",
-      dark: "#6b2c87",
-      light: "#9d4edd",
-      lighter: "#c77dff",
-      50: "#faf7fc",
-      100: "#f3ecf8",
-      200: "#e9ddf2",
-      300: "#d9c2e8",
-      400: "#c77dff",
-      500: "#9d4edd",
-      600: "#7b329b",
-      700: "#6b2c87",
-      800: "#5a2472",
-      900: "#4a1d5e",
+      DEFAULT: "#e0c3fc", // Changed from deep purple to pale purple
+      dark: "#d4b3f7", // Slightly darker pale purple
+      light: "#f0e6ff", // Very light pale purple
+      lighter: "#fefcff", // Even lighter pale purple
+      50: "#fefcff",
+      100: "#f9f5ff",
+      200: "#f0e6ff",
+      300: "#e0c3fc",
+      400: "#d4b3f7",
+      500: "#c77dff",
+      600: "#b347d9",
+      700: "#9333ea",
+      800: "#7c2d92",
+      900: "#581c87",
     },
     secondary: {
       DEFAULT: "#1A1A1A",
@@ -34,19 +34,19 @@ export const brandKit = {
       900: "#0d1117",
     },
     accent: {
-      DEFAULT: "#e0c3fc",
-      dark: "#d4b3f7",
-      light: "#f0e6ff",
-      50: "#fefcff",
-      100: "#f9f5ff",
-      200: "#f0e6ff",
-      300: "#e0c3fc",
-      400: "#d4b3f7",
-      500: "#c77dff",
-      600: "#b347d9",
-      700: "#9333ea",
-      800: "#7c2d92",
-      900: "#581c87",
+      DEFAULT: "#7b329b", // Changed from pale purple to deep purple
+      dark: "#6b2c87", // Darker deep purple
+      light: "#9d4edd", // Lighter deep purple
+      50: "#faf7fc",
+      100: "#f3ecf8",
+      200: "#e9ddf2",
+      300: "#d9c2e8",
+      400: "#c77dff",
+      500: "#9d4edd",
+      600: "#7b329b",
+      700: "#6b2c87",
+      800: "#5a2472",
+      900: "#4a1d5e",
     },
     muted: {
       DEFAULT: "#F8F9FA",

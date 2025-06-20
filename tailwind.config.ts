@@ -26,21 +26,21 @@ const config: Config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#7b329b", // Main purple color
-          foreground: "#FFFFFF",
-          dark: "#6b2c87", // Darker purple for hover states
-          light: "#9d4edd", // Lighter purple for accents
-          lighter: "#c77dff", // Even lighter purple for backgrounds
+          DEFAULT: "#e0c3fc", // Main pale purple color (was accent)
+          foreground: "#1A1A1A", // Changed to dark text for better contrast
+          dark: "#d4b3f7", // Darker pale purple for hover states
+          light: "#f0e6ff", // Lighter pale purple for accents
+          lighter: "#fefcff", // Even lighter pale purple for backgrounds
         },
         secondary: {
           DEFAULT: "#1A1A1A", // Dark grey/black for text
           foreground: "#FFFFFF",
         },
         accent: {
-          DEFAULT: "#e0c3fc", // Pale purple accent
-          foreground: "#7b329b",
-          dark: "#d4b3f7", // Slightly darker pale purple
-          light: "#f0e6ff", // Very light pale purple
+          DEFAULT: "#7b329b", // Deep purple accent (was primary)
+          foreground: "#FFFFFF", // White text on deep purple
+          dark: "#6b2c87", // Slightly darker deep purple
+          light: "#9d4edd", // Lighter deep purple
         },
         muted: {
           DEFAULT: "#F8F9FA", // Light grey background

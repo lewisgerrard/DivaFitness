@@ -5,7 +5,6 @@ import { Utensils, ArrowRight, Check, CreditCard, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import HeroPage from "@/components/hero-page"
-import { useEffect, useRef } from "react"
 
 export default function NutritionPage() {
   const nutritionServices = [
@@ -50,59 +49,8 @@ export default function NutritionPage() {
     },
   ]
 
-  const introSection = useRef(null)
-  const servicesSection = useRef(null)
-  const benefitsSection = useRef(null)
-  const paymentSection = useRef(null)
-  const ctaSection = useRef(null)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add("animate-fadeIn")
-          }
-        })
-      },
-      {
-        threshold: 0.1,
-      },
-    )
-
-    if (introSection.current) observer.observe(introSection.current)
-    if (servicesSection.current) observer.observe(servicesSection.current)
-    if (benefitsSection.current) observer.observe(benefitsSection.current)
-    if (paymentSection.current) observer.observe(paymentSection.current)
-    if (ctaSection.current) observer.observe(ctaSection.current)
-
-    return () => {
-      if (introSection.current) observer.unobserve(introSection.current)
-      if (servicesSection.current) observer.unobserve(servicesSection.current)
-      if (benefitsSection.current) observer.unobserve(benefitsSection.current)
-      if (paymentSection.current) observer.unobserve(paymentSection.current)
-      if (ctaSection.current) observer.unobserve(ctaSection.current)
-    }
-  }, [])
-
   return (
-    <div className="min-h-screen bg-white relative overflow-hidden">
-      {/* Floating Background Elements */}
-      <div className="absolute top-0 left-0 w-full h-full pointer-events-none">
-        <div
-          className="absolute top-1/4 left-1/4 w-32 h-32 bg-primary/10 rounded-full filter blur-xl animate-pulse"
-          style={{ animationDelay: "1s" }}
-        />
-        <div
-          className="absolute top-1/2 right-1/4 w-40 h-40 bg-secondary/10 rounded-full filter blur-xl animate-pulse"
-          style={{ animationDelay: "2s" }}
-        />
-        <div
-          className="absolute bottom-1/4 left-1/3 w-24 h-24 bg-accent/10 rounded-full filter blur-xl animate-pulse"
-          style={{ animationDelay: "3s" }}
-        />
-      </div>
-
+    <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <HeroPage
         title="Nutrition Coaching"
@@ -116,7 +64,7 @@ export default function NutritionPage() {
       />
 
       {/* Introduction Section */}
-      <section ref={introSection} className="py-8 bg-gray-50/50 transition-opacity duration-500 opacity-0">
+      <section className="py-8 bg-gray-50/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto text-center">
             <p className="text-lg text-gray-700 leading-relaxed">
@@ -128,14 +76,14 @@ export default function NutritionPage() {
       </section>
 
       {/* Nutrition Services */}
-      <section ref={servicesSection} className="py-8 transition-opacity duration-500 opacity-0">
+      <section className="py-8">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-16">
             {nutritionServices.map((service, index) => (
               <div
                 key={service.id}
                 id={service.id}
-                className={`scroll-mt-20 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"} transition-all duration-300 hover:scale-105`}
+                className={`scroll-mt-20 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"}`}
               >
                 <div
                   className={`grid lg:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
@@ -158,11 +106,7 @@ export default function NutritionPage() {
                     {service.content && <div className="mt-6">{service.content}</div>}
 
                     <div className="pt-4">
-                      <Button
-                        size="lg"
-                        className="bg-primary hover:bg-primary/90 rounded-xl px-8 transition-colors duration-300"
-                        asChild
-                      >
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
                         <Link href="/contact" className="flex items-center gap-2">
                           Book Now
                           <ArrowRight className="w-4 h-4" />
@@ -190,7 +134,7 @@ export default function NutritionPage() {
       </section>
 
       {/* Nutrition Benefits Section */}
-      <section ref={benefitsSection} className="py-12 bg-gray-50/50 transition-opacity duration-500 opacity-0">
+      <section className="py-12 bg-gray-50/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <div className="text-center mb-8">
@@ -273,10 +217,10 @@ export default function NutritionPage() {
       </section>
 
       {/* Payment Details */}
-      <section ref={paymentSection} className="py-12 bg-white transition-opacity duration-500 opacity-0">
+      <section className="py-12 bg-white">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <Card className="border-0 shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <Card className="border-0 shadow-lg">
               <CardContent className="p-6">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div>
@@ -304,29 +248,20 @@ export default function NutritionPage() {
       </section>
 
       {/* Final CTA */}
-      <section ref={ctaSection} className="py-10 bg-primary/5 transition-opacity duration-500 opacity-0">
+      <section className="py-10 bg-primary/5">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
               Ready to transform your relationship with food? Let's create a nutrition plan that works for you.
             </h2>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button
-                size="lg"
-                className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg transition-colors duration-300"
-                asChild
-              >
+              <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg" asChild>
                 <Link href="/contact" className="flex items-center gap-2">
                   Book Nutrition Consultation
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="rounded-xl px-8 py-6 text-lg hover:bg-gray-100 transition-colors duration-300"
-                asChild
-              >
+              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg" asChild>
                 <Link href="/training" className="flex items-center gap-2">
                   View Training Services
                   <ArrowRight className="w-5 h-5" />

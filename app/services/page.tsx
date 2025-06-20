@@ -1,5 +1,4 @@
 "use client"
-import { useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
 import { User, Clock, Heart, ArrowRight, Check, CreditCard, Users, Utensils, Trophy, Home } from "lucide-react"
@@ -9,27 +8,6 @@ import { Badge } from "@/components/ui/badge"
 import HeroPage from "@/components/hero-page"
 
 export default function ServicesPage() {
-  useEffect(() => {
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
-    }
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("animate-fade-up")
-          entry.target.classList.remove("opacity-0", "translate-y-8")
-        }
-      })
-    }, observerOptions)
-
-    const animatedElements = document.querySelectorAll(".animate-on-scroll")
-    animatedElements.forEach((el) => observer.observe(el))
-
-    return () => observer.disconnect()
-  }, [])
-
   const services = [
     {
       id: "personal-training",
@@ -213,12 +191,6 @@ export default function ServicesPage() {
 
   return (
     <div className="min-h-screen bg-white">
-      {/* Floating Background Elements */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute top-20 left-10 w-32 h-32 bg-primary/5 rounded-full animate-float" />
-        <div className="absolute top-40 right-20 w-24 h-24 bg-accent/10 rounded-full animate-float-delayed" />
-        <div className="absolute bottom-40 left-1/4 w-40 h-40 bg-primary/3 rounded-full animate-float-slow" />
-      </div>
       {/* Hero Section */}
       <HeroPage
         title="Transform Your Body."
@@ -252,8 +224,7 @@ export default function ServicesPage() {
               <div
                 key={service.id}
                 id={service.id}
-                className={`scroll-mt-20 animate-on-scroll opacity-0 translate-y-8 transition-all duration-1000 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"}`}
-                style={{ transitionDelay: `${index * 200}ms` }}
+                className={`scroll-mt-20 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"}`}
               >
                 <div
                   className={`grid lg:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
@@ -261,34 +232,23 @@ export default function ServicesPage() {
                   <div className={`space-y-6 ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
                     <div className="space-y-3">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center hover:scale-110 hover:bg-primary/20 transition-all duration-300">
+                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                           <service.icon className="w-6 h-6 text-primary" />
                         </div>
-                        {service.premium && (
-                          <Badge className="bg-primary text-white hover:scale-105 transition-transform duration-300">
-                            Premium Package
-                          </Badge>
-                        )}
+                        {service.premium && <Badge className="bg-primary text-white">Premium Package</Badge>}
                       </div>
 
-                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900 hover:text-primary transition-colors duration-500">
-                        {service.title}
-                      </h2>
+                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{service.title}</h2>
 
-                      {service.price && (
-                        <div className="text-3xl font-bold text-primary animate-pulse">{service.price}</div>
-                      )}
+                      {service.price && <div className="text-3xl font-bold text-primary">{service.price}</div>}
 
                       <p className="text-base text-gray-600 leading-relaxed">{service.description}</p>
 
                       {service.features && (
                         <div className="flex flex-wrap gap-4 mt-4">
                           {service.features.map((feature, idx) => (
-                            <div
-                              key={idx}
-                              className="flex items-center gap-2 hover:scale-105 transition-transform duration-300"
-                            >
-                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center hover:bg-primary/20 transition-colors duration-300">
+                            <div key={idx} className="flex items-center gap-2">
+                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                                 <Check className="w-4 h-4 text-primary" />
                               </div>
                               <span className="text-sm font-medium text-gray-700">{feature}</span>
@@ -301,28 +261,24 @@ export default function ServicesPage() {
                     {service.content && <div className="mt-6">{service.content}</div>}
 
                     <div className="pt-4">
-                      <Button
-                        size="lg"
-                        className="bg-primary hover:bg-primary/90 rounded-xl px-8 hover:scale-105 hover:shadow-lg transition-all duration-300"
-                        asChild
-                      >
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
                         <Link href="/contact" className="flex items-center gap-2">
                           Book Now
-                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          <ArrowRight className="w-4 h-4" />
                         </Link>
                       </Button>
                     </div>
                   </div>
 
                   <div className={`relative ${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
-                    <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl hover:scale-105 transition-all duration-500 group">
+                    <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl">
                       <Image
                         src={service.image || "/placeholder.svg"}
                         alt={service.title}
                         fill
-                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent group-hover:from-black/40 transition-all duration-500" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
                     </div>
                   </div>
                 </div>
@@ -400,29 +356,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-      <style jsx>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-20px) rotate(5deg); }
-        }
-        @keyframes float-delayed {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-15px) rotate(-3deg); }
-        }
-        @keyframes float-slow {
-          0%, 100% { transform: translateY(0px) rotate(0deg); }
-          50% { transform: translateY(-10px) rotate(2deg); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-        .animate-float-delayed {
-          animation: float-delayed 8s ease-in-out infinite;
-        }
-        .animate-float-slow {
-          animation: float-slow 10s ease-in-out infinite;
-        }
-      `}</style>
     </div>
   )
 }
