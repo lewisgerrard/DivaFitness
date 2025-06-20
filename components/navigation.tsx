@@ -38,14 +38,15 @@ export function Navigation() {
           {/* Logo - Left Side */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/diva-logo-fitness.png"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/git-blob/prj_4rnlgHf0HQ9oW9pwyOoPeZ2geHI1/evviusK2tGpRUGNf9ME6OT/public/logo-with-text.png"
               alt="Diva Fitness"
-              width={50}
-              height={50}
-              className="h-12 w-12"
+              width={40}
+              height={40}
+              className="h-10 w-10"
               priority
+              unoptimized
             />
-            <span className="font-heading font-bold text-xl text-black">Diva Fitness</span>
+            <span className="font-heading font-bold text-xl text-secondary">Diva Fitness</span>
           </Link>
 
           {/* Desktop Navigation - Right Side */}
@@ -54,13 +55,13 @@ export function Navigation() {
               {/* Render Home and About */}
               <Link
                 href="/"
-                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
               >
                 About
               </Link>
@@ -69,7 +70,7 @@ export function Navigation() {
               <div className="relative">
                 <button
                   onClick={() => setServicesOpen(!servicesOpen)}
-                  className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm flex items-center"
+                  className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm flex items-center"
                   onBlur={(e) => {
                     // Close dropdown when clicking outside
                     if (!e.currentTarget.contains(e.relatedTarget)) {
@@ -105,13 +106,13 @@ export function Navigation() {
               {/* Render FAQs and Contact */}
               <Link
                 href="/faqs"
-                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
               >
                 FAQs
               </Link>
               <Link
                 href="/contact"
-                className="text-black/80 hover:text-black transition-colors duration-200 font-medium text-sm"
+                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
               >
                 Contact
               </Link>
@@ -148,7 +149,10 @@ export function Navigation() {
 
           {/* Mobile menu button */}
           <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-black hover:text-black/80 transition-colors">
+            <button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-secondary hover:text-secondary/80 transition-colors"
+            >
               {isOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
           </div>
@@ -161,14 +165,14 @@ export function Navigation() {
               {/* Mobile Navigation Items */}
               <Link
                 href="/"
-                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                 onClick={() => setIsOpen(false)}
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                 onClick={() => setIsOpen(false)}
               >
                 About
@@ -179,14 +183,14 @@ export function Navigation() {
                 <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Services</div>
                 <Link
                   href="/training"
-                  className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                  className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   Training
                 </Link>
                 <Link
                   href="/nutrition"
-                  className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                  className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                   onClick={() => setIsOpen(false)}
                 >
                   Nutrition
@@ -195,14 +199,14 @@ export function Navigation() {
 
               <Link
                 href="/faqs"
-                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                 onClick={() => setIsOpen(false)}
               >
                 FAQs
               </Link>
               <Link
                 href="/contact"
-                className="block px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
                 onClick={() => setIsOpen(false)}
               >
                 Contact
@@ -212,21 +216,21 @@ export function Navigation() {
                   <div className="space-y-2">
                     <Link
                       href="/profile"
-                      className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
+                      className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
                     >
                       My Profile
                     </Link>
                     {user.role === "admin" && (
                       <Link
                         href="/admin"
-                        className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
+                        className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
                       >
                         Admin Panel
                       </Link>
                     )}
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-3 py-2 text-black/80 hover:text-black hover:bg-gray-100 rounded-md transition-colors text-sm"
+                      className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
                     >
                       Logout
                     </button>

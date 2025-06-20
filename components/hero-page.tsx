@@ -31,7 +31,7 @@ export function HeroPage({
   badge,
 }: HeroPageProps) {
   return (
-    <section className={`${brandKit.components.hero.container} py-16 md:py-24`}>
+    <section className={`${brandKit.components.hero.container} py-8 md:py-12`}>
       {/* Decorative Elements */}
       <div className="absolute inset-0">
         <div className="absolute inset-0 bg-gradient-to-br from-[#7b329b] to-[#5a1a75]" />

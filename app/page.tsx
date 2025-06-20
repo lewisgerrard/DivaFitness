@@ -1,4 +1,4 @@
-import { User, Users, Leaf, Sparkles } from "lucide-react"
+import { User, Users, Leaf, Sparkles, Heart, Trophy, Apple, BookOpen, Home } from "lucide-react"
 import HeroHome from "@/components/hero-home"
 import SectionHeader from "@/components/section-header"
 import ServiceCard from "@/components/service-card"
@@ -13,27 +13,80 @@ import { brandKit, brandClasses } from "@/lib/brand-kit"
 
 export default function HomePage() {
   const services = [
+    // Training Services
     {
       icon: User,
-      title: "1-to-1 Training",
-      description: "Completely personalised sessions designed around your unique goals and preferences.",
-      features: ["Custom workout plans", "Form correction", "Progress tracking"],
+      title: "One-to-One Personal Training",
+      description:
+        "Completely personalised training sessions designed around your unique goals, fitness level, and preferences.",
+      features: ["Complete Privacy", "Tailored Coaching", "Female-Led Space"],
+      price: "From £350",
+      duration: "60 min sessions",
       colorScheme: "primary" as const,
+      href: "/training#personal-training",
+    },
+    {
+      icon: Heart,
+      title: "Ultimate Personalised Wellness Session",
+      description:
+        "A comprehensive 2.5-hour session that combines fitness assessment, nutrition consultation, and personalized training.",
+      features: ["Fitness assessment", "Nutrition consultation", "Training intro"],
+      price: "£175",
+      duration: "2.5 hours",
+      colorScheme: "secondary" as const,
+      href: "/training#wellness-session",
     },
     {
       icon: Users,
-      title: "Group Sessions",
-      description: "Train with like-minded women in a supportive small group environment.",
-      features: ["Max 4 people", "Social motivation", "Cost-effective"],
-      popular: true,
-      colorScheme: "secondary" as const,
+      title: "Train Together, Grow Together",
+      description:
+        "Affordable training with built-in accountability. Train with like-minded women in a supportive environment.",
+      features: ["Max 3 people", "Social motivation", "Cost-effective"],
+      price: "£30",
+      duration: "Per session",
+      colorScheme: "accent" as const,
+      href: "/training#group-training",
     },
     {
-      icon: Leaf,
-      title: "Nutrition Coaching",
-      description: "Comprehensive guidance including meal planning and interactive cooking sessions.",
-      features: ["Meal planning", "Cooking sessions", "Lifestyle integration"],
+      icon: Trophy,
+      title: "The 12-Week Transformation",
+      description: "A comprehensive program designed to completely transform your body and lifestyle over 12 weeks.",
+      features: ["12 PT sessions", "Nutrition coaching", "Body composition analysis"],
+      price: "£999",
+      duration: "12 weeks",
+      colorScheme: "primary" as const,
+      href: "/training#transformation",
+      popular: true,
+    },
+    {
+      icon: Apple,
+      title: "Basic Nutrition Review",
+      description: "Food diary review and basic nutrition guidance for everyday wellness and healthy living.",
+      features: ["Food diary review", "Nutrition tips", "Lifestyle guidance"],
+      price: "£65",
+      duration: "75 mins",
+      colorScheme: "secondary" as const,
+      href: "/nutrition#basic-nutrition",
+    },
+    {
+      icon: BookOpen,
+      title: "Advanced Nutrition Coaching",
+      description: "In-depth nutrition coaching with goal setting, comprehensive review, and personalized planning.",
+      features: ["Goal setting", "Meal planning", "Lifestyle integration"],
+      price: "£99",
+      duration: "2 hours",
       colorScheme: "accent" as const,
+      href: "/nutrition#advanced-nutrition",
+    },
+    {
+      icon: Home,
+      title: "Hire My Studio",
+      description: "Private studio hire available for personal trainers or clients wanting professional fitness space.",
+      features: ["Professional equipment", "Private access", "Early morning slot"],
+      price: "£15",
+      duration: "45 mins",
+      colorScheme: "primary" as const,
+      href: "/training#studio-hire",
     },
   ]
 
@@ -82,17 +135,17 @@ export default function HomePage() {
       <HeroHome
         title="Transform Your"
         subtitle="Fitness Journey"
-        description="Experience personalized training in a stunning garden studio designed exclusively for women's wellness and empowerment."
+        description="Experience personalised training in a stunning garden studio designed exclusively for your privacy and comfort."
         primaryButtonText="Start Your Journey"
         primaryButtonHref="/services"
         secondaryButtonText="Meet Emma"
         secondaryButtonHref="/about"
         tertiaryButtonText="Get In Touch"
         tertiaryButtonHref="/contact"
-        badge="Award-Winning Personal Training"
+        badge="NFA Shortlisted Ladies Gym of the Year 2024"
         stats={[
-          { value: "7+", label: "Years Experience" },
-          { value: "100%", label: "Female-Led" },
+          { value: "8+", label: "Years Experience" },
+          { value: "2018 & 2024", label: "Shortlisted NFA Ladies Gym of the Year" },
         ]}
       />
 
@@ -144,10 +197,11 @@ export default function HomePage() {
             <div className="relative">
               <div className={`relative h-80 rounded-3xl overflow-hidden shadow-2xl ${brandKit.animations.scaleHover}`}>
                 <Image
-                  src="/images/studio-emma-doorway.jpg"
+                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/git-blob/prj_4rnlgHf0HQ9oW9pwyOoPeZ2geHI1/DJA6wcco1rqi2E3FSftmOO/public/images/studio-emma-doorway.jpg"
                   alt="Emma Fisher in Diva Fitness Studio"
                   fill
                   className="object-cover"
+                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
               </div>
@@ -165,9 +219,10 @@ export default function HomePage() {
             title="Choose Your Path to"
             subtitle="Transformation"
             description="Every journey is unique. Discover the perfect service that aligns with your goals and lifestyle."
+            className="text-secondary"
           />
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {services.map((service, index) => (
               <ServiceCard key={index} {...service} />
             ))}

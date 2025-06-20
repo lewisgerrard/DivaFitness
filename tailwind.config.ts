@@ -33,7 +33,7 @@ const config: Config = {
           lighter: "#c77dff", // Even lighter purple for backgrounds
         },
         secondary: {
-          DEFAULT: "#1A1A1A", // Dark grey/black for text
+          DEFAULT: "#374151", // Changed from #1A1A1A to charcoal
           foreground: "#FFFFFF",
         },
         accent: {

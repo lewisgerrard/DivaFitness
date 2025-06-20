@@ -21,14 +21,14 @@ export const brandKit = {
       900: "#4a1d5e",
     },
     secondary: {
-      DEFAULT: "#1A1A1A",
+      DEFAULT: "#374151", // Changed from #1A1A1A to charcoal
       50: "#f8f9fa",
       100: "#e9ecef",
       200: "#dee2e6",
       300: "#ced4da",
       400: "#6c757d",
       500: "#495057",
-      600: "#343a40",
+      600: "#374151", // Charcoal
       700: "#212529",
       800: "#1A1A1A",
       900: "#0d1117",

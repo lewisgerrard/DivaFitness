@@ -4,16 +4,16 @@ import Image from "next/image"
 
 export function Footer() {
   return (
-    <footer className="bg-gray-50 text-black border-t border-gray-200">
+    <footer className="bg-gray-50 text-secondary border-t border-gray-200">
       <div className="max-w-6xl mx-auto px-4 py-8">
         <div className="grid md:grid-cols-4 gap-6">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
               <Image src="/diva-logo-fitness.png" alt="Diva Fitness" width={40} height={40} className="h-10 w-10" />
-              <span className="font-heading font-bold text-lg text-black">Diva Fitness</span>
+              <span className="font-heading font-bold text-lg text-secondary">Diva Fitness</span>
             </div>
-            <p className="text-black/70 text-sm leading-relaxed">
+            <p className="text-secondary/70 text-sm leading-relaxed">
               Empowering women to achieve their health and fitness goals in a supportive, private environment since
               2017.
             </p>
@@ -47,30 +47,30 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="font-heading text-base font-semibold mb-3 text-black">Quick Links</h4>
+            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Quick Links</h4>
             <ul className="space-y-1">
               <li>
-                <Link href="/" className="text-black/70 hover:text-black transition-colors text-sm">
+                <Link href="/" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-black/70 hover:text-black transition-colors text-sm">
+                <Link href="/about" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   About Emma
                 </Link>
               </li>
               <li>
-                <Link href="/services" className="text-black/70 hover:text-black transition-colors text-sm">
+                <Link href="/services" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="/faqs" className="text-black/70 hover:text-black transition-colors text-sm">
+                <Link href="/faqs" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="/contact" className="text-black/70 hover:text-black transition-colors text-sm">
+                <Link href="/contact" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   Contact
                 </Link>
               </li>
@@ -79,8 +79,8 @@ export function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-heading text-base font-semibold mb-3 text-black">Services</h4>
-            <ul className="space-y-1 text-black/70 text-sm">
+            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Services</h4>
+            <ul className="space-y-1 text-secondary/70 text-sm">
               <li>1-to-1 Personal Training</li>
               <li>Group Training</li>
               <li>Nutrition Coaching</li>
@@ -91,11 +91,11 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="font-heading text-base font-semibold mb-3 text-black">Contact</h4>
+            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Contact</h4>
             <div className="space-y-2">
               <div className="flex items-center space-x-2">
                 <Phone className="w-4 h-4 text-primary" />
-                <a href="tel:07966874821" className="text-black/70 hover:text-black transition-colors text-sm">
+                <a href="tel:07966874821" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
                   07966 874 821
                 </a>
               </div>
@@ -103,23 +103,23 @@ export function Footer() {
                 <Mail className="w-4 h-4 text-primary" />
                 <a
                   href="mailto:info@diva-fitness.co.uk"
-                  className="text-black/70 hover:text-black transition-colors text-sm"
+                  className="text-secondary/70 hover:text-secondary transition-colors text-sm"
                 >
                   info@diva-fitness.co.uk
                 </a>
               </div>
               <div className="flex items-center space-x-2">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span className="text-black/70 text-sm">Chester, UK</span>
+                <span className="text-secondary/70 text-sm">Chester, UK</span>
               </div>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-200 mt-6 pt-4 text-center">
-          <p className="text-black/70 text-sm">
+          <p className="text-secondary/70 text-sm">
             © {new Date().getFullYear()} Diva Fitness. All rights reserved. |
-            <span className="text-black"> Designed with ❤️ for women's fitness</span>
+            <span className="text-secondary"> Designed with ❤️ for women's fitness</span>
           </p>
         </div>
       </div>

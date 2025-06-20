@@ -211,13 +211,15 @@ export default function TrainingPage() {
                   className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden"
                   onClick={() => scrollToService(service.id)}
                 >
-                  <CardContent className="p-6 text-center flex flex-col items-center justify-center h-32">
-                    <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
-                      <service.icon className="w-8 h-8 text-primary" />
+                  <CardContent className="p-6 text-center flex flex-col items-center justify-between h-48">
+                    <div className="flex flex-col items-center flex-1 justify-center">
+                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0">
+                        <service.icon className="w-8 h-8 text-primary flex-shrink-0" />
+                      </div>
+                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight text-center">
+                        {service.title}
+                      </h3>
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight">
-                      {service.title}
-                    </h3>
                   </CardContent>
                 </Card>
               ))}
