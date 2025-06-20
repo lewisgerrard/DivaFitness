@@ -95,22 +95,22 @@ export default function HomePage() {
   // Static reviews as fallback (these will be used until real APIs are set up)
   const staticReviews = [
     {
-      name: "Sarah M.",
-      text: "Emma is absolutely fantastic! Her garden studio is beautiful and the personal attention is incredible.",
+      name: "Hanna",
+      text: "After just a couple of sessions, we've noticed major improvements that were easy to incorporate into our daily routines.If you'd like to eat better but don't know where to start, get in touch with Diva Fitness! You will be in the best possible hands",
       rating: 5,
       platform: "google" as const,
       date: "2 weeks ago",
     },
     {
-      name: "Lisa K.",
-      text: "Best decision I ever made. Emma's approach to fitness and nutrition has completely changed my life.",
+      name: "Mandy",
+      text: "My understanding of what it takes to eat healthily and lose weight for the long-term has increased massively. I can highly recommend Emma - her energy and passion for everything she does is inspirational!",
       rating: 5,
       platform: "trustpilot" as const,
       date: "1 month ago",
     },
     {
-      name: "Rachel T.",
-      text: "The private studio setting is perfect. I feel so comfortable and supported in my fitness journey.",
+      name: "Bernie",
+      text: "Since embarking on my journey with Emma last July it has genuinely turned my life around. I feel great, my body has changed so much and my relationship with food is so much better. ",
       rating: 5,
       platform: "google" as const,
       date: "3 weeks ago",
@@ -347,15 +347,15 @@ export default function HomePage() {
             description="See what ladies have to say about their journey with Diva Fitness."
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
             {isLoadingReviews
               ? // Loading skeleton
-                Array.from({ length: 6 }).map((_, index) => (
+                Array.from({ length: 3 }).map((_, index) => (
                   <div key={index} className="animate-pulse">
-                    <div className="bg-gray-200 h-48 rounded-lg"></div>
+                    <div className="bg-gray-200 h-64 rounded-lg"></div>
                   </div>
                 ))
-              : reviews.map((review, index) => <ReviewCard key={index} {...review} />)}
+              : reviews.slice(0, 3).map((review, index) => <ReviewCard key={index} {...review} />)}
           </div>
 
           {/* Map Section */}

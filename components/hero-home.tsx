@@ -39,7 +39,7 @@ export function HeroHome({
   return (
     <section className={`${brandKit.components.hero.container} min-h-screen`}>
       {/* Decorative Elements */}
-      <div className="absolute inset-0">
+      <div className="absolute inset-0 bg-gray-900">
         <Image
           src="/images/studio-exterior-cropped.jpg"
           alt="Diva Fitness Studio Exterior - Cropped View"
@@ -48,8 +48,10 @@ export function HeroHome({
           className="object-cover"
           sizes="100vw"
           quality={85}
+          placeholder="blur"
+          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R7+Cp9mJWl6c1XTyRa9jG8gZu3VvmMcjHvkYP8AkKKKLkeLqvRRRSU//9k="
         />
-        <div className="absolute inset-0 bg-black/40" />
+        <div className="absolute inset-0 bg-black/30" />
       </div>
 
       <div className={brandKit.components.hero.content}>
