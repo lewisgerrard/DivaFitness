@@ -38,13 +38,12 @@ export function Navigation() {
           {/* Logo - Left Side */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/git-blob/prj_4rnlgHf0HQ9oW9pwyOoPeZ2geHI1/evviusK2tGpRUGNf9ME6OT/public/logo-with-text.png"
+              src="/images/diva-logo.png"
               alt="Diva Fitness"
               width={40}
               height={40}
               className="h-10 w-10"
               priority
-              unoptimized
             />
             <span className="font-heading font-bold text-xl text-secondary">Diva Fitness</span>
           </Link>

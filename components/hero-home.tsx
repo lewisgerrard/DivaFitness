@@ -41,14 +41,13 @@ export function HeroHome({
       {/* Decorative Elements */}
       <div className="absolute inset-0">
         <Image
-          src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/git-blob/prj_4rnlgHf0HQ9oW9pwyOoPeZ2geHI1/TQL7txG22j9DXhWsnU0orl/public/images/studio-exterior-cropped.jpg"
+          src="/images/studio-exterior-cropped.jpg"
           alt="Diva Fitness Studio Exterior - Cropped View"
           fill
           priority
           className="object-cover"
           sizes="100vw"
           quality={85}
-          unoptimized
         />
         <div className="absolute inset-0 bg-black/40" />
       </div>

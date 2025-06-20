@@ -197,11 +197,10 @@ export default function HomePage() {
             <div className="relative">
               <div className={`relative h-80 rounded-3xl overflow-hidden shadow-2xl ${brandKit.animations.scaleHover}`}>
                 <Image
-                  src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/git-blob/prj_4rnlgHf0HQ9oW9pwyOoPeZ2geHI1/DJA6wcco1rqi2E3FSftmOO/public/images/studio-emma-doorway.jpg"
+                  src="/images/emma-studio.jpg"
                   alt="Emma Fisher in Diva Fitness Studio"
                   fill
                   className="object-cover"
-                  unoptimized
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
               </div>
