@@ -1,7 +1,8 @@
+"use client"
+
 import { User, Users, Leaf, Sparkles, Heart, Trophy, Apple, BookOpen, Home } from "lucide-react"
 import HeroHome from "@/components/hero-home"
 import SectionHeader from "@/components/section-header"
-import ServiceCard from "@/components/service-card"
 import ReviewCard from "@/components/review-card"
 import MapSection from "@/components/map-section"
 import CTASection from "@/components/cta-section"
@@ -10,13 +11,14 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { ArrowRight } from "lucide-react"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
+import { useState, useEffect } from "react"
 
 export default function HomePage() {
   const services = [
     // Training Services
     {
       icon: User,
-      title: "One-to-One Personal Training",
+      title: "1:1 Personal Training",
       description:
         "Completely personalised training sessions designed around your unique goals, fitness level, and preferences.",
       features: ["Complete Privacy", "Tailored Coaching", "Female-Led Space"],
@@ -90,44 +92,89 @@ export default function HomePage() {
     },
   ]
 
-  const reviews = [
+  // Static reviews as fallback (these will be used until real APIs are set up)
+  const staticReviews = [
     {
       name: "Sarah M.",
       text: "Emma is absolutely fantastic! Her garden studio is beautiful and the personal attention is incredible.",
       rating: 5,
       platform: "google" as const,
+      date: "2 weeks ago",
     },
     {
       name: "Lisa K.",
       text: "Best decision I ever made. Emma's approach to fitness and nutrition has completely changed my life.",
       rating: 5,
       platform: "trustpilot" as const,
+      date: "1 month ago",
     },
     {
       name: "Rachel T.",
       text: "The private studio setting is perfect. I feel so comfortable and supported in my fitness journey.",
       rating: 5,
       platform: "google" as const,
+      date: "3 weeks ago",
     },
     {
       name: "Jennifer W.",
       text: "Emma's holistic approach is exactly what I needed. Not just fitness, but nutrition and emotional support too.",
       rating: 5,
       platform: "google" as const,
+      date: "1 week ago",
     },
     {
       name: "Michelle P.",
       text: "I've tried many personal trainers but Emma is in a league of her own. Her understanding of women's fitness needs is exceptional.",
       rating: 5,
       platform: "trustpilot" as const,
+      date: "2 months ago",
     },
     {
       name: "Amanda H.",
       text: "The cooking sessions are amazing! Emma teaches you how to prepare healthy meals that actually taste great.",
       rating: 5,
       platform: "google" as const,
+      date: "3 days ago",
     },
   ]
+
+  const [reviews, setReviews] = useState(staticReviews)
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false)
+
+  // Function to fetch reviews (currently disabled until APIs are created)
+  useEffect(() => {
+    // For now, just use static reviews
+    // When you're ready to implement real API calls, uncomment and modify this:
+    /*
+    const fetchReviews = async () => {
+      setIsLoadingReviews(true)
+      try {
+        // Check if API endpoints exist before calling them
+        const googleResponse = await fetch("/api/reviews/google")
+        if (googleResponse.ok) {
+          const googleReviews = await googleResponse.json()
+          // Process Google reviews
+        }
+
+        const trustpilotResponse = await fetch("/api/reviews/trustpilot")
+        if (trustpilotResponse.ok) {
+          const trustpilotReviews = await trustpilotResponse.json()
+          // Process Trustpilot reviews
+        }
+
+        // Combine and set reviews
+      } catch (error) {
+        console.error("Error fetching reviews:", error)
+        // Fallback to static reviews
+        setReviews(staticReviews)
+      } finally {
+        setIsLoadingReviews(false)
+      }
+    }
+
+    fetchReviews()
+    */
+  }, [])
 
   return (
     <div className="min-h-screen">
@@ -142,10 +189,10 @@ export default function HomePage() {
         secondaryButtonHref="/about"
         tertiaryButtonText="Get In Touch"
         tertiaryButtonHref="/contact"
-        badge="NFA Shortlisted Ladies Gym of the Year 2024"
+        badge="Specialist in Female Fitness"
         stats={[
           { value: "8+", label: "Years Experience" },
-          { value: "2018 & 2024", label: "Shortlisted NFA Ladies Gym of the Year" },
+          { value: "2024", label: "Ladies Gym of the Year Finalist" },
         ]}
       />
 
@@ -213,18 +260,80 @@ export default function HomePage() {
       <section className={`${brandKit.components.section.base} bg-white`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
-            badge="Tailored Services"
+            badge="Our Services"
             badgeIcon={Sparkles}
-            title="Choose Your Path to"
-            subtitle="Transformation"
-            description="Every journey is unique. Discover the perfect service that aligns with your goals and lifestyle."
+            title="Transform Your"
+            subtitle="Health & Fitness"
+            description="Choose your path to wellness with our comprehensive training and nutrition services."
             className="text-secondary"
           />
 
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {services.map((service, index) => (
-              <ServiceCard key={index} {...service} />
-            ))}
+          <div className="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+            {/* Training Tile */}
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer">
+              <Image
+                src="/images/weights-close-up.jpg"
+                alt="Close-up of training weights"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-black/50" />
+
+              <div className="absolute inset-0 flex flex-col justify-between p-8 text-white">
+                <div>
+                  <h3 className="text-4xl font-bold mb-4 tracking-wide">TRAINING</h3>
+                  <p className="text-lg leading-relaxed opacity-90">
+                    Transform your body with personalised training sessions designed around your unique goals, fitness
+                    level, and preferences in our private garden studio.
+                  </p>
+                </div>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="self-start bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  <Link href="/training" className="flex items-center gap-2">
+                    LEARN MORE
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
+
+            {/* Nutrition Tile */}
+            <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl group cursor-pointer">
+              <Image
+                src="/images/nutrition-pantry.jpg"
+                alt="Organized healthy nutrition pantry with glass jars"
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-700"
+              />
+              <div className="absolute inset-0 bg-black/50" />
+
+              <div className="absolute inset-0 flex flex-col justify-between p-8 text-white">
+                <div>
+                  <h3 className="text-4xl font-bold mb-4 tracking-wide">NUTRITION</h3>
+                  <p className="text-lg leading-relaxed opacity-90">
+                    Fuel your transformation with expert nutrition coaching, personalised meal planning, and lifestyle
+                    integration strategies that work for your busy life.
+                  </p>
+                </div>
+
+                <Button
+                  asChild
+                  variant="outline"
+                  size="lg"
+                  className="self-start bg-transparent border-white text-white hover:bg-white hover:text-black transition-all duration-300"
+                >
+                  <Link href="/nutrition" className="flex items-center gap-2">
+                    LEARN MORE
+                    <ArrowRight className="w-5 h-5" />
+                  </Link>
+                </Button>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -233,15 +342,20 @@ export default function HomePage() {
       <section id="reviews" className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
-            title="Stories of"
-            subtitle="Transformation"
-            description="Real women, real results, real empowerment. See what clients say about their journey with Diva Fitness."
+            title="Strong Women."
+            subtitle="Honest Words."
+            description="See what ladies have to say about their journey with Diva Fitness."
           />
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-            {reviews.map((review, index) => (
-              <ReviewCard key={index} {...review} />
-            ))}
+            {isLoadingReviews
+              ? // Loading skeleton
+                Array.from({ length: 6 }).map((_, index) => (
+                  <div key={index} className="animate-pulse">
+                    <div className="bg-gray-200 h-48 rounded-lg"></div>
+                  </div>
+                ))
+              : reviews.map((review, index) => <ReviewCard key={index} {...review} />)}
           </div>
 
           {/* Map Section */}
