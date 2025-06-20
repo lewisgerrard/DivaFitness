@@ -1,8 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { ChevronDown, ChevronUp, Search, X } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { ChevronDown, Search, X } from "lucide-react"
 import HeroPage from "@/components/hero-page"
 
 export default function FAQsPage() {
@@ -112,48 +111,67 @@ export default function FAQsPage() {
       </section>
 
       {/* FAQs Section */}
-      <section className="py-10 px-4 max-w-4xl mx-auto">
-        <div className="space-y-3">
-          {filteredFaqs.length > 0 ? (
-            filteredFaqs.map((faq, index) => {
-              const originalIndex = faqs.indexOf(faq)
-              return (
-                <Card key={originalIndex} className="overflow-hidden">
-                  <CardContent className="p-0">
-                    <button
-                      onClick={() => toggleFAQ(originalIndex)}
-                      className="w-full p-4 text-left flex justify-between items-center hover:bg-muted transition-colors"
+      <section className="py-16 px-4 max-w-6xl mx-auto">
+        <div className="max-w-4xl mx-auto">
+          {/* Right Column - FAQ List */}
+          <div>
+            <div className="space-y-4">
+              {filteredFaqs.length > 0 ? (
+                filteredFaqs.map((faq, index) => {
+                  const originalIndex = faqs.indexOf(faq)
+                  return (
+                    <div
+                      key={originalIndex}
+                      className="group bg-white rounded-xl border border-gray-200 hover:border-primary/30 hover:shadow-lg transition-all duration-300"
                     >
-                      <h3 className="font-heading text-base font-semibold text-secondary pr-4">{faq.question}</h3>
-                      {openFAQ === originalIndex ? (
-                        <ChevronUp className="w-4 h-4 text-primary flex-shrink-0" />
-                      ) : (
-                        <ChevronDown className="w-4 h-4 text-primary flex-shrink-0" />
-                      )}
-                    </button>
-
-                    {openFAQ === originalIndex && (
-                      <div className="px-4 pb-4">
-                        <p className="text-muted-foreground leading-relaxed text-sm">{faq.answer}</p>
-                      </div>
-                    )}
-                  </CardContent>
-                </Card>
-              )
-            })
-          ) : (
-            <div className="text-center py-12">
-              <Search className="w-12 h-12 text-gray-300 mx-auto mb-4" />
-              <h3 className="text-lg font-semibold text-gray-600 mb-2">No FAQs found</h3>
-              <p className="text-gray-500">Try adjusting your search terms or browse all questions below.</p>
-              <button
-                onClick={() => setSearchQuery("")}
-                className="mt-4 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary/90 transition-colors"
-              >
-                Clear Search
-              </button>
+                      <button
+                        onClick={() => toggleFAQ(originalIndex)}
+                        className="w-full p-6 text-left flex justify-between items-start hover:bg-gray-50/50 transition-colors rounded-xl"
+                      >
+                        <div className="flex-1 pr-4">
+                          <h3 className="font-semibold text-lg text-gray-900 group-hover:text-primary transition-colors">
+                            {faq.question}
+                          </h3>
+                          {openFAQ === originalIndex && (
+                            <div className="mt-4 pt-4 border-t border-gray-100">
+                              <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                            </div>
+                          )}
+                        </div>
+                        <div className="flex-shrink-0 ml-4">
+                          <div
+                            className={`w-8 h-8 rounded-full border-2 flex items-center justify-center transition-all duration-300 ${
+                              openFAQ === originalIndex
+                                ? "border-primary bg-primary text-white rotate-180"
+                                : "border-gray-300 text-gray-400 group-hover:border-primary group-hover:text-primary"
+                            }`}
+                          >
+                            <ChevronDown className="w-4 h-4" />
+                          </div>
+                        </div>
+                      </button>
+                    </div>
+                  )
+                })
+              ) : (
+                <div className="text-center py-16 bg-gray-50 rounded-2xl">
+                  <div className="w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <Search className="w-8 h-8 text-gray-400" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-gray-700 mb-2">No FAQs found</h3>
+                  <p className="text-gray-500 mb-6">Try adjusting your search terms or browse all questions.</p>
+                  <button
+                    onClick={() => setSearchQuery("")}
+                    className="px-6 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-semibold"
+                  >
+                    Clear Search
+                  </button>
+                </div>
+              )}
             </div>
-          )}
+
+            {/* Quick Stats */}
+          </div>
         </div>
       </section>
 

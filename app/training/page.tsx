@@ -11,13 +11,13 @@ export default function TrainingPage() {
   const trainingServices = [
     {
       id: "personal-training",
-      title: "One-to-One Personal Training",
+      title: "1:1 Personal Training",
       shortDescription: "Completely personalised training sessions designed around your unique goals.",
       description:
         "Experience completely personalised training sessions designed around your unique goals, fitness level, and preferences.",
       icon: User,
       image: "/images/action-training-session.jpg",
-      price: "From £350",
+      price: "From £50 / 60 minute session",
       duration: "60 min sessions",
       content: (
         <div className="space-y-6">
@@ -58,22 +58,22 @@ export default function TrainingPage() {
     },
     {
       id: "wellness-session",
-      title: "Ultimate Personalised Wellness Session",
+      title: "Personalised Fitness & Nutrition Session",
       shortDescription: "Comprehensive 2.5-hour session combining fitness, nutrition, and training.",
       description:
-        "A comprehensive 2.5-hour session that combines fitness assessment, nutrition consultation, and personalized training.",
+        "Like training alone but not seeing the results? This comprehensive 2.5-hour session will help get you back on track towards achieving your goals",
       icon: Heart,
       image: "/images/studio-emma-exterior.jpg",
-      price: "£175",
+      price: "£175 / 2.5 hours",
       duration: "2.5 hours",
       content: (
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-gray-900">What's Included:</h3>
           <ul className="space-y-3">
             {[
-              "Fitness assessment",
+              "30 min fitness assessment including body composition analysis",
               "Personalised training plan",
-              "45 min nutrition consultation",
+              "60 min nutrition consultation",
               "60 min weight training intro (form & technique)",
             ].map((item, index) => (
               <li key={index} className="flex items-start gap-3">
@@ -87,13 +87,13 @@ export default function TrainingPage() {
     },
     {
       id: "group-training",
-      title: "Train Together, Grow Together",
+      title: "Train Together, Change Together",
       shortDescription: "Affordable training with built-in accountability in a supportive environment.",
       description:
-        "Affordable training with built-in accountability. Train with like-minded women in a supportive environment.",
+        "Affordable training with built-in accountability. Train with like-minded women in a supportive small group environment.",
       icon: Users,
       image: "/images/studio-emma-doorway.jpg",
-      price: "£30",
+      price: "£25 / 60 mins",
       duration: "Per session",
       content: (
         <div className="space-y-4">
@@ -105,7 +105,7 @@ export default function TrainingPage() {
             </li>
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Wednesdays – 7:00am</span>
+              <span className="text-gray-700">Thursdays – 7:00am</span>
             </li>
           </ul>
           <div className="bg-primary/10 rounded-xl p-4">
@@ -134,7 +134,7 @@ export default function TrainingPage() {
               "2hr nutrition session + custom report",
               "12 PT sessions",
               "Monthly check-ins",
-              "3 body comp. analyses",
+              "3 body comp. analysis",
               "Final 1:1 review session",
             ].map((item, index) => (
               <li key={index} className="flex items-start gap-3">
@@ -152,11 +152,12 @@ export default function TrainingPage() {
       id: "studio-hire",
       title: "Hire My Studio",
       shortDescription: "Private studio hire for personal trainers or clients wanting space.",
-      description: "Private hire available between 6:45–7:00am for PTs or clients wanting space.",
+      description:
+        "Looking for a private place to train? The studio is availible for private hire for partners, friends or just for you.",
       icon: Home,
       image: "/images/studio-exterior-cropped.jpg",
-      price: "£15",
-      duration: "45 mins",
+      price: "£20",
+      duration: "60 mins",
       content: (
         <div className="space-y-4">
           <p className="text-gray-700">
@@ -164,7 +165,7 @@ export default function TrainingPage() {
             space.
           </p>
           <div className="bg-primary/10 rounded-xl p-4">
-            <p className="text-primary font-medium">Available: 6:45–7:00am daily</p>
+            <p className="text-primary font-medium">Available: 07:00–20:00 daily</p>
           </div>
         </div>
       ),
@@ -183,11 +184,11 @@ export default function TrainingPage() {
       {/* Hero Section */}
       <HeroPage
         title="Personal Training"
-        subtitle="& Fitness Programs"
+        subtitle="Services"
         description="Personalised training sessions and comprehensive fitness programs designed exclusively for women."
-        primaryButtonText="Book a Free Discovery Call"
+        primaryButtonText="Book a Consultation"
         primaryButtonHref="/contact"
-        secondaryButtonText="View Nutrition"
+        secondaryButtonText="Nutrition Services"
         secondaryButtonHref="/nutrition"
         badge="Women-Only Training"
       />
@@ -248,7 +249,6 @@ export default function TrainingPage() {
 
                       <div className="flex items-center gap-4">
                         <div className="text-3xl font-bold text-primary">{service.price}</div>
-                        <div className="text-gray-600">• {service.duration}</div>
                       </div>
 
                       <p className="text-lg text-gray-600 leading-relaxed">{service.description}</p>
@@ -305,18 +305,18 @@ export default function TrainingPage() {
                 <div className="grid md:grid-cols-3 gap-6">
                   <div className="text-center">
                     <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Quick Payment</h4>
-                    <p className="text-sm text-gray-600">Sessions must be paid for within 24 hours</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">Advanced Book</h4>
+                    <p className="text-sm text-gray-600">Training sessions must be paid for within 24hrs</p>
                   </div>
                   <div className="text-center">
                     <CreditCard className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Flexible Options</h4>
-                    <p className="text-sm text-gray-600">Payment via bank transfer or card</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">Payment Options</h4>
+                    <p className="text-sm text-gray-600">Monthly payments available via bank transfer</p>
                   </div>
                   <div className="text-center">
                     <Check className="w-8 h-8 text-primary mx-auto mb-3" />
-                    <h4 className="font-semibold text-gray-900 mb-2">Convenient</h4>
-                    <p className="text-sm text-gray-600">Card payments available in person or by link</p>
+                    <h4 className="font-semibold text-gray-900 mb-2">Credit Card</h4>
+                    <p className="text-sm text-gray-600">Available in person or by link</p>
                   </div>
                 </div>
               </CardContent>
