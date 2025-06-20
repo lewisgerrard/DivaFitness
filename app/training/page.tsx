@@ -12,10 +12,13 @@ export default function TrainingPage() {
     {
       id: "personal-training",
       title: "One-to-One Personal Training",
+      shortDescription: "Completely personalised training sessions designed around your unique goals.",
       description:
         "Experience completely personalised training sessions designed around your unique goals, fitness level, and preferences.",
       icon: User,
       image: "/images/action-training-session.jpg",
+      price: "From £350",
+      duration: "60 min sessions",
       content: (
         <div className="space-y-6">
           <div className="bg-white rounded-2xl shadow-lg border border-gray-100 overflow-hidden">
@@ -56,11 +59,13 @@ export default function TrainingPage() {
     {
       id: "wellness-session",
       title: "Ultimate Personalised Wellness Session",
+      shortDescription: "Comprehensive 2.5-hour session combining fitness, nutrition, and training.",
       description:
         "A comprehensive 2.5-hour session that combines fitness assessment, nutrition consultation, and personalized training.",
       icon: Heart,
       image: "/images/studio-emma-exterior.jpg",
       price: "£175",
+      duration: "2.5 hours",
       content: (
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-gray-900">What's Included:</h3>
@@ -83,11 +88,13 @@ export default function TrainingPage() {
     {
       id: "group-training",
       title: "Train Together, Grow Together",
+      shortDescription: "Affordable training with built-in accountability in a supportive environment.",
       description:
         "Affordable training with built-in accountability. Train with like-minded women in a supportive environment.",
       icon: Users,
       image: "/images/studio-emma-doorway.jpg",
-      price: "£30/session",
+      price: "£30",
+      duration: "Per session",
       content: (
         <div className="space-y-4">
           <h3 className="text-xl font-bold text-gray-900">Schedule:</h3>
@@ -110,10 +117,12 @@ export default function TrainingPage() {
     {
       id: "transformation",
       title: "The 12-Week Transformation",
+      shortDescription: "Complete body and lifestyle transformation program over 12 weeks.",
       description: "A comprehensive program designed to completely transform your body and lifestyle over 12 weeks.",
       icon: Trophy,
       image: "/images/weights-close-up.jpg",
       price: "£999",
+      duration: "12 weeks",
       premium: true,
       content: (
         <div className="space-y-4">
@@ -142,10 +151,12 @@ export default function TrainingPage() {
     {
       id: "studio-hire",
       title: "Hire My Studio",
+      shortDescription: "Private studio hire for personal trainers or clients wanting space.",
       description: "Private hire available between 6:45–7:00am for PTs or clients wanting space.",
       icon: Home,
       image: "/images/studio-exterior-cropped.jpg",
-      price: "£15/45mins",
+      price: "£15",
+      duration: "45 mins",
       content: (
         <div className="space-y-4">
           <p className="text-gray-700">
@@ -159,6 +170,13 @@ export default function TrainingPage() {
       ),
     },
   ]
+
+  const scrollToService = (serviceId: string) => {
+    const element = document.getElementById(serviceId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
 
   return (
     <div className="min-h-screen bg-white">
@@ -174,34 +192,49 @@ export default function TrainingPage() {
         badge="Women-Only Training"
       />
 
-      {/* Introduction Section */}
-      <section className="py-8 bg-gray-50/50">
+      {/* Services Overview */}
+      <section className="py-12 bg-gray-50/50">
         <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto text-center">
-            <p className="text-lg text-gray-700 leading-relaxed">
-              Transform your body with personalised training programs designed specifically for women. From one-to-one
-              sessions to small group training, find the perfect approach to reach your fitness goals in a supportive,
-              female-led environment.
-            </p>
+          <div className="max-w-6xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Choose Your Training Journey</h2>
+              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+                From one-to-one sessions to comprehensive transformation programs, find the perfect approach to reach
+                your fitness goals.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-5 gap-6">
+              {trainingServices.map((service) => (
+                <Card
+                  key={service.id}
+                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden"
+                  onClick={() => scrollToService(service.id)}
+                >
+                  <CardContent className="p-6 text-center flex flex-col items-center justify-center h-32">
+                    <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4">
+                      <service.icon className="w-8 h-8 text-primary" />
+                    </div>
+                    <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight">
+                      {service.title}
+                    </h3>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Training Services */}
-      <section className="py-8">
+      {/* Service Details */}
+      <section className="py-16">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto space-y-16">
+          <div className="max-w-6xl mx-auto space-y-24">
             {trainingServices.map((service, index) => (
-              <div
-                key={service.id}
-                id={service.id}
-                className={`scroll-mt-20 ${index % 2 === 0 ? "bg-white" : "bg-gray-50/50 rounded-3xl p-8"}`}
-              >
-                <div
-                  className={`grid lg:grid-cols-2 gap-8 items-center ${index % 2 === 1 ? "lg:grid-flow-col-dense" : ""}`}
-                >
-                  <div className={`space-y-6 ${index % 2 === 1 ? "lg:col-start-2" : ""}`}>
-                    <div className="space-y-3">
+              <div key={service.id} id={service.id} className="scroll-mt-20">
+                <div className="grid lg:grid-cols-2 gap-12 items-center">
+                  <div className={`space-y-6 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
+                    <div className="space-y-4">
                       <div className="flex items-center gap-3">
                         <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
                           <service.icon className="w-6 h-6 text-primary" />
@@ -209,19 +242,20 @@ export default function TrainingPage() {
                         {service.premium && <Badge className="bg-primary text-white">Premium Package</Badge>}
                       </div>
 
-                      <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{service.title}</h2>
+                      <h2 className="text-3xl md:text-4xl font-bold text-gray-900">{service.title}</h2>
 
-                      {service.price && <div className="text-3xl font-bold text-primary">{service.price}</div>}
+                      <div className="flex items-center gap-4">
+                        <div className="text-3xl font-bold text-primary">{service.price}</div>
+                        <div className="text-gray-600">• {service.duration}</div>
+                      </div>
 
-                      <p className="text-base text-gray-600 leading-relaxed">{service.description}</p>
+                      <p className="text-lg text-gray-600 leading-relaxed">{service.description}</p>
 
                       {service.features && (
-                        <div className="flex flex-wrap gap-4 mt-4">
+                        <div className="flex flex-wrap gap-3">
                           {service.features.map((feature, idx) => (
-                            <div key={idx} className="flex items-center gap-2">
-                              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                <Check className="w-4 h-4 text-primary" />
-                              </div>
+                            <div key={idx} className="flex items-center gap-2 bg-primary/10 rounded-full px-3 py-1">
+                              <Check className="w-4 h-4 text-primary" />
                               <span className="text-sm font-medium text-gray-700">{feature}</span>
                             </div>
                           ))}
@@ -229,9 +263,9 @@ export default function TrainingPage() {
                       )}
                     </div>
 
-                    {service.content && <div className="mt-6">{service.content}</div>}
+                    {service.content && <div className="mt-8">{service.content}</div>}
 
-                    <div className="pt-4">
+                    <div className="pt-6">
                       <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
                         <Link href="/contact" className="flex items-center gap-2">
                           Book Now
@@ -241,15 +275,15 @@ export default function TrainingPage() {
                     </div>
                   </div>
 
-                  <div className={`relative ${index % 2 === 1 ? "lg:col-start-1" : ""}`}>
-                    <div className="relative h-80 md:h-96 rounded-3xl overflow-hidden shadow-xl">
+                  <div className={`relative ${index % 2 === 1 ? "lg:order-1" : ""}`}>
+                    <div className="relative h-96 md:h-[500px] rounded-3xl overflow-hidden shadow-2xl">
                       <Image
                         src={service.image || "/placeholder.svg"}
                         alt={service.title}
                         fill
                         className="object-cover"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     </div>
                   </div>
                 </div>
@@ -260,28 +294,27 @@ export default function TrainingPage() {
       </section>
 
       {/* Payment Details */}
-      <section className="py-12 bg-white">
+      <section className="py-12 bg-gray-50/50">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-lg">
-              <CardContent className="p-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">Important Notes:</h3>
-                    <ul className="space-y-3">
-                      <li className="flex items-start gap-3">
-                        <Clock className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">Sessions must be paid for within 24 hours</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <CreditCard className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">Payment via bank transfer or card</span>
-                      </li>
-                      <li className="flex items-start gap-3">
-                        <Check className="w-5 h-5 text-primary mt-0.5 flex-shrink-0" />
-                        <span className="text-gray-700">Card payments available in person or by link</span>
-                      </li>
-                    </ul>
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Payment Information</h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Quick Payment</h4>
+                    <p className="text-sm text-gray-600">Sessions must be paid for within 24 hours</p>
+                  </div>
+                  <div className="text-center">
+                    <CreditCard className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Flexible Options</h4>
+                    <p className="text-sm text-gray-600">Payment via bank transfer or card</p>
+                  </div>
+                  <div className="text-center">
+                    <Check className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Convenient</h4>
+                    <p className="text-sm text-gray-600">Card payments available in person or by link</p>
                   </div>
                 </div>
               </CardContent>
@@ -291,12 +324,13 @@ export default function TrainingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-10 bg-primary/5">
+      <section className="py-16 bg-primary/5">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
-            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-6">
-              Ready to start your fitness journey? Let's chat about your goals and how I can help.
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Ready to start your fitness journey?</h2>
+            <p className="text-lg text-gray-600 mb-8">
+              Let's chat about your goals and how I can help you achieve them.
+            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8 py-6 text-lg" asChild>
                 <Link href="/contact" className="flex items-center gap-2">
