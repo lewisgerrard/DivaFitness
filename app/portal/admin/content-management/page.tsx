@@ -19,7 +19,6 @@ export default function ContentManagementPage() {
   return (
     <CleanDashboardLayout>
       <div className="space-y-8">
-        {/* Header */}
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold text-primary">Content Management</h1>
@@ -37,7 +36,6 @@ export default function ContentManagementPage() {
           </div>
         </div>
 
-        {/* Main Content */}
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger
@@ -77,7 +75,6 @@ export default function ContentManagementPage() {
             </TabsTrigger>
           </TabsList>
 
-          {/* Website Structure Tab */}
           <TabsContent value="website" className="space-y-6">
             <Card>
               <CardHeader>
@@ -133,7 +130,6 @@ export default function ContentManagementPage() {
             </Card>
           </TabsContent>
 
-          {/* Branding Tab */}
           <TabsContent value="branding" className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
               <Card>
@@ -232,7 +228,6 @@ export default function ContentManagementPage() {
             </div>
           </TabsContent>
 
-          {/* Email Templates Tab */}
           <TabsContent value="emails" className="space-y-6">
             <Card>
               <CardHeader>
@@ -353,27 +348,19 @@ export default function ContentManagementPage() {
                                       taking the next step in your fitness journey!
                                     </p>
                                     <p className="text-gray-800">
-                                      I have received your message and will personally respond within 24 hours. In the
-                                      meantime, here is what you can expect:
+                                      I have received your message and will personally respond within 24 hours.
                                     </p>
                                     <div className="bg-[#e0c3fc] p-4 rounded-lg space-y-2">
                                       <p className="text-[#7b329b] font-medium">
-                                        • A personalised response tailored to your goals
+                                        A personalised response tailored to your goals
                                       </p>
                                       <p className="text-[#7b329b] font-medium">
-                                        • Information about our services and approach
+                                        Information about our services and approach
                                       </p>
                                       <p className="text-[#7b329b] font-medium">
-                                        • Options to schedule your free consultation
-                                      </p>
-                                      <p className="text-[#7b329b] font-medium">
-                                        • A warm welcome to the Diva Fitness community
+                                        Options to schedule your free consultation
                                       </p>
                                     </div>
-                                    <p className="text-gray-800">
-                                      Every woman&apos;s fitness journey is unique, and I am here to support you every
-                                      step of the way in our beautiful garden studio.
-                                    </p>
                                     <div className="text-center py-4">
                                       <button className="bg-[#7b329b] text-white px-6 py-3 rounded-full font-semibold">
                                         Learn More About Emma
@@ -400,8 +387,6 @@ export default function ContentManagementPage() {
                                       Phone: 07966 874 821
                                       <br />
                                       Email: info@diva-fitness.co.uk
-                                      <br />
-                                      Website: diva-fitness.co.uk
                                     </p>
                                   </div>
                                 </div>
@@ -417,10 +402,8 @@ export default function ContentManagementPage() {
             </Card>
           </TabsContent>
 
-          {/* Components Tab */}
           <TabsContent value="components" className="space-y-6">
             <div className="grid grid-cols-1 gap-6">
-              {/* Layout Components Card */}
               <Card>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -447,11 +430,18 @@ export default function ContentManagementPage() {
                         description: "Main site navigation with mobile responsive menu",
                       },
                       {
-                        name: "Footer",
-                        category: "Layout",
-                        usage: "All pages",
-                        file: "footer.tsx",
-                        description: "Site footer with contact info, social links, and navigation",
+                        name: "Service Card",
+                        category: "Content",
+                        usage: "2 pages",
+                        file: "service-card.tsx",
+                        description: "Individual service display card with icon and description",
+                      },
+                      {
+                        name: "Contact Form",
+                        category: "Forms",
+                        usage: "1 page (Contact)",
+                        file: "contact-form.tsx",
+                        description: "Contact form with service selection and validation",
                       },
                     ].map((component) => (
                       <div key={component.name} className="border rounded-lg">
@@ -491,7 +481,7 @@ export default function ContentManagementPage() {
                                     </h1>
                                     <p className="text-white/90 mb-6 max-w-2xl mx-auto text-lg">
                                       Join Emma at Diva Fitness for personalized training in our beautiful garden
-                                      studio. Achieve your goals with expert guidance and a supportive environment.
+                                      studio.
                                     </p>
                                     <button className="bg-white text-[#7b329b] px-8 py-4 rounded-full font-semibold text-lg">
                                       Start Your Journey Today
@@ -516,12 +506,6 @@ export default function ContentManagementPage() {
                                         Services
                                       </a>
                                       <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        Training
-                                      </a>
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        Nutrition
-                                      </a>
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
                                         Contact
                                       </a>
                                     </nav>
@@ -530,151 +514,11 @@ export default function ContentManagementPage() {
                                     </button>
                                   </div>
                                 </div>
-                              ) : component.name === "Footer" ? (
-                                <div className="bg-gray-900 text-white p-6">
-                                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    <div>
-                                      <div className="flex items-center gap-2 mb-3">
-                                        <img
-                                          src="/logo-icon.png"
-                                          alt="Diva Fitness"
-                                          className="h-8 w-8 filter brightness-0 invert"
-                                        />
-                                        <span className="font-bold text-xl">Diva Fitness</span>
-                                      </div>
-                                      <p className="text-gray-300 text-sm">
-                                        Transform your body and mind with personalized fitness training in our beautiful
-                                        garden studio.
-                                      </p>
-                                    </div>
-                                    <div>
-                                      <h4 className="font-semibold mb-3">Quick Links</h4>
-                                      <ul className="space-y-2 text-sm text-gray-300">
-                                        <li>
-                                          <a href="#" className="hover:text-white">
-                                            About Emma
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#" className="hover:text-white">
-                                            Services
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#" className="hover:text-white">
-                                            Training
-                                          </a>
-                                        </li>
-                                        <li>
-                                          <a href="#" className="hover:text-white">
-                                            Nutrition
-                                          </a>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div>
-                                      <h4 className="font-semibold mb-3">Contact Info</h4>
-                                      <div className="space-y-2 text-sm text-gray-300">
-                                        <p>Phone: 07966 874 821</p>
-                                        <p>Email: info@diva-fitness.co.uk</p>
-                                        <p>Location: Chester, UK</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                  <div className="border-t border-gray-700 mt-6 pt-4 text-center text-sm text-gray-400">
-                                    <p>&copy; 2024 Diva Fitness. All rights reserved.</p>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="text-center py-8 text-gray-500">
-                                  <p>Preview not available for {component.name}</p>
-                                  <p className="text-sm mt-2">Component: {component.file}</p>
-                                </div>
-                              )}
-                            </div>
-                            <div className="mt-3 text-xs text-gray-500">
-                              <p>
-                                <strong>File:</strong> {component.file}
-                              </p>
-                              <p>
-                                <strong>Description:</strong> {component.description}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Content Components Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Layout className="w-5 h-5 text-primary" />
-                    Content Components
-                  </CardTitle>
-                  <CardDescription>Content display and information components</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    {[
-                      {
-                        name: "Service Card",
-                        category: "Content",
-                        usage: "2 pages",
-                        file: "service-card.tsx",
-                        description: "Individual service display card with icon and description",
-                      },
-                      {
-                        name: "Review Card",
-                        category: "Content",
-                        usage: "1 page (Home)",
-                        file: "review-card.tsx",
-                        description: "Customer testimonial card with rating and photo",
-                      },
-                      {
-                        name: "Contact Form",
-                        category: "Forms",
-                        usage: "1 page (Contact)",
-                        file: "contact-form.tsx",
-                        description: "Contact form with service selection and validation",
-                      },
-                    ].map((component) => (
-                      <div key={component.name} className="border rounded-lg">
-                        <div
-                          className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                          onClick={() => toggleExpanded(component.name)}
-                        >
-                          <div>
-                            <p className="font-medium">{component.name}</p>
-                            <p className="text-sm text-gray-500">
-                              {component.category} • Used in {component.usage}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              {component.category}
-                            </Badge>
-                            <ChevronDown
-                              className={`w-4 h-4 transition-transform ${
-                                expandedTemplate === component.name ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                        </div>
-                        {expandedTemplate === component.name && (
-                          <div className="border-t bg-gray-50 p-4">
-                            <div className="mb-2">
-                              <p className="text-sm font-medium text-gray-700">Component Preview:</p>
-                            </div>
-                            <div className="bg-white border rounded p-4 max-w-full overflow-auto">
-                              {component.name === "Service Card" ? (
+                              ) : component.name === "Service Card" ? (
                                 <div className="max-w-sm mx-auto">
                                   <div className="bg-white border border-[#e0c3fc] rounded-lg p-6 hover:shadow-lg transition-shadow">
                                     <div className="w-16 h-16 bg-[#7b329b] rounded-full flex items-center justify-center mb-4 mx-auto">
-                                      <span className="text-white text-2xl">💪</span>
+                                      <span className="text-white text-2xl font-bold">PT</span>
                                     </div>
                                     <h3 className="font-bold text-xl text-[#7b329b] mb-3 text-center">
                                       Personal Training
@@ -693,34 +537,12 @@ export default function ContentManagementPage() {
                                     </button>
                                   </div>
                                 </div>
-                              ) : component.name === "Review Card" ? (
-                                <div className="max-w-sm mx-auto">
-                                  <div className="bg-[#e0c3fc] p-6 rounded-lg">
-                                    <div className="flex items-center mb-3">
-                                      <div className="flex text-yellow-400 text-lg">★★★★★</div>
-                                      <span className="ml-2 text-sm text-gray-700 font-medium">5.0</span>
-                                    </div>
-                                    <p className="text-gray-800 mb-4 italic">
-                                      Emma&apos;s training has completely transformed my approach to fitness. The garden
-                                      studio is beautiful and the personalized attention is amazing!
-                                    </p>
-                                    <div className="flex items-center">
-                                      <div className="w-12 h-12 bg-[#7b329b] rounded-full flex items-center justify-center text-white font-bold text-lg">
-                                        S
-                                      </div>
-                                      <div className="ml-3">
-                                        <p className="font-semibold text-gray-800">Sarah Mitchell</p>
-                                        <p className="text-sm text-gray-600">Personal Training Client</p>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
                               ) : component.name === "Contact Form" ? (
                                 <div className="max-w-md mx-auto bg-white p-6 rounded-lg border">
                                   <h3 className="text-xl font-semibold text-[#7b329b] mb-4">Get In Touch</h3>
                                   <form className="space-y-4">
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Name *</label>
+                                      <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
                                       <input
                                         type="text"
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
@@ -728,30 +550,12 @@ export default function ContentManagementPage() {
                                       />
                                     </div>
                                     <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Email *</label>
+                                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
                                       <input
                                         type="email"
                                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
                                         placeholder="your.email@example.com"
                                       />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                                      <input
-                                        type="tel"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
-                                        placeholder="Your phone number"
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Service Interest
-                                      </label>
-                                      <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]">
-                                        <option>Personal Training</option>
-                                        <option>Nutrition Coaching</option>
-                                        <option>Group Sessions</option>
-                                      </select>
                                     </div>
                                     <div>
                                       <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
@@ -794,7 +598,6 @@ export default function ContentManagementPage() {
             </div>
           </TabsContent>
 
-          {/* Design System Tab */}
           <TabsContent value="design-system" className="space-y-6">
             <Card>
               <CardHeader>
@@ -825,10 +628,6 @@ export default function ContentManagementPage() {
                       <div className="flex items-center gap-4">
                         <span className="text-base">Body</span>
                         <span className="text-sm text-gray-600">16px, Regular - Body text</span>
-                      </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-sm text-gray-600">Small</span>
-                        <span className="text-sm text-gray-600">14px, Regular - Secondary text</span>
                       </div>
                     </div>
                   </div>
