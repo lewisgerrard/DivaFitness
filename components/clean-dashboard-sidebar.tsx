@@ -43,26 +43,24 @@ export function CleanDashboardSidebar() {
     router.push("/")
   }
 
-  const memberNavItems = [
+  const navItems = [
     { label: "Start", href: "/portal", icon: Home },
-    { label: "My Profile", href: "/portal/member/profile", icon: User },
-    { label: "Sessions", href: "/portal/member/sessions", icon: Calendar, badge: "Soon" },
-    { label: "Progress Info", href: "/portal/client/metrics", icon: BarChart3, badge: "Soon" },
-    { label: "Body Composition", href: "/portal/client/body-composition", icon: Activity, badge: "Soon" },
-    { label: "Scheduling", href: "/portal/member/scheduling", icon: Calendar, badge: "Soon" },
-    { label: "Community", href: "/portal/member/community", icon: MessageSquare, badge: "Soon" },
-    { label: "Achievements", href: "/portal/member/achievements", icon: Award, badge: "Soon" },
-    { label: "My Bookings", href: "/portal/client/bookings", icon: BookOpen, badge: "Soon" },
+    { label: "My Profile", href: "/portal/profile", icon: User },
+    { label: "Sessions", href: "/portal/sessions", icon: Calendar, badge: "Soon" },
+    { label: "Progress Info", href: "/portal/metrics", icon: BarChart3, badge: "Soon" },
+    { label: "Body Composition", href: "/portal/body-composition", icon: Activity, badge: "Soon" },
+    { label: "Scheduling", href: "/portal/scheduling", icon: Calendar, badge: "Soon" },
+    { label: "Community", href: "/portal/community", icon: MessageSquare, badge: "Soon" },
+    { label: "Achievements", href: "/portal/achievements", icon: Award, badge: "Soon" },
+    { label: "My Bookings", href: "/portal/bookings", icon: BookOpen, badge: "Soon" },
+    ...(user?.role === "admin"
+      ? [
+          { label: "User Management", href: "/portal/user-management", icon: Users },
+          { label: "Content Management", href: "/portal/content-management", icon: Edit3 },
+          { label: "Settings", href: "/portal/settings", icon: Settings },
+        ]
+      : []),
   ]
-
-  const adminNavItems = [
-    { label: "Start", href: "/portal", icon: Home },
-    { label: "User Management", href: "/portal/admin/user-management", icon: Users },
-    { label: "Content Management", href: "/portal/admin/content-management", icon: Edit3 },
-    { label: "Settings", href: "/portal/admin/settings", icon: Settings },
-  ]
-
-  const navItems = user?.role === "admin" ? adminNavItems : memberNavItems
 
   return (
     <div
@@ -146,7 +144,7 @@ export function CleanDashboardSidebar() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push("/portal/member/profile")}>
+            <DropdownMenuItem onClick={() => router.push("/portal/profile")}>
               <User className="mr-2 h-4 w-4" />
               Profile
             </DropdownMenuItem>

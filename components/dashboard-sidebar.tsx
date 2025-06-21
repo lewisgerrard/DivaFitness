@@ -4,7 +4,6 @@ import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Separator } from "@/components/ui/separator"
 import {
   Home,
   User,
@@ -41,84 +40,82 @@ export function DashboardSidebar({ collapsed, onToggle }: SidebarProps) {
     router.push("/")
   }
 
-  const memberNavItems = [
+  const navItems = [
     {
-      title: "Dashboard",
-      href: "/dashboard",
+      title: "Portal",
+      href: "/portal",
       icon: Home,
       exact: true,
     },
     {
       title: "My Profile",
-      href: "/dashboard/member/profile",
+      href: "/portal/profile",
       icon: User,
     },
     {
       title: "Community",
-      href: "/dashboard/member/community",
+      href: "/portal/community",
       icon: MessageSquare,
       badge: "Soon",
     },
     {
       title: "Classes",
-      href: "/dashboard/member/classes",
+      href: "/portal/classes",
       icon: Calendar,
       badge: "Soon",
     },
-  ]
-
-  const clientNavItems = [
     {
       title: "Body Composition",
-      href: "/dashboard/client/body-composition",
+      href: "/portal/body-composition",
       icon: Activity,
       badge: "Soon",
     },
     {
       title: "My Bookings",
-      href: "/dashboard/client/bookings",
+      href: "/portal/bookings",
       icon: BookOpen,
       badge: "Soon",
     },
     {
       title: "Progress Metrics",
-      href: "/dashboard/client/metrics",
+      href: "/portal/metrics",
       icon: BarChart3,
       badge: "Soon",
     },
-  ]
-
-  const adminNavItems = [
-    {
-      title: "User Management",
-      href: "/dashboard/admin/user-management",
-      icon: Users,
-    },
-    {
-      title: "Email Templates",
-      href: "/dashboard/admin/email-templates",
-      icon: Mail,
-    },
-    {
-      title: "Website Structure",
-      href: "/dashboard/admin/website-structure",
-      icon: Globe,
-    },
-    {
-      title: "Components",
-      href: "/dashboard/admin/components",
-      icon: Layers,
-    },
-    {
-      title: "Branding",
-      href: "/dashboard/admin/branding",
-      icon: Palette,
-    },
-    {
-      title: "Settings",
-      href: "/dashboard/admin/settings",
-      icon: Settings,
-    },
+    ...(user?.role === "admin"
+      ? [
+          {
+            title: "User Management",
+            href: "/portal/user-management",
+            icon: Users,
+          },
+          {
+            title: "Email Templates",
+            href: "/portal/email-templates",
+            icon: Mail,
+          },
+          {
+            title: "Website Structure",
+            href: "/portal/website-structure",
+            icon: Globe,
+          },
+          {
+            title: "Components",
+            href: "/portal/components",
+            icon: Layers,
+          },
+          {
+            title: "Branding",
+            href: "/portal/branding",
+            icon: Palette,
+          },
+          {
+            title: "Settings",
+            href: "/portal/settings",
+            icon: Settings,
+          },
+        ]
+      : []),
   ]
 
   const isActive = (href: string, exact = false) => {
@@ -175,97 +172,29 @@ export function DashboardSidebar({ collapsed, onToggle }: SidebarProps) {
       {/* Navigation */}
       <div className="flex-1 overflow-y-auto py-4">
         <nav className="space-y-1 px-3">
-          {/* Member Section */}
-          <div className="space-y-1">
-            {!collapsed && (
-              <div className="px-3 py-2">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Member</h3>
-              </div>
-            )}
-            {memberNavItems.map((item) => (
-              <Link key={item.href} href={item.href}>
-                <div
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    isActive(item.href, item.exact) ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100",
-                  )}
-                >
-                  <item.icon className="h-5 w-5 flex-shrink-0" />
-                  {!collapsed && (
-                    <>
-                      <span className="flex-1">{item.title}</span>
-                      {item.badge && (
-                        <Badge variant="secondary" className="text-xs">
-                          {item.badge}
-                        </Badge>
-                      )}
-                    </>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {!collapsed && <Separator className="my-4" />}
-
-          {/* Client Section */}
-          <div className="space-y-1">
-            {!collapsed && (
-              <div className="px-3 py-2">
-                <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Client</h3>
-              </div>
-            )}
-            {clientNavItems.map((item) => (
-              <Link key={item.href} href={item.href}>
-                <div
-                  className={cn(
-                    "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                    isActive(item.href) ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100",
-                    item.badge && "opacity-60 cursor-not-allowed",
-                  )}
-                >
-                  <item.icon className="h-5 w-5 flex-shrink-0" />
-                  {!collapsed && (
-                    <>
-                      <span className="flex-1">{item.title}</span>
-                      {item.badge && (
-                        <Badge variant="secondary" className="text-xs">
-                          {item.badge}
-                        </Badge>
-                      )}
-                    </>
-                  )}
-                </div>
-              </Link>
-            ))}
-          </div>
-
-          {/* Admin Section - Only show if user is admin */}
-          {user?.role === "admin" && (
-            <>
-              {!collapsed && <Separator className="my-4" />}
-              <div className="space-y-1">
-                {!collapsed && (
-                  <div className="px-3 py-2">
-                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider">Admin</h3>
-                  </div>
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <div
+                className={cn(
+                  "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
+                  isActive(item.href, item.exact) ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100",
+                  item.badge && "opacity-60 cursor-not-allowed",
                 )}
-                {adminNavItems.map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <div
-                      className={cn(
-                        "flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors",
-                        isActive(item.href) ? "bg-primary text-white" : "text-gray-700 hover:bg-gray-100",
-                      )}
-                    >
-                      <item.icon className="h-5 w-5 flex-shrink-0" />
-                      {!collapsed && <span className="flex-1">{item.title}</span>}
-                    </div>
-                  </Link>
-                ))}
+              >
+                <item.icon className="h-5 w-5 flex-shrink-0" />
+                {!collapsed && (
+                  <>
+                    <span className="flex-1">{item.title}</span>
+                    {item.badge && (
+                      <Badge variant="secondary" className="text-xs">
+                        {item.badge}
+                      </Badge>
+                    )}
+                  </>
+                )}
               </div>
-            </>
-          )}
+            </Link>
+          ))}
         </nav>
       </div>
 

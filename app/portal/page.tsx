@@ -28,7 +28,7 @@ export default function PortalPage() {
             title="My Schedule"
             description="View your training sessions"
             icon={Calendar}
-            href="/portal/member/schedule"
+            href="/portal/schedule"
             iconColor="text-blue-500"
           />
 
@@ -36,7 +36,7 @@ export default function PortalPage() {
             title="My Profile"
             description="Update your information"
             icon={UserPlus}
-            href="/portal/member/profile"
+            href="/portal/profile"
             iconColor="text-primary"
           />
 
@@ -44,7 +44,7 @@ export default function PortalPage() {
             title="Training Materials"
             description="Access workout guides"
             icon={BookOpen}
-            href="/portal/member/materials"
+            href="/portal/materials"
             iconColor="text-purple-500"
             badge="Soon"
           />
@@ -53,7 +53,7 @@ export default function PortalPage() {
             title="Progress"
             description="Track your achievements"
             icon={Trophy}
-            href="/portal/member/progress"
+            href="/portal/progress"
             iconColor="text-yellow-500"
             badge="Soon"
           />
@@ -62,7 +62,7 @@ export default function PortalPage() {
             title="Messages"
             description="Chat with your trainer"
             icon={MessageSquare}
-            href="/portal/member/messages"
+            href="/portal/messages"
             iconColor="text-indigo-500"
             notification
             badge="Soon"
@@ -72,7 +72,7 @@ export default function PortalPage() {
             title="Payments"
             description="Manage your billing"
             icon={CreditCard}
-            href="/portal/member/payments"
+            href="/portal/payments"
             iconColor="text-emerald-500"
             notification
             badge="Soon"
@@ -82,7 +82,7 @@ export default function PortalPage() {
             title="Documents"
             description="Forms and agreements"
             icon={FileText}
-            href="/portal/member/documents"
+            href="/portal/documents"
             iconColor="text-orange-500"
             badge="Soon"
           />
@@ -91,7 +91,7 @@ export default function PortalPage() {
             title="News & Updates"
             description="Latest gym announcements"
             icon={Newspaper}
-            href="/portal/member/news"
+            href="/portal/news"
             iconColor="text-pink-500"
             badge="Soon"
           />
@@ -100,7 +100,7 @@ export default function PortalPage() {
             title="Book Session"
             description="Schedule a training session"
             icon={CalendarPlus}
-            href="/portal/member/book"
+            href="/portal/book"
             iconColor="text-cyan-500"
             badge="Soon"
           />
@@ -110,7 +110,7 @@ export default function PortalPage() {
             title="User Management"
             description="Manage members and staff"
             icon={Users}
-            href="/portal/admin/user-management"
+            href="/portal/user-management"
             iconColor="text-primary-dark"
           />
 
@@ -118,7 +118,7 @@ export default function PortalPage() {
             title="Content Management"
             description="Website, branding & templates"
             icon={Edit3}
-            href="/portal/admin/content-management"
+            href="/portal/content-management"
             iconColor="text-primary"
           />
 
@@ -126,7 +126,7 @@ export default function PortalPage() {
             title="Settings"
             description="System configuration"
             icon={Settings}
-            href="/portal/admin/settings"
+            href="/portal/settings"
             iconColor="text-gray-500"
           />
         </div>
