@@ -888,13 +888,6 @@ export function CustomerThankYouEmail({ name }: CustomerThankYouEmailProps) {
                   <div className="space-y-3">
                     {[
                       {
-                        name: "Contact Info",
-                        category: "Content",
-                        usage: "1 page (Contact)",
-                        file: "contact-info.tsx",
-                        description: "Business contact information display",
-                      },
-                      {
                         name: "Service Card",
                         category: "Content",
                         usage: "2 pages",
@@ -909,25 +902,11 @@ export function CustomerThankYouEmail({ name }: CustomerThankYouEmailProps) {
                         description: "Customer testimonial card with rating and photo",
                       },
                       {
-                        name: "Studio Showcase",
-                        category: "Content",
-                        usage: "1 page (About)",
-                        file: "studio-showcase.tsx",
-                        description: "Image gallery showcasing the fitness studio",
-                      },
-                      {
-                        name: "Opening Hours",
+                        name: "Contact Info",
                         category: "Content",
                         usage: "1 page (Contact)",
-                        file: "opening-hours.tsx",
-                        description: "Business hours display component",
-                      },
-                      {
-                        name: "CTA Section",
-                        category: "Content",
-                        usage: "Multiple pages",
-                        file: "cta-section.tsx",
-                        description: "Call-to-action section with contact button",
+                        file: "contact-info.tsx",
+                        description: "Business contact information display",
                       },
                     ].map((component) => (
                       <div key={component.name} className="border rounded-lg">
@@ -1011,91 +990,6 @@ export function CustomerThankYouEmail({ name }: CustomerThankYouEmailProps) {
                                   <p className="text-sm mt-2">Component: {component.file}</p>
                                 </div>
                               )}
-                            </div>
-                            <div className="mt-3 text-xs text-gray-500">
-                              <p>
-                                <strong>File:</strong> {component.file}
-                              </p>
-                              <p>
-                                <strong>Description:</strong> {component.description}
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Interactive Components Card */}
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Layout className="w-5 h-5 text-primary" />
-                    Interactive Components
-                  </CardTitle>
-                  <CardDescription>Interactive and dynamic components</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    {[
-                      {
-                        name: "Review Carousel",
-                        category: "Interactive",
-                        usage: "1 page (Home)",
-                        file: "review-carousel.tsx",
-                        description: "Sliding carousel for customer testimonials",
-                      },
-                      {
-                        name: "Image Gallery",
-                        category: "Interactive",
-                        usage: "1 page (About)",
-                        file: "image-gallery.tsx",
-                        description: "Interactive image gallery with modal view",
-                      },
-                      {
-                        name: "Google Map",
-                        category: "Interactive",
-                        usage: "1 page (Contact)",
-                        file: "google-map.tsx",
-                        description: "Embedded Google Maps with business location",
-                      },
-                    ].map((component) => (
-                      <div key={component.name} className="border rounded-lg">
-                        <div
-                          className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                          onClick={() => {
-                            setExpandedTemplate(expandedTemplate === component.name ? null : component.name)
-                          }}
-                        >
-                          <div>
-                            <p className="font-medium">{component.name}</p>
-                            <p className="text-sm text-gray-500">
-                              {component.category} • Used in {component.usage}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              {component.category}
-                            </Badge>
-                            <ChevronDown
-                              className={`w-4 h-4 transition-transform ${
-                                expandedTemplate === component.name ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
-                        </div>
-                        {expandedTemplate === component.name && (
-                          <div className="border-t bg-gray-50 p-4">
-                            <div className="mb-2">
-                              <p className="text-sm font-medium text-gray-700">Component Preview:</p>
-                            </div>
-                            <div className="bg-white border rounded p-4 max-w-full overflow-auto">
-                              <div className="text-center py-8 text-gray-500">
-                                <p>Preview not available for {component.name}</p>
-                                <p className="text-sm mt-2">Component: {component.file}</p>
-                              </div>
                             </div>
                             <div className="mt-3 text-xs text-gray-500">
                               <p>
