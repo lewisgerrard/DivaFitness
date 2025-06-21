@@ -2,7 +2,6 @@ import Link from "next/link"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import type { LucideIcon } from "lucide-react"
-import { cn } from "@/lib/utils"
 
 interface CleanPortalCardProps {
   title: string
@@ -30,7 +29,7 @@ export function CleanPortalCard({
           <div className="flex items-start justify-between">
             <div className="flex items-center gap-4">
               <div className="p-3 bg-gray-50 rounded-lg group-hover:bg-primary/5 transition-colors">
-                <Icon className={cn("h-6 w-6", iconColor)} />
+                <Icon className="h-6 w-6 text-primary" />
               </div>
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors">{title}</h3>

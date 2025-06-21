@@ -36,10 +36,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Check if we have a token in localStorage
       const storedToken = localStorage.getItem("auth-token")
       console.log("🎫 Stored token found:", !!storedToken)
-      console.log("🎫 Token length:", storedToken?.length || 0)
 
       if (!storedToken) {
         console.log("❌ No stored token found")
+        setUser(null)
+        setToken(null)
+        setLoading(false)
+        return
+      }
+
+      // Validate token format before making request
+      const tokenParts = storedToken.split(".")
+      if (tokenParts.length !== 3) {
+        console.log("❌ Invalid token format, clearing token")
+        localStorage.removeItem("auth-token")
         setUser(null)
         setToken(null)
         setLoading(false)
@@ -64,37 +74,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setUser(data.user)
         setToken(storedToken)
       } else {
-        console.log("❌ Auth check failed, response:", response.status)
-        // Don't clear token immediately, try to refresh it
-        if (response.status === 401) {
-          console.log("🔄 Token might be expired, attempting refresh...")
-          // Try to refresh the session
-          const refreshResponse = await fetch("/api/auth/refresh", {
-            method: "POST",
-            credentials: "include",
-          })
-
-          if (refreshResponse.ok) {
-            const refreshData = await refreshResponse.json()
-            if (refreshData.token) {
-              localStorage.setItem("auth-token", refreshData.token)
-              setToken(refreshData.token)
-              setUser(refreshData.user)
-              console.log("✅ Token refreshed successfully")
-              return
-            }
-          }
-        }
-
-        console.log("❌ Clearing stored token")
+        console.log("❌ Auth check failed, clearing token")
         localStorage.removeItem("auth-token")
         setUser(null)
         setToken(null)
       }
     } catch (error) {
       console.error("❌ Auth check failed:", error)
-      // Don't clear token on network errors
-      console.log("🔄 Network error, keeping token for retry")
+      localStorage.removeItem("auth-token")
+      setUser(null)
+      setToken(null)
     } finally {
       setLoading(false)
     }

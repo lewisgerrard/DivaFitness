@@ -1,118 +1,99 @@
 "use client"
 
-import { useState } from "react"
 import Link from "next/link"
-import { usePathname, useRouter } from "next/navigation"
-import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { User, Settings, LogOut, Home, ChevronLeft, ChevronRight } from "lucide-react"
-import { useAuth } from "@/hooks/use-auth"
-import { cn } from "@/lib/utils"
+import { useState } from "react"
+import { ChevronDown, User, Settings, LogOut, Home } from "lucide-react"
 
 export function CleanPortalSidebar() {
-  const { user, logout } = useAuth()
-  const pathname = usePathname()
-  const router = useRouter()
-  const [collapsed, setCollapsed] = useState(false)
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
 
-  const handleLogout = async () => {
-    await logout()
-    router.push("/")
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    window.location.href = "/login"
   }
 
-  const navItems = [{ label: "Portal Home", href: "/portal", icon: Home }]
-
   return (
-    <div
-      className={cn(
-        "bg-white border-r border-gray-200 h-screen flex flex-col transition-all duration-300 flex-shrink-0",
-        collapsed ? "w-16" : "w-64",
-      )}
-    >
-      {/* Header */}
-      <div className="p-4 border-b border-gray-100">
-        <div className="flex items-center justify-between">
-          {!collapsed && (
-            <div className="flex items-center gap-3">
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-sm">D</span>
-              </div>
-              <div>
-                <h1 className="font-semibold text-gray-900">Diva Fitness</h1>
-                <p className="text-xs text-gray-500">Portal</p>
-              </div>
-            </div>
-          )}
-          <Button variant="ghost" size="sm" onClick={() => setCollapsed(!collapsed)} className="h-8 w-8 p-0">
-            {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
-        </div>
+    <div className="bg-white border-r border-gray-200 h-screen w-64 flex flex-col shadow-sm">
+      <div className="p-6 border-b border-gray-200">
+        <h2 className="text-xl font-semibold text-gray-800">Portal</h2>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex-1 p-4 space-y-1">
-        {navItems.map((item) => (
-          <Link key={item.href} href={item.href}>
-            <Button
-              variant={pathname === item.href ? "secondary" : "ghost"}
-              className={cn(
-                "w-full justify-start gap-3 h-10 text-gray-700 hover:text-primary hover:bg-primary/5",
-                pathname === item.href && "bg-primary/10 text-primary font-medium",
-                collapsed && "justify-center px-2",
-              )}
+      <nav className="flex-1 p-4">
+        <ul className="space-y-2">
+          <li>
+            <Link
+              href="/portal/dashboard"
+              className="flex items-center py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             >
-              <item.icon className="h-4 w-4 flex-shrink-0" />
-              {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
-            </Button>
-          </Link>
-        ))}
+              Dashboard
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/portal/profile"
+              className="flex items-center py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              My Profile
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/portal/settings"
+              className="flex items-center py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              Settings
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="/portal/help"
+              className="flex items-center py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              Help
+            </Link>
+          </li>
+        </ul>
       </nav>
 
-      {/* User Menu */}
-      <div className="p-4 border-t border-gray-100">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              variant="ghost"
-              className={cn("w-full justify-start gap-3 h-12 hover:bg-gray-50", collapsed && "justify-center px-2")}
-            >
-              <div className="w-8 h-8 bg-gradient-to-br from-primary to-primary-dark rounded-full flex items-center justify-center flex-shrink-0">
-                <User className="w-4 h-4 text-white" />
-              </div>
-              {!collapsed && (
-                <div className="flex-1 text-left">
-                  <p className="text-sm font-medium text-gray-900">{user?.first_name || user?.name}</p>
-                  <p className="text-xs text-gray-500">{user?.email}</p>
-                </div>
-              )}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-56">
-            <DropdownMenuLabel>
-              <div>
-                <p className="font-medium">{user?.first_name || user?.name}</p>
-                <p className="text-sm text-gray-500">{user?.email}</p>
-              </div>
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Settings className="mr-2 h-4 w-4" />
-              Settings
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={handleLogout}>
-              <LogOut className="mr-2 h-4 w-4" />
-              Sign Out
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+      <div className="p-4 border-t border-gray-200">
+        <div className="relative">
+          <button
+            onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+            className="w-full flex items-center justify-between py-2 px-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+          >
+            <div className="flex items-center space-x-2">
+              <User className="w-4 h-4" />
+              <span className="text-sm">User Menu</span>
+            </div>
+            <ChevronDown className={`w-4 h-4 transition-transform ${isDropdownOpen ? "rotate-180" : ""}`} />
+          </button>
+
+          {isDropdownOpen && (
+            <div className="absolute bottom-full left-0 right-0 mb-2 bg-white border border-gray-200 rounded-lg shadow-lg">
+              <Link
+                href="/portal"
+                className="flex items-center space-x-2 py-2 px-3 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg"
+              >
+                <Home className="w-4 h-4" />
+                <span>Portal</span>
+              </Link>
+              <Link
+                href="/portal/settings"
+                className="flex items-center space-x-2 py-2 px-3 text-sm text-gray-700 hover:bg-gray-100"
+              >
+                <Settings className="w-4 h-4" />
+                <span>Settings</span>
+              </Link>
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center space-x-2 py-2 px-3 text-sm text-red-600 hover:bg-red-50 rounded-b-lg"
+              >
+                <LogOut className="w-4 h-4" />
+                <span>Log Out</span>
+              </button>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   )
