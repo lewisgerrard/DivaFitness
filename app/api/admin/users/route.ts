@@ -1,6 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
-import { getAllUsers } from "@/lib/auth"
+import { getAllUsers, createUser } from "@/lib/auth"
 
 // Force dynamic rendering
 export const dynamic = "force-dynamic"
@@ -50,6 +50,48 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ users })
   } catch (error) {
     console.error("❌ Admin users API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
+  }
+}
+
+export async function POST(request: NextRequest) {
+  console.log("=== Create user API called ===")
+
+  try {
+    const authHeader = request.headers.get("authorization")
+    const cookieToken = request.cookies.get("auth-token")?.value
+
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
+    }
+
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    }
+
+    const { payload } = await jwtVerify(token, secret)
+
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
+
+    const userData = await request.json()
+    console.log("📝 Creating user with data:", userData)
+
+    const newUser = await createUser(userData)
+
+    if (!newUser) {
+      return NextResponse.json({ error: "Failed to create user" }, { status: 400 })
+    }
+
+    console.log("✅ User created successfully:", newUser)
+    return NextResponse.json({ user: newUser })
+  } catch (error) {
+    console.error("❌ Create user API error:", error)
     return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }

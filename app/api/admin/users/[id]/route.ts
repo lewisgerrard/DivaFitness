@@ -1,89 +1,77 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
-import { getUserById, deleteUser, updateUser } from "@/lib/auth"
+import { getUserById, updateUser, deleteUser } from "@/lib/auth"
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
+// Force dynamic rendering
+export const dynamic = "force-dynamic"
 
-async function getAuthenticatedUser(request: NextRequest) {
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
+const secret = new TextEncoder().encode(JWT_SECRET)
+
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    // Try Authorization header first
     const authHeader = request.headers.get("authorization")
+    const cookieToken = request.cookies.get("auth-token")?.value
+
     let token = null
 
     if (authHeader && authHeader.startsWith("Bearer ")) {
       token = authHeader.substring(7)
-      console.log("[SERVER] Token found in Authorization header")
-    } else {
-      // Fallback to cookie
-      token = request.cookies.get("auth-token")?.value
-      console.log("[SERVER] Token found in cookie:", !!token)
+    } else if (cookieToken) {
+      token = cookieToken
     }
 
     if (!token) {
-      console.log("[SERVER] No auth token found")
-      return null
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
     const { payload } = await jwtVerify(token, secret)
-    console.log("[SERVER] JWT payload:", payload)
 
-    const userId = payload.userId as number
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
+
+    const userId = Number.parseInt(params.id)
     const user = await getUserById(userId)
-    console.log("[SERVER] User from database:", user)
 
-    if (!user || user.role !== "admin") {
-      console.log("[SERVER] User not admin or not found, role:", user?.role)
-      return null
-    }
-
-    return user
-  } catch (error) {
-    console.error("[SERVER] Auth error:", error)
-    return null
-  }
-}
-
-export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
-  try {
-    console.log("[SERVER] Get user API called for ID:", params.id)
-
-    const authenticatedUser = await getAuthenticatedUser(request)
-    if (!authenticatedUser) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
-    }
-
-    const targetUserId = Number.parseInt(params.id)
-    console.log("[SERVER] Getting user ID:", targetUserId)
-
-    const targetUser = await getUserById(targetUserId)
-    console.log("[SERVER] Target user found:", !!targetUser)
-
-    if (!targetUser) {
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ user: targetUser })
+    return NextResponse.json({ user })
   } catch (error) {
-    console.error("[SERVER] Get user API error:", error)
-    return NextResponse.json({ error: "Failed to get user" }, { status: 500 })
+    console.error("Get user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    console.log("[SERVER] Update user API called for ID:", params.id)
+    const authHeader = request.headers.get("authorization")
+    const cookieToken = request.cookies.get("auth-token")?.value
 
-    const authenticatedUser = await getAuthenticatedUser(request)
-    if (!authenticatedUser) {
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
+    }
+
+    if (!token) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const targetUserId = Number.parseInt(params.id)
-    const updateData = await request.json()
-    console.log("[SERVER] Update data:", updateData)
+    const { payload } = await jwtVerify(token, secret)
 
-    const updatedUser = await updateUser(targetUserId, updateData)
-    console.log("[SERVER] User updated:", !!updatedUser)
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
+
+    const userId = Number.parseInt(params.id)
+    const updateData = await request.json()
+
+    const updatedUser = await updateUser(userId, updateData)
 
     if (!updatedUser) {
       return NextResponse.json({ error: "Failed to update user" }, { status: 400 })
@@ -91,33 +79,44 @@ export async function PUT(request: NextRequest, { params }: { params: { id: stri
 
     return NextResponse.json({ user: updatedUser })
   } catch (error) {
-    console.error("[SERVER] Update user API error:", error)
-    return NextResponse.json({ error: "Failed to update user" }, { status: 500 })
+    console.error("Update user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    console.log("[SERVER] Delete user API called for ID:", params.id)
+    const authHeader = request.headers.get("authorization")
+    const cookieToken = request.cookies.get("auth-token")?.value
 
-    const authenticatedUser = await getAuthenticatedUser(request)
-    if (!authenticatedUser) {
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
+    }
+
+    if (!token) {
       return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const userIdToDelete = Number.parseInt(params.id)
-    console.log("[SERVER] Deleting user ID:", userIdToDelete)
+    const { payload } = await jwtVerify(token, secret)
 
-    const success = await deleteUser(userIdToDelete)
-    console.log("[SERVER] User deleted successfully:", success)
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
+
+    const userId = Number.parseInt(params.id)
+    const success = await deleteUser(userId)
 
     if (!success) {
       return NextResponse.json({ error: "Failed to delete user" }, { status: 400 })
     }
 
-    return NextResponse.json({ success: true })
+    return NextResponse.json({ message: "User deleted successfully" })
   } catch (error) {
-    console.error("[SERVER] Delete user API error:", error)
-    return NextResponse.json({ error: "Failed to delete user" }, { status: 500 })
+    console.error("Delete user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }

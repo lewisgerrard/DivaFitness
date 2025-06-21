@@ -12,6 +12,7 @@ export interface User {
   date_of_birth?: string
   photo_url?: string
   role: "admin" | "client" | "member"
+  status: "active" | "inactive"
   created_at?: string
 }
 
@@ -31,7 +32,7 @@ export async function authenticateUser(email: string, password: string): Promise
 
     const result = await sql`
       SELECT id, first_name, last_name, email, password_hash, address, phone, 
-             date_of_birth, photo_url, role
+             date_of_birth, photo_url, role, status
       FROM users 
       WHERE email = ${email}
     `
@@ -42,6 +43,12 @@ export async function authenticateUser(email: string, password: string): Promise
     }
 
     const user = result[0] as any
+
+    // Check if user is active
+    if (user.status === "inactive") {
+      console.log("User account is inactive:", email)
+      return null
+    }
 
     // Check if password_hash exists
     if (!user.password_hash) {
@@ -75,7 +82,7 @@ export async function getAllUsers(): Promise<User[]> {
 
     const result = await sql`
       SELECT id, first_name, last_name, email, address, phone, 
-             date_of_birth, photo_url, role
+             date_of_birth, photo_url, role, status, created_at
       FROM users 
       ORDER BY id DESC
     `
@@ -96,7 +103,7 @@ export async function getUserById(id: number): Promise<User | null> {
 
     const result = await sql`
       SELECT id, first_name, last_name, email, address, phone,
-             date_of_birth, photo_url, role
+             date_of_birth, photo_url, role, status
       FROM users 
       WHERE id = ${id}
     `
@@ -116,6 +123,7 @@ export async function createUser(data: {
   email: string
   password: string
   role?: "admin" | "client" | "member"
+  status?: "active" | "inactive"
   phone?: string
   address?: string
   date_of_birth?: string
@@ -131,16 +139,16 @@ export async function createUser(data: {
 
     const result = await sql`
       INSERT INTO users (
-        first_name, last_name, email, password_hash, role, phone, address,
+        first_name, last_name, email, password_hash, role, status, phone, address,
         date_of_birth, photo_url
       )
       VALUES (
         ${data.first_name}, ${data.last_name}, ${data.email}, ${password_hash}, 
-        ${data.role || "member"}, ${data.phone || null}, ${data.address || null},
+        ${data.role || "member"}, ${data.status || "active"}, ${data.phone || null}, ${data.address || null},
         ${data.date_of_birth || null}, ${data.photo_url || null}
       )
       RETURNING id, first_name, last_name, email, address, phone, 
-          date_of_birth, photo_url, role
+          date_of_birth, photo_url, role, status
     `
 
     if (result.length === 0) return null
@@ -168,10 +176,11 @@ export async function updateUser(id: number, data: Partial<Omit<User, "id">>): P
         address = COALESCE(${data.address || null}, address),
         date_of_birth = COALESCE(${data.date_of_birth || null}, date_of_birth),
         photo_url = COALESCE(${data.photo_url || null}, photo_url),
-        role = COALESCE(${data.role || null}, role)
+        role = COALESCE(${data.role || null}, role),
+        status = COALESCE(${data.status || null}, status)
       WHERE id = ${id}
       RETURNING id, first_name, last_name, email, address, phone,
-          date_of_birth, photo_url, role
+          date_of_birth, photo_url, role, status
     `
 
     if (result.length === 0) return null

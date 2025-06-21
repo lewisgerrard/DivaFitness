@@ -7,9 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import { DashboardTable } from "@/components/dashboard-table"
-import AddClientModal from "@/components/add-client-modal"
+import AddUserModal from "@/components/add-user-modal"
 import { ConfirmDialog } from "@/components/confirm-dialog"
-import { Users, UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail } from "lucide-react"
+import { Users, UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail, ToggleLeft, ToggleRight } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/hooks/use-auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -21,6 +21,7 @@ interface User {
   email: string
   phone?: string
   role: string
+  status: string
   created_at: string
   address?: string
   date_of_birth?: string
@@ -32,6 +33,7 @@ export default function UserManagementPage() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
   const [roleFilter, setRoleFilter] = useState("all")
+  const [statusFilter, setStatusFilter] = useState("all")
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false)
@@ -73,7 +75,7 @@ export default function UserManagementPage() {
     }
   }, [currentUser])
 
-  // Filter users based on search and role
+  // Filter users based on search, role, and status
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
       user.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -81,8 +83,9 @@ export default function UserManagementPage() {
       user.email?.toLowerCase().includes(searchTerm.toLowerCase())
 
     const matchesRole = roleFilter === "all" || user.role === roleFilter
+    const matchesStatus = statusFilter === "all" || user.status === statusFilter
 
-    return matchesSearch && matchesRole
+    return matchesSearch && matchesRole && matchesStatus
   })
 
   // Handle user deletion
@@ -114,6 +117,33 @@ export default function UserManagementPage() {
     }
   }
 
+  // Handle user status toggle
+  const handleToggleStatus = async (user: User) => {
+    try {
+      const token = localStorage.getItem("auth-token")
+      const newStatus = user.status === "active" ? "inactive" : "active"
+
+      const response = await fetch(`/api/admin/users/${user.id}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ status: newStatus }),
+      })
+
+      if (response.ok) {
+        toast.success(`User ${newStatus === "active" ? "activated" : "deactivated"} successfully`)
+        fetchUsers() // Refresh the list
+      } else {
+        toast.error("Failed to update user status")
+      }
+    } catch (error) {
+      console.error("Error updating user status:", error)
+      toast.error("Error updating user status")
+    }
+  }
+
   const getRoleBadge = (role: string) => {
     switch (role) {
       case "admin":
@@ -127,11 +157,23 @@ export default function UserManagementPage() {
     }
   }
 
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case "active":
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Active</Badge>
+      case "inactive":
+        return <Badge className="bg-gray-100 text-gray-800 hover:bg-gray-100">Inactive</Badge>
+      default:
+        return <Badge variant="secondary">{status}</Badge>
+    }
+  }
+
   const userTableColumns = [
     { key: "full_name", label: "Full Name" },
     { key: "email", label: "Email" },
     { key: "phone", label: "Phone" },
     { key: "access", label: "Access" },
+    { key: "status", label: "Status" },
     { key: "actions", label: "Actions" },
   ]
 
@@ -141,6 +183,7 @@ export default function UserManagementPage() {
     email: user.email,
     phone: user.phone || "Not provided",
     access: getRoleBadge(user.role),
+    status: getStatusBadge(user.status),
     actions: (
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -152,6 +195,19 @@ export default function UserManagementPage() {
           <DropdownMenuItem>
             <Edit className="w-4 h-4 mr-2" />
             Edit User
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={() => handleToggleStatus(user)}>
+            {user.status === "active" ? (
+              <>
+                <ToggleLeft className="w-4 h-4 mr-2" />
+                Deactivate
+              </>
+            ) : (
+              <>
+                <ToggleRight className="w-4 h-4 mr-2" />
+                Activate
+              </>
+            )}
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Mail className="w-4 h-4 mr-2" />
@@ -174,6 +230,8 @@ export default function UserManagementPage() {
 
   const userStats = {
     total: users.length,
+    active: users.filter((u) => u.status === "active").length,
+    inactive: users.filter((u) => u.status === "inactive").length,
     admins: users.filter((u) => u.role === "admin").length,
     clients: users.filter((u) => u.role === "client").length,
     members: users.filter((u) => u.role === "member").length,
@@ -208,7 +266,7 @@ export default function UserManagementPage() {
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
           <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
@@ -217,7 +275,35 @@ export default function UserManagementPage() {
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">{userStats.total}</p>
-                  <p className="text-sm text-gray-600">Total Users</p>
+                  <p className="text-sm text-gray-600">Total</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Users className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.active}</p>
+                  <p className="text-sm text-gray-600">Active</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gray-100 rounded-lg">
+                  <Users className="w-5 h-5 text-gray-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.inactive}</p>
+                  <p className="text-sm text-gray-600">Inactive</p>
                 </div>
               </div>
             </CardContent>
@@ -283,7 +369,7 @@ export default function UserManagementPage() {
                   className="pl-10 border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]"
                 />
               </div>
-              <div className="flex gap-2">
+              <div className="flex gap-2 flex-wrap">
                 <Button
                   variant={roleFilter === "all" ? "default" : "outline"}
                   onClick={() => setRoleFilter("all")}
@@ -293,7 +379,7 @@ export default function UserManagementPage() {
                       : "border-[#7b329b]/20 hover:bg-[#7b329b]/10"
                   }
                 >
-                  All
+                  All Roles
                 </Button>
                 <Button
                   variant={roleFilter === "admin" ? "default" : "outline"}
@@ -328,6 +414,40 @@ export default function UserManagementPage() {
                 >
                   Members
                 </Button>
+                <Button
+                  variant={statusFilter === "active" ? "default" : "outline"}
+                  onClick={() => setStatusFilter("active")}
+                  className={
+                    statusFilter === "active"
+                      ? "bg-green-600 hover:bg-green-700"
+                      : "border-green-200 hover:bg-green-50 text-green-600"
+                  }
+                >
+                  Active
+                </Button>
+                <Button
+                  variant={statusFilter === "inactive" ? "default" : "outline"}
+                  onClick={() => setStatusFilter("inactive")}
+                  className={
+                    statusFilter === "inactive"
+                      ? "bg-gray-600 hover:bg-gray-700"
+                      : "border-gray-200 hover:bg-gray-50 text-gray-600"
+                  }
+                >
+                  Inactive
+                </Button>
+                {(roleFilter !== "all" || statusFilter !== "all") && (
+                  <Button
+                    variant="outline"
+                    onClick={() => {
+                      setRoleFilter("all")
+                      setStatusFilter("all")
+                    }}
+                    className="border-[#7b329b]/20 hover:bg-[#7b329b]/10"
+                  >
+                    Clear Filters
+                  </Button>
+                )}
               </div>
             </div>
 
@@ -342,10 +462,10 @@ export default function UserManagementPage() {
         </Card>
 
         {/* Add User Modal */}
-        <AddClientModal
+        <AddUserModal
           isOpen={isAddModalOpen}
           onClose={() => setIsAddModalOpen(false)}
-          onAddClient={async () => {
+          onAddUser={async () => {
             await fetchUsers() // Refresh the list
           }}
         />
