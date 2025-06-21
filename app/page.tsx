@@ -4,10 +4,21 @@ import SectionHeader from "@/components/section-header"
 import ReviewCard from "@/components/review-card"
 import MapSection from "@/components/map-section"
 import CTASection from "@/components/cta-section"
+import { StructuredData } from "@/components/structured-data"
+import { generateBusinessSchema, generatePersonSchema } from "@/lib/structured-data"
+import { generatePageMetadata } from "@/lib/seo"
 import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
+
+export const metadata = generatePageMetadata({
+  title: "Personal Training & Fitness Studio for Women",
+  description:
+    "Transform your body and mind with expert personal training in our private women-only fitness studio. Specializing in female fitness since 2017.",
+  keywords: ["personal trainer", "women's fitness", "female personal trainer", "fitness studio", "private gym"],
+  path: "/",
+})
 
 export default function HomePage() {
   const reviews = [
@@ -36,6 +47,8 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen">
+      <StructuredData data={[generateBusinessSchema(), generatePersonSchema()]} />
+
       <HeroHome
         title="Transform Your"
         subtitle="Fitness Journey"

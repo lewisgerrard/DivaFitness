@@ -7,10 +7,9 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Badge } from "@/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAuth } from "@/hooks/use-auth"
-import { User, Mail, Phone, Calendar, MapPin, Shield, Edit, Save, X, Heart } from "lucide-react"
+import { User, Edit, Save, X, Heart } from "lucide-react"
 import { toast } from "sonner"
 
 export default function ProfilePage() {
@@ -25,7 +24,7 @@ export default function ProfilePage() {
     address: "",
     emergency_contact_name: "",
     emergency_contact_phone: "",
-    membership_type: "",
+    account_type: "",
   })
 
   useEffect(() => {
@@ -39,7 +38,7 @@ export default function ProfilePage() {
         address: user.address || "",
         emergency_contact_name: user.emergency_contact_name || "",
         emergency_contact_phone: user.emergency_contact_phone || "",
-        membership_type: user.membership_type || "Basic",
+        account_type: user.role || "member",
       })
     }
   }, [user])
@@ -64,15 +63,42 @@ export default function ProfilePage() {
         address: user.address || "",
         emergency_contact_name: user.emergency_contact_name || "",
         emergency_contact_phone: user.emergency_contact_phone || "",
-        membership_type: user.membership_type || "Basic",
+        account_type: user.role || "member",
       })
     }
     setIsEditing(false)
   }
 
+  const getAccountTypeBadge = (type: string) => {
+    switch (type) {
+      case "admin":
+        return "Admin"
+      case "client":
+        return "Client"
+      case "member":
+        return "Member"
+      default:
+        return "Member"
+    }
+  }
+
+  const getAccountTypeColor = (type: string) => {
+    switch (type) {
+      case "admin":
+        return "bg-red-100 text-red-800 border-red-200"
+      case "client":
+        return "bg-[#7b329b]/10 text-[#7b329b] border-[#7b329b]/30"
+      case "member":
+        return "bg-blue-100 text-blue-800 border-blue-200"
+      default:
+        return "bg-blue-100 text-blue-800 border-blue-200"
+    }
+  }
+
   return (
     <CleanPortalLayout>
       <div className="space-y-8">
+        {/* Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-2">
             <h1 className="text-3xl font-bold text-gray-900">My Profile</h1>
@@ -81,17 +107,21 @@ export default function ProfilePage() {
           <div className="flex gap-2">
             {isEditing ? (
               <>
-                <Button variant="outline" onClick={handleCancel} className="border-purple-200 hover:bg-purple-50">
+                <Button
+                  variant="outline"
+                  onClick={handleCancel}
+                  className="border-[#7b329b]/20 hover:bg-[#7b329b]/5 text-[#7b329b]"
+                >
                   <X className="w-4 h-4 mr-2" />
                   Cancel
                 </Button>
-                <Button onClick={handleSave} className="bg-purple-600 hover:bg-purple-700">
+                <Button onClick={handleSave} className="bg-[#7b329b] hover:bg-[#6b2c87] text-white">
                   <Save className="w-4 h-4 mr-2" />
                   Save Changes
                 </Button>
               </>
             ) : (
-              <Button onClick={() => setIsEditing(true)} className="bg-purple-600 hover:bg-purple-700">
+              <Button onClick={() => setIsEditing(true)} className="bg-[#7b329b] hover:bg-[#6b2c87] text-white">
                 <Edit className="w-4 h-4 mr-2" />
                 Edit Profile
               </Button>
@@ -99,204 +129,198 @@ export default function ProfilePage() {
           </div>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Profile Overview */}
-          <Card className="lg:col-span-1 border-purple-100 shadow-sm">
-            <CardHeader className="text-center bg-gradient-to-b from-purple-50 to-white">
-              <Avatar className="w-24 h-24 mx-auto mb-4 ring-4 ring-purple-100">
-                <AvatarImage src="/placeholder-user.jpg" />
-                <AvatarFallback className="text-2xl bg-gradient-to-br from-purple-500 to-purple-600 text-white">
-                  {formData.first_name?.[0]}
-                  {formData.last_name?.[0]}
-                </AvatarFallback>
-              </Avatar>
-              <CardTitle className="text-xl text-gray-900">
-                {formData.first_name} {formData.last_name}
-              </CardTitle>
-              <CardDescription className="text-purple-600">{formData.email}</CardDescription>
-              <div className="flex justify-center mt-2">
-                <Badge className="bg-gradient-to-r from-purple-100 to-purple-50 text-purple-700 border-purple-200">
-                  <Shield className="w-3 h-3 mr-1" />
-                  {user?.role || "Member"}
-                </Badge>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-sm">
-                  <Mail className="w-4 h-4 text-purple-500" />
-                  <span className="text-gray-600">{formData.email}</span>
+        {/* Profile Sections */}
+        <div className="space-y-8">
+          {/* Personal Information */}
+          <Card className="border-[#7b329b]/20 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-[#7b329b]/10 border-b border-[#7b329b]/20">
+              <CardTitle className="flex items-center gap-3 text-gray-900">
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <User className="w-5 h-5 text-[#7b329b]" />
                 </div>
-                {formData.phone && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <Phone className="w-4 h-4 text-purple-500" />
-                    <span className="text-gray-600">{formData.phone}</span>
-                  </div>
-                )}
-                {formData.date_of_birth && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <Calendar className="w-4 h-4 text-purple-500" />
-                    <span className="text-gray-600">{formData.date_of_birth}</span>
-                  </div>
-                )}
-                {formData.address && (
-                  <div className="flex items-center gap-3 text-sm">
-                    <MapPin className="w-4 h-4 text-purple-500" />
-                    <span className="text-xs text-gray-600">{formData.address}</span>
-                  </div>
-                )}
+                Personal Information
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                Your basic personal details and account information
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="first_name" className="text-gray-700 font-medium">
+                    First Name
+                  </Label>
+                  <Input
+                    id="first_name"
+                    value={formData.first_name}
+                    onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
+                    disabled={!isEditing}
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="last_name" className="text-gray-700 font-medium">
+                    Last Name
+                  </Label>
+                  <Input
+                    id="last_name"
+                    value={formData.last_name}
+                    onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
+                    disabled={!isEditing}
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="email" className="text-gray-700 font-medium">
+                    Email Address
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    value={formData.email}
+                    disabled={true}
+                    className="bg-gray-50 border-gray-200 text-gray-500"
+                  />
+                  <p className="text-xs text-gray-500">Email cannot be changed</p>
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="phone" className="text-gray-700 font-medium">
+                    Phone Number
+                  </Label>
+                  <Input
+                    id="phone"
+                    value={formData.phone}
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    disabled={!isEditing}
+                    placeholder="Enter your phone number"
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="space-y-2">
+                  <Label htmlFor="date_of_birth" className="text-gray-700 font-medium">
+                    Date of Birth
+                  </Label>
+                  <Input
+                    id="date_of_birth"
+                    type="date"
+                    value={formData.date_of_birth}
+                    onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
+                    disabled={!isEditing}
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="account_type" className="text-gray-700 font-medium">
+                    Account Type
+                  </Label>
+                  {isEditing ? (
+                    <Select
+                      value={formData.account_type}
+                      onValueChange={(value) => setFormData({ ...formData, account_type: value })}
+                    >
+                      <SelectTrigger className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20">
+                        <SelectValue placeholder="Select account type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="member">Member</SelectItem>
+                        <SelectItem value="client">Client</SelectItem>
+                        <SelectItem value="admin">Admin</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  ) : (
+                    <div className="relative">
+                      <div
+                        className={`px-3 py-2 rounded-md border font-medium text-sm ${getAccountTypeColor(
+                          formData.account_type,
+                        )}`}
+                      >
+                        {getAccountTypeBadge(formData.account_type)}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="address" className="text-gray-700 font-medium">
+                  Address
+                </Label>
+                <Textarea
+                  id="address"
+                  value={formData.address}
+                  onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  disabled={!isEditing}
+                  rows={3}
+                  placeholder="Enter your full address"
+                  className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50 resize-none"
+                />
               </div>
             </CardContent>
           </Card>
 
-          {/* Profile Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Personal Information */}
-            <Card className="border-purple-100 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
-                  <User className="w-5 h-5 text-purple-600" />
-                  Personal Information
-                </CardTitle>
-                <CardDescription>Your basic personal details</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="first_name" className="text-gray-700">
-                      First Name
-                    </Label>
-                    <Input
-                      id="first_name"
-                      value={formData.first_name}
-                      onChange={(e) => setFormData({ ...formData, first_name: e.target.value })}
-                      disabled={!isEditing}
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="last_name" className="text-gray-700">
-                      Last Name
-                    </Label>
-                    <Input
-                      id="last_name"
-                      value={formData.last_name}
-                      onChange={(e) => setFormData({ ...formData, last_name: e.target.value })}
-                      disabled={!isEditing}
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
+          {/* Emergency Contact */}
+          <Card className="border-[#7b329b]/20 shadow-lg">
+            <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-[#7b329b]/10 border-b border-[#7b329b]/20">
+              <CardTitle className="flex items-center gap-3 text-gray-900">
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <Heart className="w-5 h-5 text-[#7b329b]" />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email" className="text-gray-700">
-                      Email Address
-                    </Label>
-                    <Input
-                      id="email"
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      disabled={true}
-                      className="bg-gray-50 border-gray-200"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="phone" className="text-gray-700">
-                      Phone
-                    </Label>
-                    <Input
-                      id="phone"
-                      value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      disabled={!isEditing}
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="date_of_birth" className="text-gray-700">
-                      Date of Birth
-                    </Label>
-                    <Input
-                      id="date_of_birth"
-                      type="date"
-                      value={formData.date_of_birth}
-                      onChange={(e) => setFormData({ ...formData, date_of_birth: e.target.value })}
-                      disabled={!isEditing}
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="membership_type" className="text-gray-700">
-                      Membership Type
-                    </Label>
-                    <Input
-                      id="membership_type"
-                      value={formData.membership_type}
-                      disabled={true}
-                      className="bg-purple-50 border-purple-200 text-purple-700 font-medium"
-                    />
-                  </div>
-                </div>
+                Emergency Contact
+              </CardTitle>
+              <CardDescription className="text-gray-600">
+                Contact information for emergencies and important notifications
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6 pt-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-2">
-                  <Label htmlFor="address" className="text-gray-700">
-                    Address
+                  <Label htmlFor="emergency_contact_name" className="text-gray-700 font-medium">
+                    Contact Name
                   </Label>
-                  <Textarea
-                    id="address"
-                    value={formData.address}
-                    onChange={(e) => setFormData({ ...formData, address: e.target.value })}
+                  <Input
+                    id="emergency_contact_name"
+                    value={formData.emergency_contact_name}
+                    onChange={(e) => setFormData({ ...formData, emergency_contact_name: e.target.value })}
                     disabled={!isEditing}
-                    rows={2}
-                    className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
+                    placeholder="Full name of emergency contact"
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
                   />
                 </div>
-              </CardContent>
-            </Card>
+                <div className="space-y-2">
+                  <Label htmlFor="emergency_contact_phone" className="text-gray-700 font-medium">
+                    Contact Phone
+                  </Label>
+                  <Input
+                    id="emergency_contact_phone"
+                    value={formData.emergency_contact_phone}
+                    onChange={(e) => setFormData({ ...formData, emergency_contact_phone: e.target.value })}
+                    disabled={!isEditing}
+                    placeholder="Phone number"
+                    className="border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]/20 disabled:bg-gray-50"
+                  />
+                </div>
+              </div>
 
-            {/* Emergency Contact */}
-            <Card className="border-purple-100 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
-                <CardTitle className="flex items-center gap-2 text-gray-900">
-                  <Heart className="w-5 h-5 text-purple-600" />
-                  Emergency Contact
-                </CardTitle>
-                <CardDescription>Contact information for emergencies</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 pt-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="emergency_contact_name" className="text-gray-700">
-                      Contact Name
-                    </Label>
-                    <Input
-                      id="emergency_contact_name"
-                      value={formData.emergency_contact_name}
-                      onChange={(e) => setFormData({ ...formData, emergency_contact_name: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="Full name of emergency contact"
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="emergency_contact_phone" className="text-gray-700">
-                      Contact Phone
-                    </Label>
-                    <Input
-                      id="emergency_contact_phone"
-                      value={formData.emergency_contact_phone}
-                      onChange={(e) => setFormData({ ...formData, emergency_contact_phone: e.target.value })}
-                      disabled={!isEditing}
-                      placeholder="Phone number"
-                      className="border-purple-200 focus:border-purple-500 focus:ring-purple-500"
-                    />
+              <div className="bg-[#7b329b]/5 border border-[#7b329b]/20 rounded-lg p-4">
+                <div className="flex items-start gap-3">
+                  <Heart className="w-5 h-5 text-[#7b329b] mt-0.5 flex-shrink-0" />
+                  <div className="space-y-1">
+                    <h4 className="font-medium text-gray-900">Important Note</h4>
+                    <p className="text-sm text-gray-600">
+                      This contact will be notified in case of emergencies during your training sessions. Please ensure
+                      the information is current and the person is easily reachable.
+                    </p>
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          </div>
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </div>
     </CleanPortalLayout>

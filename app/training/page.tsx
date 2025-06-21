@@ -239,8 +239,8 @@ export default function TrainingPage() {
                   <div className={`space-y-6 ${index % 2 === 1 ? "lg:order-2" : ""}`}>
                     <div className="space-y-4">
                       <div className="flex items-center gap-3">
-                        <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
-                          <service.icon className="w-6 h-6 text-primary" />
+                        <div className="w-16 h-16 bg-gradient-to-br from-primary/20 to-primary/10 rounded-2xl flex items-center justify-center shadow-lg border border-primary/20">
+                          <service.icon className="w-8 h-8 text-primary" />
                         </div>
                         {service.premium && <Badge className="bg-primary text-white">Premium Package</Badge>}
                       </div>

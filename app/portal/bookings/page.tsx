@@ -125,7 +125,7 @@ export default function BookingsPage() {
       case "cancelled":
         return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Cancelled</Badge>
       case "completed":
-        return <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Completed</Badge>
+        return <Badge className="bg-[#7b329b]/10 text-[#7b329b] hover:bg-[#7b329b]/10">Completed</Badge>
       default:
         return <Badge variant="secondary">{status}</Badge>
     }
@@ -135,17 +135,17 @@ export default function BookingsPage() {
     <CleanPortalLayout>
       <div className="space-y-8">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
+          <h1 className="text-3xl font-bold text-[#7b329b]">My Bookings</h1>
           <p className="text-gray-600">Manage your class bookings and schedule</p>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-          <Card className="border-purple-100 shadow-sm">
+          <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Calendar className="w-5 h-5 text-purple-600" />
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <Calendar className="w-5 h-5 text-[#7b329b]" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">3</p>
@@ -154,7 +154,7 @@ export default function BookingsPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-purple-100 shadow-sm">
+          <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-100 rounded-lg">
@@ -167,11 +167,11 @@ export default function BookingsPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-purple-100 shadow-sm">
+          <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-purple-100 rounded-lg">
-                  <Clock className="w-5 h-5 text-purple-600" />
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <Clock className="w-5 h-5 text-[#7b329b]" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">18</p>
@@ -180,7 +180,7 @@ export default function BookingsPage() {
               </div>
             </CardContent>
           </Card>
-          <Card className="border-purple-100 shadow-sm">
+          <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-orange-100 rounded-lg">
@@ -196,22 +196,22 @@ export default function BookingsPage() {
         </div>
 
         <Tabs defaultValue="upcoming" className="space-y-6">
-          <TabsList className="bg-purple-50 border-purple-200">
-            <TabsTrigger value="upcoming" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+          <TabsList className="bg-[#7b329b]/5 border-[#7b329b]/20">
+            <TabsTrigger value="upcoming" className="data-[state=active]:bg-[#7b329b] data-[state=active]:text-white">
               Upcoming Bookings
             </TabsTrigger>
-            <TabsTrigger value="available" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="available" className="data-[state=active]:bg-[#7b329b] data-[state=active]:text-white">
               Available Classes
             </TabsTrigger>
-            <TabsTrigger value="history" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+            <TabsTrigger value="history" className="data-[state=active]:bg-[#7b329b] data-[state=active]:text-white">
               Booking History
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="upcoming" className="space-y-4">
-            <Card className="border-purple-100 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
-                <CardTitle className="text-gray-900">Upcoming Sessions</CardTitle>
+            <Card className="border-[#7b329b]/20 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
+                <CardTitle className="text-[#7b329b]">Upcoming Sessions</CardTitle>
                 <CardDescription>Your confirmed and pending bookings</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -219,7 +219,7 @@ export default function BookingsPage() {
                   {bookings.map((booking) => (
                     <div
                       key={booking.id}
-                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                      className="flex items-center justify-between p-4 border border-[#7b329b]/20 rounded-lg bg-gradient-to-r from-white to-[#7b329b]/5"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2">
@@ -228,25 +228,25 @@ export default function BookingsPage() {
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-purple-500" />
+                            <User className="w-4 h-4 text-[#7b329b]" />
                             {booking.instructor}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-purple-500" />
+                            <Calendar className="w-4 h-4 text-[#7b329b]" />
                             {booking.date}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-purple-500" />
+                            <Clock className="w-4 h-4 text-[#7b329b]" />
                             {booking.time} ({booking.duration})
                           </div>
                           <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-purple-500" />
+                            <MapPin className="w-4 h-4 text-[#7b329b]" />
                             {booking.location}
                           </div>
                         </div>
                       </div>
                       <div className="flex gap-2">
-                        <Button variant="outline" size="sm" className="border-purple-200 hover:bg-purple-50">
+                        <Button variant="outline" size="sm" className="border-[#7b329b]/20 hover:bg-[#7b329b]/10">
                           Reschedule
                         </Button>
                         <Button
@@ -266,9 +266,9 @@ export default function BookingsPage() {
           </TabsContent>
 
           <TabsContent value="available" className="space-y-4">
-            <Card className="border-purple-100 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
-                <CardTitle className="text-gray-900">Available Classes</CardTitle>
+            <Card className="border-[#7b329b]/20 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
+                <CardTitle className="text-[#7b329b]">Available Classes</CardTitle>
                 <CardDescription>Book your next session (max 3 bookings per class)</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -276,30 +276,30 @@ export default function BookingsPage() {
                   {availableClasses.map((classItem) => (
                     <div
                       key={classItem.id}
-                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                      className="flex items-center justify-between p-4 border border-[#7b329b]/20 rounded-lg bg-gradient-to-r from-white to-[#7b329b]/5"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2">
                           <h3 className="font-semibold text-gray-900">{classItem.class}</h3>
-                          <Badge variant="outline" className="border-purple-200 text-purple-700">
+                          <Badge variant="outline" className="border-[#7b329b]/20 text-[#7b329b]">
                             {classItem.spots_left} spots left
                           </Badge>
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-purple-500" />
+                            <User className="w-4 h-4 text-[#7b329b]" />
                             {classItem.instructor}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-purple-500" />
+                            <Calendar className="w-4 h-4 text-[#7b329b]" />
                             {classItem.date}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-purple-500" />
+                            <Clock className="w-4 h-4 text-[#7b329b]" />
                             {classItem.time} ({classItem.duration})
                           </div>
                           <div className="flex items-center gap-2">
-                            <MapPin className="w-4 h-4 text-purple-500" />
+                            <MapPin className="w-4 h-4 text-[#7b329b]" />
                             {classItem.location}
                           </div>
                         </div>
@@ -307,7 +307,7 @@ export default function BookingsPage() {
                       <Button
                         onClick={() => handleBookClass(classItem.id)}
                         disabled={classItem.spots_left === 0}
-                        className="bg-purple-600 hover:bg-purple-700"
+                        className="bg-[#7b329b] hover:bg-[#6b2c87]"
                       >
                         <Plus className="w-4 h-4 mr-2" />
                         Book Class
@@ -320,9 +320,9 @@ export default function BookingsPage() {
           </TabsContent>
 
           <TabsContent value="history" className="space-y-4">
-            <Card className="border-purple-100 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
-                <CardTitle className="text-gray-900">Booking History</CardTitle>
+            <Card className="border-[#7b329b]/20 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
+                <CardTitle className="text-[#7b329b]">Booking History</CardTitle>
                 <CardDescription>Your past sessions and attendance record</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -330,7 +330,7 @@ export default function BookingsPage() {
                   {bookingHistory.map((booking) => (
                     <div
                       key={booking.id}
-                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                      className="flex items-center justify-between p-4 border border-[#7b329b]/20 rounded-lg bg-gradient-to-r from-white to-[#7b329b]/5"
                     >
                       <div className="flex-1">
                         <div className="flex items-center gap-4 mb-2">
@@ -341,7 +341,7 @@ export default function BookingsPage() {
                               {[...Array(5)].map((_, i) => (
                                 <span
                                   key={i}
-                                  className={`text-sm ${i < booking.rating ? "text-purple-400" : "text-gray-300"}`}
+                                  className={`text-sm ${i < booking.rating ? "text-[#7b329b]" : "text-gray-300"}`}
                                 >
                                   ★
                                 </span>
@@ -351,15 +351,15 @@ export default function BookingsPage() {
                         </div>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
                           <div className="flex items-center gap-2">
-                            <User className="w-4 h-4 text-purple-500" />
+                            <User className="w-4 h-4 text-[#7b329b]" />
                             {booking.instructor}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Calendar className="w-4 h-4 text-purple-500" />
+                            <Calendar className="w-4 h-4 text-[#7b329b]" />
                             {booking.date}
                           </div>
                           <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-purple-500" />
+                            <Clock className="w-4 h-4 text-[#7b329b]" />
                             {booking.time} ({booking.duration})
                           </div>
                         </div>
