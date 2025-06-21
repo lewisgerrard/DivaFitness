@@ -12,13 +12,7 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
       <Container style={container}>
         {/* Header with Logo */}
         <Section style={header}>
-          <Img
-            src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="200"
-            height="60"
-            alt="Diva Fitness"
-            style={logo}
-          />
+          <Img src="/logo-with-text.png" width="200" height="60" alt="Diva Fitness" style={logo} />
         </Section>
 
         {/* Main Content */}
@@ -36,10 +30,10 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
           </Text>
 
           <Section style={bulletPoints}>
-            <Text style={bulletPoint}>✨ A personalised response tailored to your goals</Text>
-            <Text style={bulletPoint}>🏋️‍♀️ Information about our services and approach</Text>
-            <Text style={bulletPoint}>📅 Options to schedule your free consultation</Text>
-            <Text style={bulletPoint}>💜 A warm welcome to the Diva Fitness community</Text>
+            <Text style={bulletPoint}>• A personalised response tailored to your goals</Text>
+            <Text style={bulletPoint}>• Information about our services and approach</Text>
+            <Text style={bulletPoint}>• Options to schedule your free consultation</Text>
+            <Text style={bulletPoint}>• A warm welcome to the Diva Fitness community</Text>
           </Section>
 
           <Text style={text}>
@@ -68,16 +62,18 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
             <strong>Diva Fitness</strong>
             <br />
             Chester, UK
-            <br />📞{" "}
+            <br />
+            Phone:{" "}
             <Link href="tel:07966874821" style={footerLink}>
               07966 874 821
             </Link>
             <br />
-            ✉️{" "}
+            Email:{" "}
             <Link href="mailto:info@diva-fitness.co.uk" style={footerLink}>
               info@diva-fitness.co.uk
             </Link>
-            <br />🌐{" "}
+            <br />
+            Website:{" "}
             <Link href="https://diva-fitness.co.uk" style={footerLink}>
               diva-fitness.co.uk
             </Link>
@@ -110,20 +106,25 @@ const main = {
 const container = {
   backgroundColor: "#ffffff",
   margin: "0 auto",
-  padding: "20px 0 48px",
+  padding: "0",
   marginBottom: "64px",
   maxWidth: "600px",
+  borderRadius: "12px",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
 }
 
 const header = {
   backgroundColor: "#7b329b",
-  padding: "20px 0",
+  padding: "30px 30px 20px",
   textAlign: "center" as const,
+  borderRadius: "12px 12px 0 0",
 }
 
 const logo = {
-  margin: "0 auto",
+  margin: "0 auto 20px",
   filter: "brightness(0) invert(1)",
+  maxWidth: "200px",
+  height: "auto",
 }
 
 const content = {

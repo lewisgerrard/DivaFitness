@@ -16,19 +16,13 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
       <Container style={container}>
         {/* Header */}
         <Section style={header}>
-          <Img
-            src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="180"
-            height="54"
-            alt="Diva Fitness"
-            style={logo}
-          />
+          <Img src="/logo-with-text.png" width="200" height="60" alt="Diva Fitness" style={logo} />
           <Heading style={h1}>New Contact Form Submission</Heading>
         </Section>
 
         {/* Main Content */}
         <Section style={content}>
-          <Text style={alertText}>🎉 You have a new potential client inquiry!</Text>
+          <Text style={alertText}>✓ You have a new potential client inquiry!</Text>
 
           <Section style={detailsBox}>
             <Heading style={h2}>Contact Details</Heading>
@@ -73,7 +67,7 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
 
           <Section style={actionSection}>
             <Text style={reminderText}>
-              💜 Remember to respond within 24 hours to maintain our excellent customer service standards!
+              • Remember to respond within 24 hours to maintain our excellent customer service standards!
             </Text>
 
             <Link href={`mailto:${email}?subject=Re: Your Diva Fitness Inquiry`} style={replyButton}>
@@ -105,20 +99,25 @@ const main = {
 const container = {
   backgroundColor: "#ffffff",
   margin: "0 auto",
-  padding: "20px 0 48px",
+  padding: "0",
   marginBottom: "64px",
   maxWidth: "650px",
+  borderRadius: "12px",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
 }
 
 const header = {
   backgroundColor: "#7b329b",
   padding: "30px 30px 20px",
   textAlign: "center" as const,
+  borderRadius: "12px 12px 0 0",
 }
 
 const logo = {
   margin: "0 auto 20px",
   filter: "brightness(0) invert(1)",
+  maxWidth: "200px",
+  height: "auto",
 }
 
 const h1 = {
