@@ -6,15 +6,11 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { Globe, Palette, Mail, Layout, Eye, RefreshCw, File, ChevronDown } from "lucide-react"
+import { Globe, Palette, Mail, Layout, Eye, File, ChevronDown } from "lucide-react"
 
 export default function ContentManagementPage() {
   const [activeTab, setActiveTab] = useState("website")
   const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null)
-
-  const toggleExpanded = (templateName: string) => {
-    setExpandedTemplate(expandedTemplate === templateName ? null : templateName)
-  }
 
   return (
     <CleanDashboardLayout>
@@ -38,38 +34,23 @@ export default function ContentManagementPage() {
 
         <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6">
           <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger
-              value="website"
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
-            >
+            <TabsTrigger value="website" className="flex items-center gap-2">
               <Globe className="w-4 h-4" />
               Website Structure
             </TabsTrigger>
-            <TabsTrigger
-              value="branding"
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
-            >
+            <TabsTrigger value="branding" className="flex items-center gap-2">
               <Palette className="w-4 h-4" />
               Branding
             </TabsTrigger>
-            <TabsTrigger
-              value="emails"
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
-            >
+            <TabsTrigger value="emails" className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
               Email Templates
             </TabsTrigger>
-            <TabsTrigger
-              value="components"
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
-            >
+            <TabsTrigger value="components" className="flex items-center gap-2">
               <Layout className="w-4 h-4" />
               Components
             </TabsTrigger>
-            <TabsTrigger
-              value="design-system"
-              className="flex items-center gap-2 data-[state=active]:bg-primary data-[state=active]:text-white"
-            >
+            <TabsTrigger value="design-system" className="flex items-center gap-2">
               <Layout className="w-4 h-4" />
               Design System
             </TabsTrigger>
@@ -116,116 +97,89 @@ export default function ContentManagementPage() {
                     ))}
                   </div>
                 </div>
-                <div className="mt-6 flex gap-3">
-                  <Button variant="outline" size="sm">
-                    <Eye className="w-4 h-4 mr-2" />
-                    Preview Structure
-                  </Button>
-                  <Button variant="outline" size="sm">
-                    <RefreshCw className="w-4 h-4 mr-2" />
-                    Sync with Actual Site
-                  </Button>
-                </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="branding" className="space-y-6">
-            <div className="grid grid-cols-1 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Logo & Assets</CardTitle>
-                  <CardDescription>Manage your brand logos and images</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    <div className="p-3 border rounded-lg flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                          <img
-                            src="/images/diva-logo.png"
-                            alt="Diva Fitness Logo"
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <div>
-                          <p className="font-medium">Main Logo</p>
-                          <p className="text-sm text-gray-500">PNG, 512x512</p>
-                        </div>
+            <Card>
+              <CardHeader>
+                <CardTitle>Logo & Assets</CardTitle>
+                <CardDescription>Manage your brand logos and images</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  <div className="p-3 border rounded-lg flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                        <img
+                          src="/images/diva-logo.png"
+                          alt="Diva Fitness Logo"
+                          className="w-full h-full object-contain"
+                        />
                       </div>
-                    </div>
-                    <div className="p-3 border rounded-lg flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                          <img src="/logo-icon.png" alt="Diva Fitness Icon" className="w-full h-full object-contain" />
-                        </div>
-                        <div>
-                          <p className="font-medium">Logo Icon</p>
-                          <p className="text-sm text-gray-500">PNG, 256x256</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="p-3 border rounded-lg flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
-                          <img
-                            src="/logo-with-text.png"
-                            alt="Diva Fitness Logo with Text"
-                            className="w-full h-full object-contain"
-                          />
-                        </div>
-                        <div>
-                          <p className="font-medium">Logo with Text</p>
-                          <p className="text-sm text-gray-500">PNG, 512x256</p>
-                        </div>
+                      <div>
+                        <p className="font-medium">Main Logo</p>
+                        <p className="text-sm text-gray-500">PNG, 512x512</p>
                       </div>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
+                  <div className="p-3 border rounded-lg flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 bg-gray-100 rounded flex items-center justify-center overflow-hidden">
+                        <img src="/logo-icon.png" alt="Diva Fitness Icon" className="w-full h-full object-contain" />
+                      </div>
+                      <div>
+                        <p className="font-medium">Logo Icon</p>
+                        <p className="text-sm text-gray-500">PNG, 256x256</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
 
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Palette className="w-5 h-5 text-primary" />
-                    Brand Colors
-                  </CardTitle>
-                  <CardDescription>Customize your brand color palette</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Primary Color</p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#7b329b] rounded border"></div>
-                        <span className="text-sm text-gray-600">#7b329b</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Secondary Color</p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#374151] rounded border"></div>
-                        <span className="text-sm text-gray-600">#374151</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Accent Color</p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#e0c3fc] rounded border"></div>
-                        <span className="text-sm text-gray-600">#e0c3fc</span>
-                      </div>
-                    </div>
-                    <div className="space-y-2">
-                      <p className="text-sm font-medium">Text Color</p>
-                      <div className="flex items-center gap-2">
-                        <div className="w-8 h-8 bg-[#111827] rounded border"></div>
-                        <span className="text-sm text-gray-600">#111827</span>
-                      </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Palette className="w-5 h-5 text-primary" />
+                  Brand Colors
+                </CardTitle>
+                <CardDescription>Customize your brand color palette</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Primary Color</p>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#7b329b] rounded border"></div>
+                      <span className="text-sm text-gray-600">#7b329b</span>
                     </div>
                   </div>
-                </CardContent>
-              </Card>
-            </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Secondary Color</p>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#374151] rounded border"></div>
+                      <span className="text-sm text-gray-600">#374151</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Accent Color</p>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#e0c3fc] rounded border"></div>
+                      <span className="text-sm text-gray-600">#e0c3fc</span>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium">Text Color</p>
+                    <div className="flex items-center gap-2">
+                      <div className="w-8 h-8 bg-[#111827] rounded border"></div>
+                      <span className="text-sm text-gray-600">#111827</span>
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="emails" className="space-y-6">
@@ -239,363 +193,166 @@ export default function ContentManagementPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
-                  {[
-                    {
-                      name: "Business Notification Email",
-                      type: "Contact Form Submission",
-                      status: "Active",
-                      file: "business-notification.tsx",
-                    },
-                    {
-                      name: "Customer Thank You Email",
-                      type: "Contact Form Response",
-                      status: "Active",
-                      file: "customer-thank-you.tsx",
-                    },
-                  ].map((template) => (
-                    <div key={template.name} className="border rounded-lg">
-                      <div
-                        className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                        onClick={() => toggleExpanded(template.name)}
-                      >
-                        <div>
-                          <p className="font-medium">{template.name}</p>
-                          <p className="text-sm text-gray-500">
-                            {template.type} • {template.file}
-                          </p>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <Badge variant={template.status === "Active" ? "default" : "secondary"}>
-                            {template.status}
-                          </Badge>
-                          <ChevronDown
-                            className={`w-4 h-4 transition-transform ${
-                              expandedTemplate === template.name ? "rotate-180" : ""
-                            }`}
-                          />
-                        </div>
+                  <div className="border rounded-lg">
+                    <div
+                      className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => setExpandedTemplate(expandedTemplate === "business" ? null : "business")}
+                    >
+                      <div>
+                        <p className="font-medium">Business Notification Email</p>
+                        <p className="text-sm text-gray-500">Contact Form Submission • business-notification.tsx</p>
                       </div>
-                      {expandedTemplate === template.name && (
-                        <div className="border-t bg-gray-50 p-4">
-                          <div className="mb-4">
-                            <p className="text-sm font-medium text-gray-700 mb-3">Email Preview:</p>
-                            <div className="bg-white border rounded p-4 max-w-2xl mx-auto shadow-sm">
-                              {template.name === "Business Notification Email" ? (
-                                <div className="space-y-4">
-                                  <div className="bg-[#7b329b] p-6 rounded-t-lg text-center">
-                                    <img
-                                      src="/logo-with-text.png"
-                                      alt="Diva Fitness"
-                                      className="h-12 mx-auto mb-4 filter brightness-0 invert"
-                                    />
-                                    <h1 className="text-white text-xl font-bold">New Contact Form Submission</h1>
-                                  </div>
-                                  <div className="p-6 space-y-4">
-                                    <div className="bg-[#e0c3fc] p-4 rounded-lg text-center">
-                                      <p className="text-[#7b329b] font-semibold">
-                                        You have a new potential client inquiry!
-                                      </p>
-                                    </div>
-                                    <div className="bg-gray-50 p-4 rounded-lg space-y-3">
-                                      <h2 className="text-[#7b329b] font-bold text-lg">Contact Details</h2>
-                                      <div className="space-y-2 text-sm">
-                                        <p>
-                                          <strong>Name:</strong> John Doe
-                                        </p>
-                                        <p>
-                                          <strong>Email:</strong> john.doe@example.com
-                                        </p>
-                                        <p>
-                                          <strong>Phone:</strong> 07966 874 821
-                                        </p>
-                                        <p>
-                                          <strong>Interested In:</strong> Personal Training
-                                        </p>
-                                      </div>
-                                    </div>
-                                    <div className="border-2 border-[#e0c3fc] p-4 rounded-lg">
-                                      <h2 className="text-[#7b329b] font-bold text-lg mb-2">Message</h2>
-                                      <p className="text-gray-800 text-sm leading-relaxed">
-                                        I am interested in learning more about your personal training services. Could we
-                                        schedule a consultation to discuss my fitness goals?
-                                      </p>
-                                    </div>
-                                    <div className="text-center pt-4">
-                                      <button className="bg-[#7b329b] text-white px-6 py-3 rounded-full font-semibold">
-                                        Reply to John
-                                      </button>
-                                    </div>
-                                  </div>
-                                  <div className="bg-gray-50 p-4 text-center border-t">
-                                    <p className="text-xs text-gray-500">
-                                      This email was sent from the Diva Fitness contact form on your website.
-                                    </p>
-                                  </div>
-                                </div>
-                              ) : (
-                                <div className="space-y-4">
-                                  <div className="bg-[#7b329b] p-6 rounded-t-lg text-center">
-                                    <img
-                                      src="/logo-with-text.png"
-                                      alt="Diva Fitness"
-                                      className="h-12 mx-auto filter brightness-0 invert"
-                                    />
-                                  </div>
-                                  <div className="p-6 space-y-4">
-                                    <h1 className="text-[#7b329b] text-2xl font-bold text-center">Thank You, John!</h1>
-                                    <p className="text-gray-800">
-                                      Thank you for reaching out to Diva Fitness. I am thrilled that you are considering
-                                      taking the next step in your fitness journey!
-                                    </p>
-                                    <p className="text-gray-800">
-                                      I have received your message and will personally respond within 24 hours.
-                                    </p>
-                                    <div className="bg-[#e0c3fc] p-4 rounded-lg space-y-2">
-                                      <p className="text-[#7b329b] font-medium">
-                                        A personalised response tailored to your goals
-                                      </p>
-                                      <p className="text-[#7b329b] font-medium">
-                                        Information about our services and approach
-                                      </p>
-                                      <p className="text-[#7b329b] font-medium">
-                                        Options to schedule your free consultation
-                                      </p>
-                                    </div>
-                                    <div className="text-center py-4">
-                                      <button className="bg-[#7b329b] text-white px-6 py-3 rounded-full font-semibold">
-                                        Learn More About Emma
-                                      </button>
-                                    </div>
-                                    <div className="text-center pt-4 border-t">
-                                      <p className="text-gray-800">
-                                        With excitement for your journey,
-                                        <br />
-                                        <strong>Emma Fisher</strong>
-                                        <br />
-                                        <span className="text-[#7b329b] text-sm">
-                                          Personal Trainer & Wellness Coach
-                                        </span>
-                                      </p>
-                                    </div>
-                                  </div>
-                                  <div className="bg-gray-50 p-4 text-center border-t">
-                                    <p className="text-xs text-gray-600 mb-2">
-                                      <strong>Diva Fitness</strong>
-                                      <br />
-                                      Chester, UK
-                                      <br />
-                                      Phone: 07966 874 821
-                                      <br />
-                                      Email: info@diva-fitness.co.uk
-                                    </p>
-                                  </div>
-                                </div>
-                              )}
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Active</Badge>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            expandedTemplate === "business" ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
+                    </div>
+                    {expandedTemplate === "business" && (
+                      <div className="border-t bg-gray-50 p-4">
+                        <div className="space-y-3">
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Purpose</h4>
+                            <p className="text-sm text-gray-600">
+                              Sent to business owner when customers submit the contact form
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Recipients</h4>
+                            <p className="text-sm text-gray-600">info@diva-fitness.co.uk</p>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Preview</h4>
+                            <div className="bg-white border rounded p-4 text-sm">
+                              <div className="bg-[#7b329b] text-white p-4 rounded text-center mb-4">
+                                <h3 className="font-bold">New Contact Form Submission</h3>
+                              </div>
+                              <div className="space-y-2">
+                                <p>
+                                  <strong>Name:</strong> John Doe
+                                </p>
+                                <p>
+                                  <strong>Email:</strong> john.doe@example.com
+                                </p>
+                                <p>
+                                  <strong>Phone:</strong> 07966 874 821
+                                </p>
+                                <p>
+                                  <strong>Service:</strong> Personal Training
+                                </p>
+                                <p>
+                                  <strong>Message:</strong> I am interested in learning more about your services.
+                                </p>
+                              </div>
                             </div>
                           </div>
                         </div>
-                      )}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="border rounded-lg">
+                    <div
+                      className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
+                      onClick={() => setExpandedTemplate(expandedTemplate === "customer" ? null : "customer")}
+                    >
+                      <div>
+                        <p className="font-medium">Customer Thank You Email</p>
+                        <p className="text-sm text-gray-500">Contact Form Response • customer-thank-you.tsx</p>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <Badge variant="default">Active</Badge>
+                        <ChevronDown
+                          className={`w-4 h-4 transition-transform ${
+                            expandedTemplate === "customer" ? "rotate-180" : ""
+                          }`}
+                        />
+                      </div>
                     </div>
-                  ))}
+                    {expandedTemplate === "customer" && (
+                      <div className="border-t bg-gray-50 p-4">
+                        <div className="space-y-3">
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Purpose</h4>
+                            <p className="text-sm text-gray-600">
+                              Automatic confirmation sent to customers after form submission
+                            </p>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Recipients</h4>
+                            <p className="text-sm text-gray-600">Customer email address</p>
+                          </div>
+                          <div className="bg-white p-3 rounded border">
+                            <h4 className="text-sm font-semibold text-gray-700 mb-1">Preview</h4>
+                            <div className="bg-white border rounded p-4 text-sm">
+                              <div className="bg-[#7b329b] text-white p-4 rounded text-center mb-4">
+                                <h3 className="font-bold">Thank You, John!</h3>
+                              </div>
+                              <div className="space-y-2">
+                                <p>Thank you for reaching out to Diva Fitness.</p>
+                                <p>I will personally respond within 24 hours.</p>
+                                <div className="bg-[#e0c3fc] p-3 rounded">
+                                  <p className="text-[#7b329b] font-medium">What to expect:</p>
+                                  <ul className="text-[#7b329b] text-sm mt-1">
+                                    <li>• Personalized response</li>
+                                    <li>• Service information</li>
+                                    <li>• Free consultation options</li>
+                                  </ul>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="components" className="space-y-6">
-            <div className="grid grid-cols-1 gap-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle className="flex items-center gap-2">
-                    <Layout className="w-5 h-5 text-primary" />
-                    Layout Components
-                  </CardTitle>
-                  <CardDescription>Core layout and navigation components</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-3">
-                    {[
-                      {
-                        name: "Hero Home",
-                        category: "Layout",
-                        usage: "1 page (Home)",
-                        file: "hero-home.tsx",
-                        description: "Main homepage hero with gradient background and call-to-action",
-                      },
-                      {
-                        name: "Navigation",
-                        category: "Layout",
-                        usage: "All pages",
-                        file: "navigation.tsx",
-                        description: "Main site navigation with mobile responsive menu",
-                      },
-                      {
-                        name: "Service Card",
-                        category: "Content",
-                        usage: "2 pages",
-                        file: "service-card.tsx",
-                        description: "Individual service display card with icon and description",
-                      },
-                      {
-                        name: "Contact Form",
-                        category: "Forms",
-                        usage: "1 page (Contact)",
-                        file: "contact-form.tsx",
-                        description: "Contact form with service selection and validation",
-                      },
-                    ].map((component) => (
-                      <div key={component.name} className="border rounded-lg">
-                        <div
-                          className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                          onClick={() => toggleExpanded(component.name)}
-                        >
-                          <div>
-                            <p className="font-medium">{component.name}</p>
-                            <p className="text-sm text-gray-500">
-                              {component.category} • Used in {component.usage}
-                            </p>
-                          </div>
-                          <div className="flex items-center gap-2">
-                            <Badge variant="outline" className="text-xs">
-                              {component.category}
-                            </Badge>
-                            <ChevronDown
-                              className={`w-4 h-4 transition-transform ${
-                                expandedTemplate === component.name ? "rotate-180" : ""
-                              }`}
-                            />
-                          </div>
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Layout className="w-5 h-5 text-primary" />
+                  Website Components
+                </CardTitle>
+                <CardDescription>Core components used throughout the website</CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-3">
+                  {[
+                    { name: "Hero Home", file: "hero-home.tsx", usage: "1 page (Home)", category: "Layout" },
+                    { name: "Navigation", file: "navigation.tsx", usage: "All pages", category: "Layout" },
+                    { name: "Footer", file: "footer.tsx", usage: "All pages", category: "Layout" },
+                    { name: "Service Card", file: "service-card.tsx", usage: "2 pages", category: "Content" },
+                    { name: "Review Card", file: "review-card.tsx", usage: "1 page", category: "Content" },
+                    { name: "Contact Form", file: "contact-form.tsx", usage: "1 page", category: "Forms" },
+                  ].map((component) => (
+                    <div key={component.name} className="border rounded-lg p-3">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <p className="font-medium">{component.name}</p>
+                          <p className="text-sm text-gray-500">
+                            {component.category} • Used in {component.usage}
+                          </p>
                         </div>
-                        {expandedTemplate === component.name && (
-                          <div className="border-t bg-gray-50 p-4">
-                            <div className="mb-2">
-                              <p className="text-sm font-medium text-gray-700">Component Preview:</p>
-                            </div>
-                            <div className="bg-white border rounded p-4 max-w-full overflow-auto">
-                              {component.name === "Hero Home" ? (
-                                <div className="bg-gradient-to-r from-[#7b329b] to-[#e0c3fc] p-8 rounded-lg text-center relative overflow-hidden">
-                                  <div className="absolute inset-0 bg-black/20"></div>
-                                  <div className="relative z-10">
-                                    <h1 className="text-4xl font-bold text-white mb-4">
-                                      Transform Your Body, Transform Your Life
-                                    </h1>
-                                    <p className="text-white/90 mb-6 max-w-2xl mx-auto text-lg">
-                                      Join Emma at Diva Fitness for personalized training in our beautiful garden
-                                      studio.
-                                    </p>
-                                    <button className="bg-white text-[#7b329b] px-8 py-4 rounded-full font-semibold text-lg">
-                                      Start Your Journey Today
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : component.name === "Navigation" ? (
-                                <div className="bg-white border-b shadow-sm">
-                                  <div className="flex items-center justify-between px-6 py-4">
-                                    <div className="flex items-center gap-2">
-                                      <img src="/logo-icon.png" alt="Diva Fitness" className="h-8 w-8" />
-                                      <span className="font-bold text-[#7b329b] text-xl">Diva Fitness</span>
-                                    </div>
-                                    <nav className="hidden md:flex items-center gap-8">
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        Home
-                                      </a>
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        About
-                                      </a>
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        Services
-                                      </a>
-                                      <a href="#" className="text-gray-700 hover:text-[#7b329b] font-medium">
-                                        Contact
-                                      </a>
-                                    </nav>
-                                    <button className="bg-[#7b329b] text-white px-4 py-2 rounded-full font-medium">
-                                      Get Started
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : component.name === "Service Card" ? (
-                                <div className="max-w-sm mx-auto">
-                                  <div className="bg-white border border-[#e0c3fc] rounded-lg p-6 hover:shadow-lg transition-shadow">
-                                    <div className="w-16 h-16 bg-[#7b329b] rounded-full flex items-center justify-center mb-4 mx-auto">
-                                      <span className="text-white text-2xl font-bold">PT</span>
-                                    </div>
-                                    <h3 className="font-bold text-xl text-[#7b329b] mb-3 text-center">
-                                      Personal Training
-                                    </h3>
-                                    <p className="text-gray-600 text-center mb-4">
-                                      One-on-one sessions tailored specifically to your fitness goals and lifestyle
-                                    </p>
-                                    <ul className="text-sm text-gray-600 space-y-1 mb-4">
-                                      <li>• Customized workout plans</li>
-                                      <li>• Progress tracking</li>
-                                      <li>• Nutritional guidance</li>
-                                      <li>• Flexible scheduling</li>
-                                    </ul>
-                                    <button className="w-full bg-[#7b329b] text-white py-2 px-4 rounded-md hover:bg-[#6b2a8b] transition-colors">
-                                      Learn More
-                                    </button>
-                                  </div>
-                                </div>
-                              ) : component.name === "Contact Form" ? (
-                                <div className="max-w-md mx-auto bg-white p-6 rounded-lg border">
-                                  <h3 className="text-xl font-semibold text-[#7b329b] mb-4">Get In Touch</h3>
-                                  <form className="space-y-4">
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
-                                      <input
-                                        type="text"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
-                                        placeholder="Your full name"
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Email</label>
-                                      <input
-                                        type="email"
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
-                                        placeholder="your.email@example.com"
-                                      />
-                                    </div>
-                                    <div>
-                                      <label className="block text-sm font-medium text-gray-700 mb-1">Message</label>
-                                      <textarea
-                                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#7b329b]"
-                                        rows={3}
-                                        placeholder="Tell us about your fitness goals..."
-                                      />
-                                    </div>
-                                    <button
-                                      type="submit"
-                                      className="w-full bg-[#7b329b] text-white py-3 px-4 rounded-md hover:bg-[#6b2a8b] transition-colors font-medium"
-                                    >
-                                      Send Message
-                                    </button>
-                                  </form>
-                                </div>
-                              ) : (
-                                <div className="text-center py-8 text-gray-500">
-                                  <p>Preview not available for {component.name}</p>
-                                  <p className="text-sm mt-2">Component: {component.file}</p>
-                                </div>
-                              )}
-                            </div>
-                            <div className="mt-3 text-xs text-gray-500">
-                              <p>
-                                <strong>File:</strong> {component.file}
-                              </p>
-                              <p>
-                                <strong>Description:</strong> {component.description}
-                              </p>
-                            </div>
-                          </div>
-                        )}
+                        <Badge variant="outline" className="text-xs">
+                          {component.category}
+                        </Badge>
                       </div>
-                    ))}
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+                      <div className="mt-2 text-xs text-gray-500">
+                        <p>File: {component.file}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="design-system" className="space-y-6">
@@ -605,13 +362,12 @@ export default function ContentManagementPage() {
                   <Layout className="w-5 h-5 text-primary" />
                   Design System
                 </CardTitle>
-                <CardDescription>Typography, spacing, and style guidelines for consistent design</CardDescription>
+                <CardDescription>Typography, spacing, and style guidelines</CardDescription>
               </CardHeader>
               <CardContent className="space-y-6">
                 <div className="space-y-4">
                   <div className="p-4 border rounded-lg">
                     <h3 className="font-semibold text-lg mb-2">Typography Scale</h3>
-                    <p className="text-sm text-gray-500 mb-4">Consistent heading and body text styles</p>
                     <div className="space-y-3">
                       <div className="flex items-center gap-4">
                         <span className="text-3xl font-bold text-primary">H1</span>
@@ -625,16 +381,11 @@ export default function ContentManagementPage() {
                         <span className="text-xl font-semibold text-primary">H3</span>
                         <span className="text-sm text-gray-600">20px, Semibold - Subsection headings</span>
                       </div>
-                      <div className="flex items-center gap-4">
-                        <span className="text-base">Body</span>
-                        <span className="text-sm text-gray-600">16px, Regular - Body text</span>
-                      </div>
                     </div>
                   </div>
 
                   <div className="p-4 border rounded-lg">
                     <h3 className="font-semibold text-lg mb-2">Component Library</h3>
-                    <p className="text-sm text-gray-500 mb-4">Reusable UI components and interactive elements</p>
                     <div className="space-y-4">
                       <div className="flex flex-wrap gap-3">
                         <Button size="sm">Small Button</Button>
