@@ -12,6 +12,30 @@ export default function ContentManagementPage() {
   const [activeTab, setActiveTab] = useState("website")
   const [expandedTemplate, setExpandedTemplate] = useState<string | null>(null)
 
+  const handleTemplateToggle = (templateName: string) => {
+    setExpandedTemplate(expandedTemplate === templateName ? null : templateName)
+  }
+
+  const pages = [
+    { name: "About", path: "/about", status: "Published" },
+    { name: "Services", path: "/services", status: "Published" },
+    { name: "Training", path: "/training", status: "Published" },
+    { name: "Nutrition", path: "/nutrition", status: "Published" },
+    { name: "Contact", path: "/contact", status: "Published" },
+    { name: "FAQs", path: "/faqs", status: "Published" },
+    { name: "Portal", path: "/portal", status: "Published" },
+    { name: "Login", path: "/login", status: "Published" },
+  ]
+
+  const components = [
+    { name: "Hero Home", file: "hero-home.tsx", usage: "1 page (Home)", category: "Layout" },
+    { name: "Navigation", file: "navigation.tsx", usage: "All pages", category: "Layout" },
+    { name: "Footer", file: "footer.tsx", usage: "All pages", category: "Layout" },
+    { name: "Service Card", file: "service-card.tsx", usage: "2 pages", category: "Content" },
+    { name: "Review Card", file: "review-card.tsx", usage: "1 page", category: "Content" },
+    { name: "Contact Form", file: "contact-form.tsx", usage: "1 page", category: "Forms" },
+  ]
+
   return (
     <CleanDashboardLayout>
       <div className="space-y-8">
@@ -73,16 +97,7 @@ export default function ContentManagementPage() {
                     <Badge variant="default">Published</Badge>
                   </div>
                   <div className="ml-6 space-y-3">
-                    {[
-                      { name: "About", path: "/about", status: "Published" },
-                      { name: "Services", path: "/services", status: "Published" },
-                      { name: "Training", path: "/training", status: "Published" },
-                      { name: "Nutrition", path: "/nutrition", status: "Published" },
-                      { name: "Contact", path: "/contact", status: "Published" },
-                      { name: "FAQs", path: "/faqs", status: "Published" },
-                      { name: "Portal", path: "/portal", status: "Published" },
-                      { name: "Login", path: "/login", status: "Published" },
-                    ].map((page) => (
+                    {pages.map((page) => (
                       <div key={page.name} className="flex items-center gap-3 p-3 bg-gray-50 rounded-lg border">
                         <div className="flex items-center gap-2">
                           <div className="w-2 h-2 bg-gray-400 rounded-full"></div>
@@ -152,28 +167,28 @@ export default function ContentManagementPage() {
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Primary Color</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#7b329b] rounded border"></div>
+                      <div className="w-8 h-8 bg-purple-600 rounded border"></div>
                       <span className="text-sm text-gray-600">#7b329b</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Secondary Color</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#374151] rounded border"></div>
+                      <div className="w-8 h-8 bg-gray-700 rounded border"></div>
                       <span className="text-sm text-gray-600">#374151</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Accent Color</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#e0c3fc] rounded border"></div>
+                      <div className="w-8 h-8 bg-purple-200 rounded border"></div>
                       <span className="text-sm text-gray-600">#e0c3fc</span>
                     </div>
                   </div>
                   <div className="space-y-2">
                     <p className="text-sm font-medium">Text Color</p>
                     <div className="flex items-center gap-2">
-                      <div className="w-8 h-8 bg-[#111827] rounded border"></div>
+                      <div className="w-8 h-8 bg-gray-900 rounded border"></div>
                       <span className="text-sm text-gray-600">#111827</span>
                     </div>
                   </div>
@@ -196,11 +211,11 @@ export default function ContentManagementPage() {
                   <div className="border rounded-lg">
                     <div
                       className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => setExpandedTemplate(expandedTemplate === "business" ? null : "business")}
+                      onClick={() => handleTemplateToggle("business")}
                     >
                       <div>
                         <p className="font-medium">Business Notification Email</p>
-                        <p className="text-sm text-gray-500">Contact Form Submission • business-notification.tsx</p>
+                        <p className="text-sm text-gray-500">Contact Form Submission</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">Active</Badge>
@@ -227,7 +242,7 @@ export default function ContentManagementPage() {
                           <div className="bg-white p-3 rounded border">
                             <h4 className="text-sm font-semibold text-gray-700 mb-1">Preview</h4>
                             <div className="bg-white border rounded p-4 text-sm">
-                              <div className="bg-[#7b329b] text-white p-4 rounded text-center mb-4">
+                              <div className="bg-purple-600 text-white p-4 rounded text-center mb-4">
                                 <h3 className="font-bold">New Contact Form Submission</h3>
                               </div>
                               <div className="space-y-2">
@@ -257,11 +272,11 @@ export default function ContentManagementPage() {
                   <div className="border rounded-lg">
                     <div
                       className="flex items-center justify-between p-3 cursor-pointer hover:bg-gray-50 transition-colors"
-                      onClick={() => setExpandedTemplate(expandedTemplate === "customer" ? null : "customer")}
+                      onClick={() => handleTemplateToggle("customer")}
                     >
                       <div>
                         <p className="font-medium">Customer Thank You Email</p>
-                        <p className="text-sm text-gray-500">Contact Form Response • customer-thank-you.tsx</p>
+                        <p className="text-sm text-gray-500">Contact Form Response</p>
                       </div>
                       <div className="flex items-center gap-2">
                         <Badge variant="default">Active</Badge>
@@ -288,18 +303,18 @@ export default function ContentManagementPage() {
                           <div className="bg-white p-3 rounded border">
                             <h4 className="text-sm font-semibold text-gray-700 mb-1">Preview</h4>
                             <div className="bg-white border rounded p-4 text-sm">
-                              <div className="bg-[#7b329b] text-white p-4 rounded text-center mb-4">
+                              <div className="bg-purple-600 text-white p-4 rounded text-center mb-4">
                                 <h3 className="font-bold">Thank You, John!</h3>
                               </div>
                               <div className="space-y-2">
                                 <p>Thank you for reaching out to Diva Fitness.</p>
                                 <p>I will personally respond within 24 hours.</p>
-                                <div className="bg-[#e0c3fc] p-3 rounded">
-                                  <p className="text-[#7b329b] font-medium">What to expect:</p>
-                                  <ul className="text-[#7b329b] text-sm mt-1">
-                                    <li>• Personalized response</li>
-                                    <li>• Service information</li>
-                                    <li>• Free consultation options</li>
+                                <div className="bg-purple-100 p-3 rounded">
+                                  <p className="text-purple-600 font-medium">What to expect:</p>
+                                  <ul className="text-purple-600 text-sm mt-1">
+                                    <li>Personalized response</li>
+                                    <li>Service information</li>
+                                    <li>Free consultation options</li>
                                   </ul>
                                 </div>
                               </div>
@@ -325,20 +340,13 @@ export default function ContentManagementPage() {
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-3">
-                  {[
-                    { name: "Hero Home", file: "hero-home.tsx", usage: "1 page (Home)", category: "Layout" },
-                    { name: "Navigation", file: "navigation.tsx", usage: "All pages", category: "Layout" },
-                    { name: "Footer", file: "footer.tsx", usage: "All pages", category: "Layout" },
-                    { name: "Service Card", file: "service-card.tsx", usage: "2 pages", category: "Content" },
-                    { name: "Review Card", file: "review-card.tsx", usage: "1 page", category: "Content" },
-                    { name: "Contact Form", file: "contact-form.tsx", usage: "1 page", category: "Forms" },
-                  ].map((component) => (
+                  {components.map((component) => (
                     <div key={component.name} className="border rounded-lg p-3">
                       <div className="flex items-center justify-between">
                         <div>
                           <p className="font-medium">{component.name}</p>
                           <p className="text-sm text-gray-500">
-                            {component.category} • Used in {component.usage}
+                            {component.category} - Used in {component.usage}
                           </p>
                         </div>
                         <Badge variant="outline" className="text-xs">
