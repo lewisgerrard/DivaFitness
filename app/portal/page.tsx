@@ -12,25 +12,23 @@ import {
   CalendarPlus,
   Users,
   Settings,
-  Palette,
-  Mail,
-  Layout,
   UserPlus,
+  Edit3,
 } from "lucide-react"
 
-export default function DashboardPage() {
+export default function PortalPage() {
   return (
     <CleanDashboardLayout>
       <div className="space-y-8">
         <DashboardHeaderSection />
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
           {/* Member Cards */}
           <CleanDashboardCard
             title="My Schedule"
             description="View your training sessions"
             icon={Calendar}
-            href="/dashboard/member/schedule"
+            href="/portal/member/schedule"
             iconColor="text-blue-500"
           />
 
@@ -38,15 +36,15 @@ export default function DashboardPage() {
             title="My Profile"
             description="Update your information"
             icon={UserPlus}
-            href="/dashboard/member/profile"
-            iconColor="text-green-500"
+            href="/portal/member/profile"
+            iconColor="text-primary"
           />
 
           <CleanDashboardCard
             title="Training Materials"
             description="Access workout guides"
             icon={BookOpen}
-            href="/dashboard/member/materials"
+            href="/portal/member/materials"
             iconColor="text-purple-500"
             badge="Soon"
           />
@@ -55,7 +53,7 @@ export default function DashboardPage() {
             title="Progress"
             description="Track your achievements"
             icon={Trophy}
-            href="/dashboard/member/progress"
+            href="/portal/member/progress"
             iconColor="text-yellow-500"
             badge="Soon"
           />
@@ -64,9 +62,9 @@ export default function DashboardPage() {
             title="Messages"
             description="Chat with your trainer"
             icon={MessageSquare}
-            href="/dashboard/member/messages"
+            href="/portal/member/messages"
             iconColor="text-indigo-500"
-            hasNotification
+            notification
             badge="Soon"
           />
 
@@ -74,9 +72,9 @@ export default function DashboardPage() {
             title="Payments"
             description="Manage your billing"
             icon={CreditCard}
-            href="/dashboard/member/payments"
+            href="/portal/member/payments"
             iconColor="text-emerald-500"
-            hasNotification
+            notification
             badge="Soon"
           />
 
@@ -84,7 +82,7 @@ export default function DashboardPage() {
             title="Documents"
             description="Forms and agreements"
             icon={FileText}
-            href="/dashboard/member/documents"
+            href="/portal/member/documents"
             iconColor="text-orange-500"
             badge="Soon"
           />
@@ -93,7 +91,7 @@ export default function DashboardPage() {
             title="News & Updates"
             description="Latest gym announcements"
             icon={Newspaper}
-            href="/dashboard/member/news"
+            href="/portal/member/news"
             iconColor="text-pink-500"
             badge="Soon"
           />
@@ -102,7 +100,7 @@ export default function DashboardPage() {
             title="Book Session"
             description="Schedule a training session"
             icon={CalendarPlus}
-            href="/dashboard/member/book"
+            href="/portal/member/book"
             iconColor="text-cyan-500"
             badge="Soon"
           />
@@ -112,48 +110,24 @@ export default function DashboardPage() {
             title="User Management"
             description="Manage members and staff"
             icon={Users}
-            href="/dashboard/admin/user-management"
-            iconColor="text-red-500"
+            href="/portal/admin/user-management"
+            iconColor="text-primary-dark"
+          />
+
+          <CleanDashboardCard
+            title="Content Management"
+            description="Website, branding & templates"
+            icon={Edit3}
+            href="/portal/admin/content-management"
+            iconColor="text-primary"
           />
 
           <CleanDashboardCard
             title="Settings"
             description="System configuration"
             icon={Settings}
-            href="/dashboard/admin/settings"
+            href="/portal/admin/settings"
             iconColor="text-gray-500"
-          />
-
-          <CleanDashboardCard
-            title="Branding"
-            description="Customize appearance"
-            icon={Palette}
-            href="/dashboard/admin/branding"
-            iconColor="text-violet-500"
-          />
-
-          <CleanDashboardCard
-            title="Email Templates"
-            description="Manage email content"
-            icon={Mail}
-            href="/dashboard/admin/email-templates"
-            iconColor="text-blue-600"
-          />
-
-          <CleanDashboardCard
-            title="Website Structure"
-            description="Manage site content"
-            icon={Layout}
-            href="/dashboard/admin/website-structure"
-            iconColor="text-green-600"
-          />
-
-          <CleanDashboardCard
-            title="Components"
-            description="UI component library"
-            icon={Layout}
-            href="/dashboard/admin/components"
-            iconColor="text-purple-600"
           />
         </div>
       </div>
