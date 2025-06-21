@@ -6,7 +6,6 @@ import { CleanPortalSidebar } from "./clean-portal-sidebar"
 import { useAuth } from "@/hooks/use-auth"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
-import { PortalHeaderSection } from "./portal-header-section"
 
 interface CleanPortalLayoutProps {
   children: React.ReactNode
@@ -48,10 +47,7 @@ export function CleanPortalLayout({ children }: CleanPortalLayoutProps) {
       <main className="flex-1 overflow-auto">
         {/* Main Content */}
         <div className="p-6">
-          <div className="max-w-7xl mx-auto space-y-8">
-            <PortalHeaderSection />
-            {children}
-          </div>
+          <div className="max-w-7xl mx-auto">{children}</div>
         </div>
 
         {/* Branded Footer */}

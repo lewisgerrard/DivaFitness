@@ -49,10 +49,10 @@ export default function BodyCompositionPage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-[#7b329b]">Body Composition</h1>
+            <h1 className="text-3xl font-bold text-gray-900">Body Composition</h1>
             <p className="text-gray-600">Track your body metrics and progress over time</p>
           </div>
-          <Button className="bg-[#7b329b] hover:bg-[#6b2c87]">
+          <Button className="bg-purple-600 hover:bg-purple-700">
             <Plus className="w-4 h-4 mr-2" />
             Add Measurement
           </Button>
@@ -60,11 +60,11 @@ export default function BodyCompositionPage() {
 
         {/* Current Metrics Overview */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Card className="border-[#7b329b]/20 shadow-sm">
+          <Card className="border-purple-100 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
-                  <Scale className="w-5 h-5 text-[#7b329b]" />
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Scale className="w-5 h-5 text-purple-600" />
                 </div>
                 <div className="flex-1">
                   <p className="text-2xl font-bold text-gray-900">{currentMetrics.weight} kg</p>
@@ -87,11 +87,11 @@ export default function BodyCompositionPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#7b329b]/20 shadow-sm">
+          <Card className="border-purple-100 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
-                  <Target className="w-5 h-5 text-[#7b329b]" />
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Target className="w-5 h-5 text-purple-600" />
                 </div>
                 <div className="flex-1">
                   <p className="text-2xl font-bold text-gray-900">{currentMetrics.bodyFat}%</p>
@@ -114,7 +114,7 @@ export default function BodyCompositionPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#7b329b]/20 shadow-sm">
+          <Card className="border-purple-100 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-green-100 rounded-lg">
@@ -128,7 +128,7 @@ export default function BodyCompositionPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-[#7b329b]/20 shadow-sm">
+          <Card className="border-purple-100 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-orange-100 rounded-lg">
@@ -149,9 +149,9 @@ export default function BodyCompositionPage() {
         </div>
 
         {/* Goals Progress */}
-        <Card className="border-[#7b329b]/20 shadow-sm">
-          <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-            <CardTitle className="text-[#7b329b]">Goal Progress</CardTitle>
+        <Card className="border-purple-100 shadow-sm">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+            <CardTitle className="text-gray-900">Goal Progress</CardTitle>
             <CardDescription>Track your progress towards your fitness goals</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6 pt-6">
@@ -159,7 +159,7 @@ export default function BodyCompositionPage() {
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-700">Weight Goal</span>
-                  <span className="text-[#7b329b] font-medium">
+                  <span className="text-purple-600 font-medium">
                     {currentMetrics.weight}kg / {goals.targetWeight}kg
                   </span>
                 </div>
@@ -167,15 +167,14 @@ export default function BodyCompositionPage() {
                   value={
                     ((goals.targetWeight - currentMetrics.weight) / (goals.targetWeight - weightData[0].weight)) * 100
                   }
-                  className="h-2"
-                  style={{ backgroundColor: "#7b329b20" }}
+                  className="h-2 bg-purple-100"
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-700">Body Fat Goal</span>
-                  <span className="text-[#7b329b] font-medium">
+                  <span className="text-purple-600 font-medium">
                     {currentMetrics.bodyFat}% / {goals.targetBodyFat}%
                   </span>
                 </div>
@@ -184,22 +183,20 @@ export default function BodyCompositionPage() {
                     ((weightData[0].bodyFat - currentMetrics.bodyFat) / (weightData[0].bodyFat - goals.targetBodyFat)) *
                     100
                   }
-                  className="h-2"
-                  style={{ backgroundColor: "#7b329b20" }}
+                  className="h-2 bg-purple-100"
                 />
               </div>
 
               <div className="space-y-2">
                 <div className="flex justify-between text-sm">
                   <span className="text-gray-700">Muscle Mass Goal</span>
-                  <span className="text-[#7b329b] font-medium">
+                  <span className="text-purple-600 font-medium">
                     {currentMetrics.muscleMass}kg / {goals.targetMuscleMass}kg
                   </span>
                 </div>
                 <Progress
                   value={((currentMetrics.muscleMass - 60) / (goals.targetMuscleMass - 60)) * 100}
-                  className="h-2"
-                  style={{ backgroundColor: "#7b329b20" }}
+                  className="h-2 bg-purple-100"
                 />
               </div>
             </div>
@@ -207,22 +204,22 @@ export default function BodyCompositionPage() {
         </Card>
 
         <Tabs defaultValue="trends" className="space-y-6">
-          <TabsList className="bg-[#7b329b]/5 border-[#7b329b]/20">
-            <TabsTrigger value="trends" className="data-[state=active]:bg-[#7b329b] data-[state=active]:text-white">
+          <TabsList className="bg-purple-50 border-purple-200">
+            <TabsTrigger value="trends" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
               Weight & Body Fat Trends
             </TabsTrigger>
             <TabsTrigger
               value="measurements"
-              className="data-[state=active]:bg-[#7b329b] data-[state=active]:text-white"
+              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
             >
               Body Measurements
             </TabsTrigger>
           </TabsList>
 
           <TabsContent value="trends">
-            <Card className="border-[#7b329b]/20 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-                <CardTitle className="text-[#7b329b]">Weight & Body Fat Progress</CardTitle>
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Weight & Body Fat Progress</CardTitle>
                 <CardDescription>Track your weight and body fat percentage over time</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
@@ -230,11 +227,11 @@ export default function BodyCompositionPage() {
                   config={{
                     weight: {
                       label: "Weight (kg)",
-                      color: "#7b329b",
+                      color: "#7c3aed",
                     },
                     bodyFat: {
                       label: "Body Fat (%)",
-                      color: "#9d4edd",
+                      color: "#a855f7",
                     },
                   }}
                   className="h-[400px]"
@@ -250,17 +247,17 @@ export default function BodyCompositionPage() {
                         yAxisId="left"
                         type="monotone"
                         dataKey="weight"
-                        stroke="#7b329b"
+                        stroke="#7c3aed"
                         strokeWidth={3}
-                        dot={{ fill: "#7b329b", strokeWidth: 2, r: 4 }}
+                        dot={{ fill: "#7c3aed", strokeWidth: 2, r: 4 }}
                       />
                       <Line
                         yAxisId="right"
                         type="monotone"
                         dataKey="bodyFat"
-                        stroke="#9d4edd"
+                        stroke="#a855f7"
                         strokeWidth={3}
-                        dot={{ fill: "#9d4edd", strokeWidth: 2, r: 4 }}
+                        dot={{ fill: "#a855f7", strokeWidth: 2, r: 4 }}
                       />
                     </LineChart>
                   </ResponsiveContainer>
@@ -270,19 +267,19 @@ export default function BodyCompositionPage() {
           </TabsContent>
 
           <TabsContent value="measurements">
-            <Card className="border-[#7b329b]/20 shadow-sm">
-              <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-                <CardTitle className="text-[#7b329b]">Body Measurements</CardTitle>
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Body Measurements</CardTitle>
                 <CardDescription>Track changes in your body measurements</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
                 <ChartContainer
                   config={{
-                    chest: { label: "Chest (cm)", color: "#7b329b" },
-                    waist: { label: "Waist (cm)", color: "#9d4edd" },
-                    hips: { label: "Hips (cm)", color: "#c77dff" },
-                    arms: { label: "Arms (cm)", color: "#e0c3fc" },
-                    thighs: { label: "Thighs (cm)", color: "#f0e6ff" },
+                    chest: { label: "Chest (cm)", color: "#7c3aed" },
+                    waist: { label: "Waist (cm)", color: "#a855f7" },
+                    hips: { label: "Hips (cm)", color: "#c084fc" },
+                    arms: { label: "Arms (cm)", color: "#ddd6fe" },
+                    thighs: { label: "Thighs (cm)", color: "#ede9fe" },
                   }}
                   className="h-[400px]"
                 >
@@ -292,11 +289,11 @@ export default function BodyCompositionPage() {
                       <XAxis dataKey="date" stroke="#6b7280" />
                       <YAxis stroke="#6b7280" />
                       <ChartTooltip content={<ChartTooltipContent />} />
-                      <Bar dataKey="chest" fill="#7b329b" />
-                      <Bar dataKey="waist" fill="#9d4edd" />
-                      <Bar dataKey="hips" fill="#c77dff" />
-                      <Bar dataKey="arms" fill="#e0c3fc" />
-                      <Bar dataKey="thighs" fill="#f0e6ff" />
+                      <Bar dataKey="chest" fill="#7c3aed" />
+                      <Bar dataKey="waist" fill="#a855f7" />
+                      <Bar dataKey="hips" fill="#c084fc" />
+                      <Bar dataKey="arms" fill="#ddd6fe" />
+                      <Bar dataKey="thighs" fill="#ede9fe" />
                     </BarChart>
                   </ResponsiveContainer>
                 </ChartContainer>

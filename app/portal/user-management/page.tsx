@@ -8,7 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import AddUserModal from "@/components/add-user-modal"
 import { ConfirmDialog } from "@/components/confirm-dialog"
-import { UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail, ToggleLeft, ToggleRight } from "lucide-react"
+import { Users, UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail, ToggleLeft, ToggleRight } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/hooks/use-auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -167,6 +167,15 @@ export default function UserManagementPage() {
     }
   }
 
+  const userStats = {
+    total: users.length,
+    active: users.filter((u) => u.status === "active").length,
+    inactive: users.filter((u) => u.status === "inactive").length,
+    admins: users.filter((u) => u.role === "admin").length,
+    clients: users.filter((u) => u.role === "client").length,
+    members: users.filter((u) => u.role === "member").length,
+  }
+
   if (currentUser?.role !== "admin") {
     return (
       <CleanPortalLayout>
@@ -195,7 +204,94 @@ export default function UserManagementPage() {
           </Button>
         </div>
 
-        {/* User Directory Table */}
+        {/* Stats Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <Users className="w-5 h-5 text-[#7b329b]" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.total}</p>
+                  <p className="text-sm text-gray-600">Total</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Users className="w-5 h-5 text-green-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.active}</p>
+                  <p className="text-sm text-gray-600">Active</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-gray-100 rounded-lg">
+                  <Users className="w-5 h-5 text-gray-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.inactive}</p>
+                  <p className="text-sm text-gray-600">Inactive</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-red-100 rounded-lg">
+                  <Users className="w-5 h-5 text-red-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.admins}</p>
+                  <p className="text-sm text-gray-600">Admins</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
+                  <Users className="w-5 h-5 text-[#7b329b]" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.clients}</p>
+                  <p className="text-sm text-gray-600">Clients</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-[#7b329b]/20 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-blue-100 rounded-lg">
+                  <Users className="w-5 h-5 text-blue-600" />
+                </div>
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">{userStats.members}</p>
+                  <p className="text-sm text-gray-600">Members</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Filters and Search */}
         <Card className="border-[#7b329b]/20 shadow-sm">
           <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
             <CardTitle className="text-[#7b329b]">User Directory</CardTitle>
@@ -302,24 +398,24 @@ export default function UserManagementPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr className="border-b border-[#7b329b]/20">
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Full Name</th>
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Email</th>
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Phone</th>
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Access</th>
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Status</th>
-                      <th className="text-left px-4 py-3 font-semibold text-[#7b329b] bg-[#7b329b]/5">Actions</th>
+                    <tr>
+                      <th className="text-left">Full Name</th>
+                      <th className="text-left">Email</th>
+                      <th className="text-left">Phone</th>
+                      <th className="text-left">Access</th>
+                      <th className="text-left">Status</th>
+                      <th className="text-left">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
                     {filteredUsers.map((user) => (
-                      <tr key={user.id} className="border-b border-gray-100 hover:bg-[#7b329b]/5">
-                        <td className="px-4 py-3 text-gray-900">{`${user.first_name} ${user.last_name}`}</td>
-                        <td className="px-4 py-3 text-gray-900">{user.email}</td>
-                        <td className="px-4 py-3 text-gray-900">{user.phone || "Not provided"}</td>
-                        <td className="px-4 py-3">{getRoleBadge(user.role)}</td>
-                        <td className="px-4 py-3">{getStatusBadge(user.status)}</td>
-                        <td className="px-4 py-3">
+                      <tr key={user.id}>
+                        <td>{`${user.first_name} ${user.last_name}`}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phone || "Not provided"}</td>
+                        <td>{getRoleBadge(user.role)}</td>
+                        <td>{getStatusBadge(user.status)}</td>
+                        <td>
                           <DropdownMenu>
                             <DropdownMenuTrigger asChild>
                               <Button variant="ghost" size="sm">

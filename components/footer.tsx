@@ -77,47 +77,15 @@ export function Footer() {
             </ul>
           </div>
 
-          {/* Portal Links */}
+          {/* Services */}
           <div>
-            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Portal Links</h4>
-            <ul className="space-y-1">
-              <li>
-                <Link href="/login" className="text-secondary/70 hover:text-secondary transition-colors text-sm">
-                  Client Login
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/portal/profile"
-                  className="text-secondary/70 hover:text-secondary transition-colors text-sm"
-                >
-                  My Profile
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/portal/bookings"
-                  className="text-secondary/70 hover:text-secondary transition-colors text-sm"
-                >
-                  Book Sessions
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/portal/body-composition"
-                  className="text-secondary/70 hover:text-secondary transition-colors text-sm"
-                >
-                  Progress Tracking
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/portal/session-history"
-                  className="text-secondary/70 hover:text-secondary transition-colors text-sm"
-                >
-                  Session History
-                </Link>
-              </li>
+            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Services</h4>
+            <ul className="space-y-1 text-secondary/70 text-sm">
+              <li>1-to-1 Personal Training</li>
+              <li>Group Training</li>
+              <li>Nutrition Coaching</li>
+              <li>Cooking Sessions</li>
+              <li>Free Consultations</li>
             </ul>
           </div>
 
@@ -151,7 +119,7 @@ export function Footer() {
         <div className="border-t border-gray-200 mt-6 pt-4 text-center">
           <p className="text-secondary/70 text-sm">
             © {new Date().getFullYear()} Diva Fitness. All rights reserved. |
-            <span className="text-secondary"> Designed with 💜 for women's fitness</span>
+            <span className="text-secondary"> Designed with ❤️ for women's fitness</span>
           </p>
         </div>
       </div>
