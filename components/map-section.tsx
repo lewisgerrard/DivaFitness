@@ -11,7 +11,7 @@ interface MapSectionProps {
 
 export default function MapSection({
   title = "Find the Studio",
-  description = "Located in Chester, UK - exact address provided upon booking",
+  description = "Located in Chester, UK",
   mapUrl = "https://www.google.com/maps/embed/v1/search?key=AIzaSyAt0i9BNsrI7oW9fiXrDDiTJNkeEvokDXk&q=Diva+Fitness+Chester+UK&zoom=15",
   directionsUrl = "https://g.co/kgs/M2SZQkb",
   className = "",
