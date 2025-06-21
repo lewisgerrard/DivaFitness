@@ -31,13 +31,8 @@ export function HeroPage({
   badge,
 }: HeroPageProps) {
   return (
-    <section className={`${brandKit.components.hero.container} py-8 md:py-12`}>
-      {/* Decorative Elements */}
-      <div className="absolute inset-0">
-        <div className={`absolute inset-0 ${brandKit.gradients.primary}`} />
-      </div>
-
-      <div className={brandKit.components.hero.content}>
+    <section className="relative min-h-[400px] bg-gradient-to-br from-primary via-primary/95 to-primary/90 flex items-center justify-center overflow-hidden w-screen ml-[calc(-50vw+50%)] mr-[calc(-50vw+50%)] mb-0">
+      <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white py-16">
         <div className={brandKit.components.hero.badge}>
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">{badge || title}</span>

@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-import "./globals.css"
 import { Poppins, Roboto } from "next/font/google"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
@@ -29,14 +28,12 @@ export default function ClientLayout({
   const isLoginPage = pathname === "/login"
 
   return (
-    <html lang="en" className={poppins.variable + " " + roboto.variable}>
-      <body className="font-body bg-white text-secondary">
-        <AuthProvider>
-          <Navigation />
-          <main>{children}</main>
-          {!isLoginPage && <Footer />}
-        </AuthProvider>
-      </body>
-    </html>
+    <div className={`${poppins.variable} ${roboto.variable} font-body bg-white text-secondary`}>
+      <AuthProvider>
+        <Navigation />
+        <main>{children}</main>
+        {!isLoginPage && <Footer />}
+      </AuthProvider>
+    </div>
   )
 }

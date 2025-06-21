@@ -15,7 +15,7 @@ export default function NutritionPage() {
       description:
         "A focused 75-minute session reviewing your current eating habits and providing practical nutrition guidance.",
       icon: Apple,
-      image: "/images/studio-emma-sitting.jpg",
+      image: "/images/nutrition-pantry.jpg",
       price: "£65",
       duration: "75 mins",
       content: (
@@ -44,7 +44,7 @@ export default function NutritionPage() {
       description:
         "An in-depth 2-hour session combining goal setting, comprehensive nutrition review, and personalized planning.",
       icon: BookOpen,
-      image: "/images/studio-emma-exterior.jpg",
+      image: "/images/journey-complete.jpg",
       price: "£99",
       duration: "2 hours",
       addOn: "Personalised Report: £45",
@@ -114,32 +114,14 @@ export default function NutritionPage() {
                   className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden"
                   onClick={() => scrollToService(service.id)}
                 >
-                  <div className="relative h-48 overflow-hidden">
-                    <Image
-                      src={service.image || "/placeholder.svg"}
-                      alt={service.title}
-                      fill
-                      className="object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
-                    <div className="absolute bottom-3 left-3 right-3">
-                      <div className="flex items-center gap-2 text-white mb-2">
-                        <service.icon className="w-5 h-5" />
-                        <span className="text-sm font-medium">{service.duration}</span>
+                  <CardContent className="p-6 text-center flex flex-col items-center justify-between h-48">
+                    <div className="flex flex-col items-center flex-1 justify-center">
+                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0">
+                        <service.icon className="w-8 h-8 text-primary flex-shrink-0" />
                       </div>
-                      <div className="text-2xl font-bold text-white">{service.price}</div>
-                      {service.addOn && <div className="text-sm text-white/80 mt-1">{service.addOn}</div>}
-                    </div>
-                  </div>
-
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-primary transition-colors">
-                      {service.title}
-                    </h3>
-                    <p className="text-gray-600 text-sm leading-relaxed mb-4">{service.shortDescription}</p>
-                    <div className="flex items-center text-primary font-medium text-sm">
-                      <span>View Details</span>
-                      <ArrowRight className="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" />
+                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight text-center">
+                        {service.title}
+                      </h3>
                     </div>
                   </CardContent>
                 </Card>

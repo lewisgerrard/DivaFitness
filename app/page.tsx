@@ -1,5 +1,3 @@
-"use client"
-
 import { User, Leaf, Sparkles, ArrowRight } from "lucide-react"
 import HeroHome from "@/components/hero-home"
 import SectionHeader from "@/components/section-header"
@@ -10,11 +8,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { brandKit, brandClasses } from "@/lib/brand-kit"
-import { useState, useEffect } from "react"
 
 export default function HomePage() {
-  // Static reviews as fallback (these will be used until real APIs are set up)
-  const staticReviews = [
+  const reviews = [
     {
       name: "Hanna",
       text: "After just a couple of sessions, we noticed major improvements that were easy to incorporate into our daily routines. If you would like to eat better but do not know where to start, get in touch with Diva Fitness! You will be in the best possible hands",
@@ -37,13 +33,6 @@ export default function HomePage() {
       date: "3 weeks ago",
     },
   ]
-
-  const [reviews, setReviews] = useState(staticReviews)
-  const [isLoadingReviews, setIsLoadingReviews] = useState(false)
-
-  useEffect(() => {
-    // Static reviews only for now
-  }, [])
 
   return (
     <div className="min-h-screen">
@@ -115,6 +104,8 @@ export default function HomePage() {
                   alt="Emma Fisher in Diva Fitness Studio"
                   fill
                   className="object-cover"
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-primary/20 to-transparent" />
               </div>
@@ -141,6 +132,7 @@ export default function HomePage() {
                 alt="Close-up of training weights"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/50" />
 
@@ -173,6 +165,7 @@ export default function HomePage() {
                 alt="Organized healthy nutrition pantry with glass jars"
                 fill
                 className="object-cover group-hover:scale-105 transition-transform duration-700"
+                sizes="(max-width: 768px) 100vw, 50vw"
               />
               <div className="absolute inset-0 bg-black/50" />
 
@@ -211,13 +204,9 @@ export default function HomePage() {
           />
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
-            {isLoadingReviews
-              ? Array.from({ length: 3 }).map((_, index) => (
-                  <div key={index} className="animate-pulse">
-                    <div className="bg-gray-200 h-64 rounded-lg"></div>
-                  </div>
-                ))
-              : reviews.slice(0, 3).map((review, index) => <ReviewCard key={index} {...review} />)}
+            {reviews.slice(0, 3).map((review, index) => (
+              <ReviewCard key={index} {...review} />
+            ))}
           </div>
 
           <MapSection />
