@@ -1,18 +1,19 @@
 "use client"
 
 import type React from "react"
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
-import { CleanPortalSidebar } from "@/components/clean-portal-sidebar"
+
+import { CleanPortalSidebar } from "./clean-portal-sidebar"
 import { useAuth } from "@/hooks/use-auth"
+import { useRouter } from "next/navigation"
+import { useEffect } from "react"
 
 interface CleanPortalLayoutProps {
   children: React.ReactNode
 }
 
 export function CleanPortalLayout({ children }: CleanPortalLayoutProps) {
-  const router = useRouter()
   const { user, loading } = useAuth()
+  const router = useRouter()
 
   useEffect(() => {
     if (!loading && !user) {
@@ -22,25 +23,53 @@ export function CleanPortalLayout({ children }: CleanPortalLayoutProps) {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-br from-purple-600 to-purple-700 rounded-2xl flex items-center justify-center mx-auto mb-4 animate-pulse">
-            <span className="text-white font-bold text-xl">D</span>
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-purple-50/30 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <div className="w-16 h-16 bg-gradient-to-br from-[#7b329b] to-[#6b2c87] rounded-2xl flex items-center justify-center mx-auto shadow-lg">
+            <div className="w-8 h-8 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
           </div>
-          <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your portal...</p>
+          <div>
+            <h2 className="text-xl font-semibold text-gray-900">Loading Portal</h2>
+            <p className="text-[#7b329b]">Please wait...</p>
+          </div>
         </div>
       </div>
     )
   }
 
-  if (!user) return null
+  if (!user) {
+    return null
+  }
 
   return (
-    <div className="h-screen bg-gray-50 flex overflow-hidden">
+    <div className="min-h-screen bg-gradient-to-br from-[#7b329b]/5 via-white to-[#7b329b]/5 flex">
       <CleanPortalSidebar />
       <main className="flex-1 overflow-auto">
-        <div className="p-8">{children}</div>
+        {/* Main Content */}
+        <div className="p-6">
+          <div className="max-w-7xl mx-auto">{children}</div>
+        </div>
+
+        {/* Branded Footer */}
+        <footer className="bg-gradient-to-r from-[#7b329b] to-[#6b2c87] text-white mt-12">
+          <div className="max-w-7xl mx-auto px-6 py-8">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-4">
+                <div className="relative w-10 h-10 bg-white rounded-lg p-2">
+                  <img src="/diva-logo-fitness.png" alt="Diva Fitness" className="w-full h-full object-contain" />
+                </div>
+                <div>
+                  <h3 className="font-bold text-lg">Diva Fitness</h3>
+                  <p className="text-[#c77dff] text-sm">Transform Your Body & Mind</p>
+                </div>
+              </div>
+              <div className="text-right">
+                <p className="text-[#c77dff] text-sm">Need help?</p>
+                <p className="font-semibold">support@divafitness.com</p>
+              </div>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   )

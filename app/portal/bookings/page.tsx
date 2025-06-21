@@ -1,290 +1,376 @@
 "use client"
 
+import { useState } from "react"
 import { CleanPortalLayout } from "@/components/clean-portal-layout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { CalendarPlus, Clock, MapPin, User, CheckCircle, Calendar } from "lucide-react"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Calendar, Clock, MapPin, User, Plus, X, CheckCircle, AlertCircle } from "lucide-react"
+import { toast } from "sonner"
 
+// Mock data for bookings
 const upcomingBookings = [
   {
     id: 1,
+    class: "HIIT Training",
+    instructor: "Emma Johnson",
     date: "2024-01-15",
-    time: "09:00 AM",
-    type: "Personal Training",
-    trainer: "Emma Wilson",
+    time: "09:00",
+    duration: "45 min",
     location: "Studio A",
     status: "confirmed",
-    duration: "60 min",
+    spots_left: 2,
   },
   {
     id: 2,
+    class: "Strength & Conditioning",
+    instructor: "Emma Johnson",
     date: "2024-01-17",
-    time: "02:00 PM",
-    type: "Nutrition Consultation",
-    trainer: "Emma Wilson",
-    location: "Office",
+    time: "18:00",
+    duration: "60 min",
+    location: "Main Gym",
     status: "confirmed",
-    duration: "45 min",
+    spots_left: 1,
   },
   {
     id: 3,
+    class: "Personal Training",
+    instructor: "Emma Johnson",
     date: "2024-01-20",
-    time: "10:00 AM",
-    type: "Progress Assessment",
-    trainer: "Emma Wilson",
-    location: "Studio A",
+    time: "10:00",
+    duration: "60 min",
+    location: "Studio B",
     status: "pending",
-    duration: "30 min",
+    spots_left: 0,
   },
 ]
 
-const pastBookings = [
+const availableClasses = [
   {
     id: 4,
-    date: "2024-01-10",
-    time: "09:00 AM",
-    type: "Personal Training",
-    trainer: "Emma Wilson",
-    location: "Studio A",
-    status: "completed",
+    class: "Morning Yoga",
+    instructor: "Sarah Wilson",
+    date: "2024-01-16",
+    time: "07:00",
     duration: "60 min",
-    notes: "Great progress on squats and deadlifts",
+    location: "Studio A",
+    spots_left: 5,
+    max_capacity: 8,
   },
   {
     id: 5,
-    date: "2024-01-08",
-    time: "02:00 PM",
-    type: "Nutrition Consultation",
-    trainer: "Emma Wilson",
-    location: "Office",
-    status: "completed",
+    class: "HIIT Training",
+    instructor: "Emma Johnson",
+    date: "2024-01-18",
+    time: "19:00",
     duration: "45 min",
-    notes: "Updated meal plan provided",
+    location: "Studio A",
+    spots_left: 3,
+    max_capacity: 6,
   },
+]
+
+const bookingHistory = [
   {
     id: 6,
-    date: "2024-01-05",
-    time: "11:00 AM",
-    type: "Personal Training",
-    trainer: "Emma Wilson",
-    location: "Studio A",
-    status: "completed",
+    class: "Strength Training",
+    instructor: "Emma Johnson",
+    date: "2024-01-10",
+    time: "18:00",
     duration: "60 min",
-    notes: "Focused on upper body strength",
+    status: "completed",
+    rating: 5,
+  },
+  {
+    id: 7,
+    class: "HIIT Training",
+    instructor: "Emma Johnson",
+    date: "2024-01-08",
+    time: "09:00",
+    duration: "45 min",
+    status: "completed",
+    rating: 4,
+  },
+  {
+    id: 8,
+    class: "Personal Training",
+    instructor: "Emma Johnson",
+    date: "2024-01-05",
+    time: "10:00",
+    duration: "60 min",
+    status: "cancelled",
+    rating: null,
   },
 ]
 
 export default function BookingsPage() {
+  const [bookings, setBookings] = useState(upcomingBookings)
+
+  const handleCancelBooking = (bookingId: number) => {
+    setBookings(bookings.filter((booking) => booking.id !== bookingId))
+    toast.success("Booking cancelled successfully")
+  }
+
+  const handleBookClass = (classId: number) => {
+    toast.success("Class booked successfully!")
+  }
+
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "confirmed":
-        return <Badge className="bg-green-100 text-green-800">Confirmed</Badge>
+        return <Badge className="bg-green-100 text-green-800 hover:bg-green-100">Confirmed</Badge>
       case "pending":
-        return <Badge className="bg-yellow-100 text-yellow-800">Pending</Badge>
-      case "completed":
-        return <Badge className="bg-blue-100 text-blue-800">Completed</Badge>
+        return <Badge className="bg-yellow-100 text-yellow-800 hover:bg-yellow-100">Pending</Badge>
       case "cancelled":
-        return <Badge className="bg-red-100 text-red-800">Cancelled</Badge>
+        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Cancelled</Badge>
+      case "completed":
+        return <Badge className="bg-purple-100 text-purple-800 hover:bg-purple-100">Completed</Badge>
       default:
-        return <Badge variant="outline">{status}</Badge>
+        return <Badge variant="secondary">{status}</Badge>
     }
   }
 
   return (
     <CleanPortalLayout>
       <div className="space-y-8">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
-            <p className="text-gray-600 mt-1">Manage your training sessions and appointments</p>
-          </div>
-          <Button className="bg-pink-600 hover:bg-pink-700">
-            <CalendarPlus className="h-4 w-4 mr-2" />
-            Book New Session
-          </Button>
+        <div className="space-y-2">
+          <h1 className="text-3xl font-bold text-gray-900">My Bookings</h1>
+          <p className="text-gray-600">Manage your class bookings and schedule</p>
         </div>
 
         {/* Quick Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Calendar className="w-5 h-5 text-purple-600" />
+                </div>
                 <div>
-                  <p className="text-sm font-medium text-gray-600">Upcoming</p>
                   <p className="text-2xl font-bold text-gray-900">3</p>
-                  <p className="text-xs text-gray-500">Sessions</p>
+                  <p className="text-sm text-gray-600">Upcoming</p>
                 </div>
-                <Calendar className="h-8 w-8 text-pink-600" />
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">This Month</p>
-                  <p className="text-2xl font-bold text-gray-900">8</p>
-                  <p className="text-xs text-gray-500">Sessions</p>
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <CheckCircle className="w-5 h-5 text-green-600" />
                 </div>
-                <CheckCircle className="h-8 w-8 text-pink-600" />
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">12</p>
+                  <p className="text-sm text-gray-600">This Month</p>
+                </div>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Total Hours</p>
-                  <p className="text-2xl font-bold text-gray-900">24</p>
-                  <p className="text-xs text-gray-500">This month</p>
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Clock className="w-5 h-5 text-purple-600" />
                 </div>
-                <Clock className="h-8 w-8 text-pink-600" />
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">18</p>
+                  <p className="text-sm text-gray-600">Total Hours</p>
+                </div>
               </div>
             </CardContent>
           </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Completion Rate</p>
-                  <p className="text-2xl font-bold text-gray-900">95%</p>
-                  <p className="text-xs text-gray-500">Last 3 months</p>
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <AlertCircle className="w-5 h-5 text-orange-600" />
                 </div>
-                <User className="h-8 w-8 text-pink-600" />
+                <div>
+                  <p className="text-2xl font-bold text-gray-900">2</p>
+                  <p className="text-sm text-gray-600">Available</p>
+                </div>
               </div>
             </CardContent>
           </Card>
         </div>
 
-        {/* Upcoming Bookings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-900">Upcoming Sessions</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Session Type</TableHead>
-                  <TableHead>Trainer</TableHead>
-                  <TableHead>Location</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {upcomingBookings.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{new Date(booking.date).toLocaleDateString()}</p>
-                        <p className="text-sm text-gray-500">{booking.time}</p>
+        <Tabs defaultValue="upcoming" className="space-y-6">
+          <TabsList className="bg-purple-50 border-purple-200">
+            <TabsTrigger value="upcoming" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              Upcoming Bookings
+            </TabsTrigger>
+            <TabsTrigger value="available" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              Available Classes
+            </TabsTrigger>
+            <TabsTrigger value="history" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              Booking History
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="upcoming" className="space-y-4">
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Upcoming Sessions</CardTitle>
+                <CardDescription>Your confirmed and pending bookings</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {bookings.map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <h3 className="font-semibold text-gray-900">{booking.class}</h3>
+                          {getStatusBadge(booking.status)}
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-purple-500" />
+                            {booking.instructor}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-purple-500" />
+                            {booking.date}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-purple-500" />
+                            {booking.time} ({booking.duration})
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-purple-500" />
+                            {booking.location}
+                          </div>
+                        </div>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <CalendarPlus className="h-4 w-4 text-pink-600" />
-                        <span>{booking.type}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <User className="h-4 w-4 text-gray-400" />
-                        <span>{booking.trainer}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        <span>{booking.location}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4 text-gray-400" />
-                        <span>{booking.duration}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(booking.status)}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
-                        <Button variant="outline" size="sm">
+                      <div className="flex gap-2">
+                        <Button variant="outline" size="sm" className="border-purple-200 hover:bg-purple-50">
                           Reschedule
                         </Button>
-                        <Button variant="outline" size="sm" className="text-red-600 hover:text-red-700">
-                          Cancel
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => handleCancelBooking(booking.id)}
+                          className="border-red-200 hover:bg-red-50 text-red-600"
+                        >
+                          <X className="w-4 h-4" />
                         </Button>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
 
-        {/* Past Bookings */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-900">Session History</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Date & Time</TableHead>
-                  <TableHead>Session Type</TableHead>
-                  <TableHead>Trainer</TableHead>
-                  <TableHead>Duration</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Notes</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {pastBookings.map((booking) => (
-                  <TableRow key={booking.id}>
-                    <TableCell>
-                      <div>
-                        <p className="font-medium">{new Date(booking.date).toLocaleDateString()}</p>
-                        <p className="text-sm text-gray-500">{booking.time}</p>
+          <TabsContent value="available" className="space-y-4">
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Available Classes</CardTitle>
+                <CardDescription>Book your next session (max 3 bookings per class)</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {availableClasses.map((classItem) => (
+                    <div
+                      key={classItem.id}
+                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <h3 className="font-semibold text-gray-900">{classItem.class}</h3>
+                          <Badge variant="outline" className="border-purple-200 text-purple-700">
+                            {classItem.spots_left} spots left
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-purple-500" />
+                            {classItem.instructor}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-purple-500" />
+                            {classItem.date}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-purple-500" />
+                            {classItem.time} ({classItem.duration})
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <MapPin className="w-4 h-4 text-purple-500" />
+                            {classItem.location}
+                          </div>
+                        </div>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <CalendarPlus className="h-4 w-4 text-pink-600" />
-                        <span>{booking.type}</span>
+                      <Button
+                        onClick={() => handleBookClass(classItem.id)}
+                        disabled={classItem.spots_left === 0}
+                        className="bg-purple-600 hover:bg-purple-700"
+                      >
+                        <Plus className="w-4 h-4 mr-2" />
+                        Book Class
+                      </Button>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="history" className="space-y-4">
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Booking History</CardTitle>
+                <CardDescription>Your past sessions and attendance record</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {bookingHistory.map((booking) => (
+                    <div
+                      key={booking.id}
+                      className="flex items-center justify-between p-4 border border-purple-100 rounded-lg bg-gradient-to-r from-white to-purple-50/30"
+                    >
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-2">
+                          <h3 className="font-semibold text-gray-900">{booking.class}</h3>
+                          {getStatusBadge(booking.status)}
+                          {booking.rating && (
+                            <div className="flex items-center gap-1">
+                              {[...Array(5)].map((_, i) => (
+                                <span
+                                  key={i}
+                                  className={`text-sm ${i < booking.rating ? "text-purple-400" : "text-gray-300"}`}
+                                >
+                                  ★
+                                </span>
+                              ))}
+                            </div>
+                          )}
+                        </div>
+                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <User className="w-4 h-4 text-purple-500" />
+                            {booking.instructor}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Calendar className="w-4 h-4 text-purple-500" />
+                            {booking.date}
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Clock className="w-4 h-4 text-purple-500" />
+                            {booking.time} ({booking.duration})
+                          </div>
+                        </div>
                       </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <User className="h-4 w-4 text-gray-400" />
-                        <span>{booking.trainer}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>
-                      <div className="flex items-center space-x-2">
-                        <Clock className="h-4 w-4 text-gray-400" />
-                        <span>{booking.duration}</span>
-                      </div>
-                    </TableCell>
-                    <TableCell>{getStatusBadge(booking.status)}</TableCell>
-                    <TableCell>
-                      <p className="text-sm text-gray-600 max-w-xs truncate">{booking.notes}</p>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </CleanPortalLayout>
   )

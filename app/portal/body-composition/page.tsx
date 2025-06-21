@@ -1,279 +1,306 @@
 "use client"
 
 import { CleanPortalLayout } from "@/components/clean-portal-layout"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, PieChart, Pie, Cell } from "recharts"
-import { Activity, TrendingUp, TrendingDown, Scale, Zap, Heart, Target } from "lucide-react"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, ResponsiveContainer, BarChart, Bar } from "recharts"
+import { TrendingUp, TrendingDown, Scale, Ruler, Target, Plus } from "lucide-react"
 
-const bodyCompositionHistory = [
-  { month: "Oct", weight: 75, muscle: 42, fat: 25, water: 33 },
-  { month: "Nov", weight: 73, muscle: 43, fat: 23, water: 34 },
-  { month: "Dec", weight: 71, muscle: 44, fat: 21, water: 35 },
-  { month: "Jan", weight: 69, muscle: 45, fat: 20, water: 35 },
+// Mock data for body composition tracking
+const weightData = [
+  { date: "2024-01-01", weight: 75.2, bodyFat: 18.5 },
+  { date: "2024-01-08", weight: 74.8, bodyFat: 18.2 },
+  { date: "2024-01-15", weight: 74.5, bodyFat: 17.9 },
+  { date: "2024-01-22", weight: 74.1, bodyFat: 17.6 },
+  { date: "2024-01-29", weight: 73.8, bodyFat: 17.3 },
 ]
 
-const currentComposition = [
-  { name: "Muscle Mass", value: 45, color: "#ec4899", target: 48 },
-  { name: "Body Fat", value: 20, color: "#f97316", target: 18 },
-  { name: "Water", value: 35, color: "#3b82f6", target: 35 },
+const measurementsData = [
+  { date: "2024-01-01", chest: 98, waist: 82, hips: 95, arms: 32, thighs: 58 },
+  { date: "2024-01-15", chest: 99, waist: 81, hips: 94, arms: 33, thighs: 59 },
+  { date: "2024-01-29", chest: 100, waist: 80, hips: 93, arms: 34, thighs: 60 },
 ]
 
-const measurements = [
-  { area: "Chest", current: 92, previous: 95, change: -3, unit: "cm" },
-  { area: "Waist", current: 78, previous: 82, change: -4, unit: "cm" },
-  { area: "Hips", current: 98, previous: 101, change: -3, unit: "cm" },
-  { area: "Thigh", current: 58, previous: 60, change: -2, unit: "cm" },
-  { area: "Arm", current: 32, previous: 31, change: +1, unit: "cm" },
-]
+const currentMetrics = {
+  weight: 73.8,
+  height: 175,
+  bodyFat: 17.3,
+  muscleMass: 61.1,
+  bmi: 24.1,
+  visceralFat: 8,
+}
+
+const goals = {
+  targetWeight: 72.0,
+  targetBodyFat: 15.0,
+  targetMuscleMass: 63.0,
+}
 
 export default function BodyCompositionPage() {
+  const weightChange = weightData[weightData.length - 1].weight - weightData[0].weight
+  const bodyFatChange = weightData[weightData.length - 1].bodyFat - weightData[0].bodyFat
+
   return (
     <CleanPortalLayout>
       <div className="space-y-8">
-        {/* Header */}
-        <div className="flex justify-between items-center">
-          <div>
-            <h1 className="text-3xl font-bold text-gray-900">Body Composition Dashboard</h1>
-            <p className="text-gray-600 mt-1">Track your body composition metrics and progress</p>
+        <div className="flex items-center justify-between">
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold text-gray-900">Body Composition</h1>
+            <p className="text-gray-600">Track your body metrics and progress over time</p>
           </div>
-          <Button className="bg-pink-600 hover:bg-pink-700">
-            <Activity className="h-4 w-4 mr-2" />
-            Record Measurement
+          <Button className="bg-purple-600 hover:bg-purple-700">
+            <Plus className="w-4 h-4 mr-2" />
+            Add Measurement
           </Button>
         </div>
 
-        {/* Current Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Current Weight</p>
-                  <p className="text-2xl font-bold text-gray-900">69kg</p>
-                  <p className="text-xs text-green-600 flex items-center mt-1">
-                    <TrendingDown className="h-3 w-3 mr-1" />
-                    -6kg from start
-                  </p>
+        {/* Current Metrics Overview */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Scale className="w-5 h-5 text-purple-600" />
                 </div>
-                <Scale className="h-8 w-8 text-pink-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Muscle Mass</p>
-                  <p className="text-2xl font-bold text-gray-900">45%</p>
-                  <p className="text-xs text-green-600 flex items-center mt-1">
-                    <TrendingUp className="h-3 w-3 mr-1" />
-                    +3% from start
-                  </p>
-                </div>
-                <Zap className="h-8 w-8 text-pink-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">Body Fat</p>
-                  <p className="text-2xl font-bold text-gray-900">20%</p>
-                  <p className="text-xs text-green-600 flex items-center mt-1">
-                    <TrendingDown className="h-3 w-3 mr-1" />
-                    -5% from start
-                  </p>
-                </div>
-                <Activity className="h-8 w-8 text-pink-600" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">BMI</p>
-                  <p className="text-2xl font-bold text-gray-900">22.1</p>
-                  <p className="text-xs text-gray-500">Normal range</p>
-                </div>
-                <Heart className="h-8 w-8 text-pink-600" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Body Composition Trends */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-gray-900">Composition Trends</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ChartContainer
-                config={{
-                  muscle: { label: "Muscle %", color: "#ec4899" },
-                  fat: { label: "Fat %", color: "#f97316" },
-                  water: { label: "Water %", color: "#3b82f6" },
-                }}
-                className="h-[300px]"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={bodyCompositionHistory}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                    <Line type="monotone" dataKey="muscle" stroke="var(--color-muscle)" strokeWidth={2} />
-                    <Line type="monotone" dataKey="fat" stroke="var(--color-fat)" strokeWidth={2} />
-                    <Line type="monotone" dataKey="water" stroke="var(--color-water)" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-            </CardContent>
-          </Card>
-
-          {/* Current Composition */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="text-xl font-semibold text-gray-900">Current Composition</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ChartContainer
-                config={{
-                  muscle: { label: "Muscle", color: "#ec4899" },
-                  fat: { label: "Fat", color: "#f97316" },
-                  water: { label: "Water", color: "#3b82f6" },
-                }}
-                className="h-[300px]"
-              >
-                <ResponsiveContainer width="100%" height="100%">
-                  <PieChart>
-                    <Pie
-                      data={currentComposition}
-                      cx="50%"
-                      cy="50%"
-                      innerRadius={60}
-                      outerRadius={100}
-                      paddingAngle={5}
-                      dataKey="value"
-                    >
-                      {currentComposition.map((entry, index) => (
-                        <Cell key={`cell-${index}`} fill={entry.color} />
-                      ))}
-                    </Pie>
-                    <ChartTooltip content={<ChartTooltipContent />} />
-                  </PieChart>
-                </ResponsiveContainer>
-              </ChartContainer>
-              <div className="flex justify-center space-x-6 mt-4">
-                {currentComposition.map((item) => (
-                  <div key={item.name} className="text-center">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <div className="w-3 h-3 rounded-full" style={{ backgroundColor: item.color }} />
-                      <span className="text-sm font-medium">{item.name}</span>
-                    </div>
-                    <p className="text-lg font-bold">{item.value}%</p>
-                    <p className="text-xs text-gray-500">Target: {item.target}%</p>
+                <div className="flex-1">
+                  <p className="text-2xl font-bold text-gray-900">{currentMetrics.weight} kg</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-sm text-gray-600">Weight</p>
+                    {weightChange < 0 ? (
+                      <div className="flex items-center text-green-600">
+                        <TrendingDown className="w-3 h-3" />
+                        <span className="text-xs">{Math.abs(weightChange).toFixed(1)}kg</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-red-600">
+                        <TrendingUp className="w-3 h-3" />
+                        <span className="text-xs">{weightChange.toFixed(1)}kg</span>
+                      </div>
+                    )}
                   </div>
-                ))}
+                </div>
               </div>
             </CardContent>
           </Card>
-        </div>
 
-        {/* Body Measurements */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-900">Body Measurements</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {measurements.map((measurement) => (
-                <div key={measurement.area} className="p-4 border border-gray-200 rounded-lg">
-                  <div className="flex items-center justify-between mb-2">
-                    <h3 className="font-semibold text-gray-900">{measurement.area}</h3>
-                    <Badge
-                      variant={measurement.change > 0 ? "default" : "outline"}
-                      className={measurement.change > 0 ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"}
-                    >
-                      {measurement.change > 0 ? "+" : ""}
-                      {measurement.change}
-                      {measurement.unit}
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-purple-100 rounded-lg">
+                  <Target className="w-5 h-5 text-purple-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-2xl font-bold text-gray-900">{currentMetrics.bodyFat}%</p>
+                  <div className="flex items-center gap-1">
+                    <p className="text-sm text-gray-600">Body Fat</p>
+                    {bodyFatChange < 0 ? (
+                      <div className="flex items-center text-green-600">
+                        <TrendingDown className="w-3 h-3" />
+                        <span className="text-xs">{Math.abs(bodyFatChange).toFixed(1)}%</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center text-red-600">
+                        <TrendingUp className="w-3 h-3" />
+                        <span className="text-xs">{bodyFatChange.toFixed(1)}%</span>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-green-100 rounded-lg">
+                  <Ruler className="w-5 h-5 text-green-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-2xl font-bold text-gray-900">{currentMetrics.muscleMass} kg</p>
+                  <p className="text-sm text-gray-600">Muscle Mass</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="border-purple-100 shadow-sm">
+            <CardContent className="p-4">
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-orange-100 rounded-lg">
+                  <Scale className="w-5 h-5 text-orange-600" />
+                </div>
+                <div className="flex-1">
+                  <p className="text-2xl font-bold text-gray-900">{currentMetrics.bmi}</p>
+                  <div className="flex items-center gap-2">
+                    <p className="text-sm text-gray-600">BMI</p>
+                    <Badge variant="secondary" className="text-xs bg-green-100 text-green-700">
+                      Normal
                     </Badge>
                   </div>
-                  <div className="space-y-1">
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Current:</span>
-                      <span className="font-medium">
-                        {measurement.current}
-                        {measurement.unit}
-                      </span>
-                    </div>
-                    <div className="flex justify-between">
-                      <span className="text-sm text-gray-600">Previous:</span>
-                      <span className="text-sm text-gray-500">
-                        {measurement.previous}
-                        {measurement.unit}
-                      </span>
-                    </div>
-                  </div>
                 </div>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Goals Progress */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-xl font-semibold text-gray-900">Composition Goals</CardTitle>
+        <Card className="border-purple-100 shadow-sm">
+          <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+            <CardTitle className="text-gray-900">Goal Progress</CardTitle>
+            <CardDescription>Track your progress towards your fitness goals</CardDescription>
           </CardHeader>
-          <CardContent>
-            <div className="space-y-6">
-              {currentComposition.map((item) => {
-                const progress = (item.value / item.target) * 100
-                const isOnTrack = item.name === "Body Fat" ? item.value <= item.target : item.value >= item.target
+          <CardContent className="space-y-6 pt-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-700">Weight Goal</span>
+                  <span className="text-purple-600 font-medium">
+                    {currentMetrics.weight}kg / {goals.targetWeight}kg
+                  </span>
+                </div>
+                <Progress
+                  value={
+                    ((goals.targetWeight - currentMetrics.weight) / (goals.targetWeight - weightData[0].weight)) * 100
+                  }
+                  className="h-2 bg-purple-100"
+                />
+              </div>
 
-                return (
-                  <div key={item.name}>
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center space-x-2">
-                        <Target className="h-4 w-4 text-gray-400" />
-                        <span className="font-medium text-gray-900">{item.name} Goal</span>
-                      </div>
-                      <div className="flex items-center space-x-2">
-                        <span className="text-sm text-gray-600">
-                          {item.value}% / {item.target}%
-                        </span>
-                        {isOnTrack ? (
-                          <Badge className="bg-green-100 text-green-800">On Track</Badge>
-                        ) : (
-                          <Badge className="bg-yellow-100 text-yellow-800">In Progress</Badge>
-                        )}
-                      </div>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="h-2 rounded-full"
-                        style={{
-                          width: `${Math.min(progress, 100)}%`,
-                          backgroundColor: item.color,
-                        }}
-                      />
-                    </div>
-                  </div>
-                )
-              })}
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-700">Body Fat Goal</span>
+                  <span className="text-purple-600 font-medium">
+                    {currentMetrics.bodyFat}% / {goals.targetBodyFat}%
+                  </span>
+                </div>
+                <Progress
+                  value={
+                    ((weightData[0].bodyFat - currentMetrics.bodyFat) / (weightData[0].bodyFat - goals.targetBodyFat)) *
+                    100
+                  }
+                  className="h-2 bg-purple-100"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-gray-700">Muscle Mass Goal</span>
+                  <span className="text-purple-600 font-medium">
+                    {currentMetrics.muscleMass}kg / {goals.targetMuscleMass}kg
+                  </span>
+                </div>
+                <Progress
+                  value={((currentMetrics.muscleMass - 60) / (goals.targetMuscleMass - 60)) * 100}
+                  className="h-2 bg-purple-100"
+                />
+              </div>
             </div>
           </CardContent>
         </Card>
+
+        <Tabs defaultValue="trends" className="space-y-6">
+          <TabsList className="bg-purple-50 border-purple-200">
+            <TabsTrigger value="trends" className="data-[state=active]:bg-purple-600 data-[state=active]:text-white">
+              Weight & Body Fat Trends
+            </TabsTrigger>
+            <TabsTrigger
+              value="measurements"
+              className="data-[state=active]:bg-purple-600 data-[state=active]:text-white"
+            >
+              Body Measurements
+            </TabsTrigger>
+          </TabsList>
+
+          <TabsContent value="trends">
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Weight & Body Fat Progress</CardTitle>
+                <CardDescription>Track your weight and body fat percentage over time</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <ChartContainer
+                  config={{
+                    weight: {
+                      label: "Weight (kg)",
+                      color: "#7c3aed",
+                    },
+                    bodyFat: {
+                      label: "Body Fat (%)",
+                      color: "#a855f7",
+                    },
+                  }}
+                  className="h-[400px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <LineChart data={weightData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis dataKey="date" stroke="#6b7280" />
+                      <YAxis yAxisId="left" stroke="#6b7280" />
+                      <YAxis yAxisId="right" orientation="right" stroke="#6b7280" />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Line
+                        yAxisId="left"
+                        type="monotone"
+                        dataKey="weight"
+                        stroke="#7c3aed"
+                        strokeWidth={3}
+                        dot={{ fill: "#7c3aed", strokeWidth: 2, r: 4 }}
+                      />
+                      <Line
+                        yAxisId="right"
+                        type="monotone"
+                        dataKey="bodyFat"
+                        stroke="#a855f7"
+                        strokeWidth={3}
+                        dot={{ fill: "#a855f7", strokeWidth: 2, r: 4 }}
+                      />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="measurements">
+            <Card className="border-purple-100 shadow-sm">
+              <CardHeader className="bg-gradient-to-r from-purple-50 to-white border-b border-purple-100">
+                <CardTitle className="text-gray-900">Body Measurements</CardTitle>
+                <CardDescription>Track changes in your body measurements</CardDescription>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <ChartContainer
+                  config={{
+                    chest: { label: "Chest (cm)", color: "#7c3aed" },
+                    waist: { label: "Waist (cm)", color: "#a855f7" },
+                    hips: { label: "Hips (cm)", color: "#c084fc" },
+                    arms: { label: "Arms (cm)", color: "#ddd6fe" },
+                    thighs: { label: "Thighs (cm)", color: "#ede9fe" },
+                  }}
+                  className="h-[400px]"
+                >
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={measurementsData}>
+                      <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                      <XAxis dataKey="date" stroke="#6b7280" />
+                      <YAxis stroke="#6b7280" />
+                      <ChartTooltip content={<ChartTooltipContent />} />
+                      <Bar dataKey="chest" fill="#7c3aed" />
+                      <Bar dataKey="waist" fill="#a855f7" />
+                      <Bar dataKey="hips" fill="#c084fc" />
+                      <Bar dataKey="arms" fill="#ddd6fe" />
+                      <Bar dataKey="thighs" fill="#ede9fe" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </ChartContainer>
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
       </div>
     </CleanPortalLayout>
   )

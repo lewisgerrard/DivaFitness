@@ -25,13 +25,6 @@ async function getAuthenticatedUser(request: NextRequest) {
       return null
     }
 
-    // Validate token format
-    const tokenParts = token.split(".")
-    if (tokenParts.length !== 3) {
-      console.log("❌ Invalid token format")
-      return null
-    }
-
     console.log("🔍 Verifying token...")
     const { payload } = await jwtVerify(token, secret)
     console.log("✅ Token verified, user ID:", payload.userId)
