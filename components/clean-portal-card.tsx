@@ -10,8 +10,8 @@ interface CleanPortalCardProps {
   icon: LucideIcon
   href: string
   iconColor?: string
-  notification?: boolean
   badge?: string
+  notification?: boolean
 }
 
 export function CleanPortalCard({
@@ -19,29 +19,33 @@ export function CleanPortalCard({
   description,
   icon: Icon,
   href,
-  iconColor = "text-primary",
-  notification = false,
+  iconColor = "text-gray-500",
   badge,
+  notification = false,
 }: CleanPortalCardProps) {
   return (
-    <Link href={href} className="group">
-      <Card className="h-full transition-all duration-200 hover:shadow-md hover:scale-[1.02] border-gray-200 hover:border-primary/20">
+    <Link href={href}>
+      <Card className="group hover:shadow-md transition-all duration-200 cursor-pointer border-gray-200 hover:border-primary/20">
         <CardContent className="p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className={cn("p-3 rounded-xl bg-gray-50 group-hover:bg-primary/5 transition-colors", iconColor)}>
-              <Icon className="h-6 w-6" />
+          <div className="flex items-start justify-between">
+            <div className="flex items-center gap-4">
+              <div className="p-3 bg-gray-50 rounded-lg group-hover:bg-primary/5 transition-colors">
+                <Icon className={cn("h-6 w-6", iconColor)} />
+              </div>
+              <div className="flex-1">
+                <h3 className="font-semibold text-gray-900 group-hover:text-primary transition-colors">{title}</h3>
+                <p className="text-sm text-gray-600 mt-1">{description}</p>
+              </div>
             </div>
             <div className="flex items-center gap-2">
-              {notification && <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />}
+              {notification && <div className="w-2 h-2 bg-red-500 rounded-full"></div>}
               {badge && (
-                <Badge variant="secondary" className="text-xs bg-gray-100 text-gray-600">
+                <Badge variant="secondary" className="text-xs">
                   {badge}
                 </Badge>
               )}
             </div>
           </div>
-          <h3 className="font-semibold text-gray-900 mb-2 group-hover:text-primary transition-colors">{title}</h3>
-          <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
         </CardContent>
       </Card>
     </Link>
