@@ -3,14 +3,14 @@
 import type React from "react"
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
-import { CleanDashboardSidebar } from "@/components/clean-dashboard-sidebar"
+import { CleanPortalSidebar } from "@/components/clean-portal-sidebar"
 import { useAuth } from "@/hooks/use-auth"
 
-interface CleanDashboardLayoutProps {
+interface CleanPortalLayoutProps {
   children: React.ReactNode
 }
 
-export function CleanDashboardLayout({ children }: CleanDashboardLayoutProps) {
+export function CleanPortalLayout({ children }: CleanPortalLayoutProps) {
   const router = useRouter()
   const { user, loading } = useAuth()
 
@@ -28,7 +28,7 @@ export function CleanDashboardLayout({ children }: CleanDashboardLayoutProps) {
             <span className="text-white font-bold text-xl">D</span>
           </div>
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading your dashboard...</p>
+          <p className="text-gray-600">Loading your portal...</p>
         </div>
       </div>
     )
@@ -38,7 +38,7 @@ export function CleanDashboardLayout({ children }: CleanDashboardLayoutProps) {
 
   return (
     <div className="h-screen bg-gray-50 flex overflow-hidden">
-      <CleanDashboardSidebar />
+      <CleanPortalSidebar />
       <main className="flex-1 overflow-auto">
         <div className="p-8">{children}</div>
       </main>

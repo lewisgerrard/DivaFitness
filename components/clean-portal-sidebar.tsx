@@ -4,7 +4,6 @@ import { useState } from "react"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,26 +12,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  User,
-  Users,
-  Calendar,
-  Activity,
-  MessageSquare,
-  Settings,
-  LogOut,
-  Home,
-  BookOpen,
-  Award,
-  BarChart3,
-  ChevronLeft,
-  ChevronRight,
-  Edit3,
-} from "lucide-react"
+import { User, Settings, LogOut, Home, ChevronLeft, ChevronRight } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
 import { cn } from "@/lib/utils"
 
-export function CleanDashboardSidebar() {
+export function CleanPortalSidebar() {
   const { user, logout } = useAuth()
   const pathname = usePathname()
   const router = useRouter()
@@ -43,24 +27,7 @@ export function CleanDashboardSidebar() {
     router.push("/")
   }
 
-  const navItems = [
-    { label: "Start", href: "/portal", icon: Home },
-    { label: "My Profile", href: "/portal/profile", icon: User },
-    { label: "Sessions", href: "/portal/sessions", icon: Calendar, badge: "Soon" },
-    { label: "Progress Info", href: "/portal/metrics", icon: BarChart3, badge: "Soon" },
-    { label: "Body Composition", href: "/portal/body-composition", icon: Activity, badge: "Soon" },
-    { label: "Scheduling", href: "/portal/scheduling", icon: Calendar, badge: "Soon" },
-    { label: "Community", href: "/portal/community", icon: MessageSquare, badge: "Soon" },
-    { label: "Achievements", href: "/portal/achievements", icon: Award, badge: "Soon" },
-    { label: "My Bookings", href: "/portal/bookings", icon: BookOpen, badge: "Soon" },
-    ...(user?.role === "admin"
-      ? [
-          { label: "User Management", href: "/portal/user-management", icon: Users },
-          { label: "Content Management", href: "/portal/content-management", icon: Edit3 },
-          { label: "Settings", href: "/portal/settings", icon: Settings },
-        ]
-      : []),
-  ]
+  const navItems = [{ label: "Portal Home", href: "/portal", icon: Home }]
 
   return (
     <div
@@ -102,16 +69,7 @@ export function CleanDashboardSidebar() {
               )}
             >
               <item.icon className="h-4 w-4 flex-shrink-0" />
-              {!collapsed && (
-                <>
-                  <span className="flex-1 text-left">{item.label}</span>
-                  {item.badge && (
-                    <Badge variant="secondary" className="text-xs bg-gray-200 text-gray-600">
-                      {item.badge}
-                    </Badge>
-                  )}
-                </>
-              )}
+              {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
             </Button>
           </Link>
         ))}
@@ -144,10 +102,6 @@ export function CleanDashboardSidebar() {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => router.push("/portal/profile")}>
-              <User className="mr-2 h-4 w-4" />
-              Profile
-            </DropdownMenuItem>
             <DropdownMenuItem>
               <Settings className="mr-2 h-4 w-4" />
               Settings
