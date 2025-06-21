@@ -4,7 +4,6 @@ import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
-import Image from "next/image"
 
 interface HeroHomeProps {
   title: string
@@ -37,24 +36,16 @@ export function HeroHome({
   stats,
 }: HeroHomeProps) {
   return (
-    <section className={`${brandKit.components.hero.container} min-h-screen`}>
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 bg-gray-900">
-        <Image
-          src="/images/studio-exterior-cropped.jpg"
-          alt="Diva Fitness Studio Exterior - Cropped View"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={85}
-          placeholder="blur"
-          blurDataURL="data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAABAAEDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAv/xAAhEAACAQMDBQAAAAAAAAAAAAABAgMABAUGIWGRkqGx0f/EABUBAQEAAAAAAAAAAAAAAAAAAAMF/8QAGhEAAgIDAAAAAAAAAAAAAAAAAAECEgMRkf/aAAwDAQACEQMRAD8AltJagyeH0AthI5xdrLcNM91BF5pX2HaH9bcfaSXWGaRmknyJckliyjqTzSlT54b6bk+h0R7+Cp9mJWl6c1XTyRa9jG8gZu3VvmMcjHvkYP8AkKKKLkeLqvRRRSU//9k="
-        />
-        <div className="absolute inset-0 bg-black/30" />
-      </div>
+    <section
+      className={`${brandKit.components.hero.container} min-h-screen bg-cover bg-center bg-no-repeat relative`}
+      style={{
+        backgroundImage: "url('/images/studio-exterior-cropped.jpg')",
+      }}
+    >
+      {/* Overlay */}
+      <div className="absolute inset-0 bg-black/30" />
 
-      <div className={brandKit.components.hero.content}>
+      <div className={`${brandKit.components.hero.content} relative z-10`}>
         <div className={brandKit.components.hero.badge}>
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">{badge || title}</span>

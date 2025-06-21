@@ -34,7 +34,7 @@ export function HeroPage({
     <section className={`${brandKit.components.hero.container} py-8 md:py-12`}>
       {/* Decorative Elements */}
       <div className="absolute inset-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-[#7b329b] to-[#5a1a75]" />
+        <div className={`absolute inset-0 ${brandKit.gradients.primary}`} />
       </div>
 
       <div className={brandKit.components.hero.content}>
