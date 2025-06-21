@@ -12,7 +12,13 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
       <Container style={container}>
         {/* Header with Logo */}
         <Section style={header}>
-          <Img src="/logo-with-text.png" width="200" height="60" alt="Diva Fitness" style={logo} />
+          <Img
+            src="https://diva-fitness.co.uk/logo-with-text.png"
+            width="200"
+            height="60"
+            alt="Diva Fitness"
+            style={logo}
+          />
         </Section>
 
         {/* Main Content */}
@@ -80,6 +86,11 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
           </Text>
 
           <Text style={footerText}>
+            You received this email because you contacted us through our website. If you have any questions, please
+            reply to this email or contact us at info@diva-fitness.co.uk
+          </Text>
+
+          <Text style={footerText}>
             Follow us:
             <Link href="https://instagram.com/divafitnesschester" style={footerLink}>
               {" "}
@@ -125,6 +136,7 @@ const logo = {
   filter: "brightness(0) invert(1)",
   maxWidth: "200px",
   height: "auto",
+  display: "block",
 }
 
 const content = {

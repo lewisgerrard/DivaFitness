@@ -16,7 +16,13 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
       <Container style={container}>
         {/* Header */}
         <Section style={header}>
-          <Img src="/logo-with-text.png" width="200" height="60" alt="Diva Fitness" style={logo} />
+          <Img
+            src="https://diva-fitness.co.uk/logo-with-text.png"
+            width="200"
+            height="60"
+            alt="Diva Fitness"
+            style={logo}
+          />
           <Heading style={h1}>New Contact Form Submission</Heading>
         </Section>
 
@@ -118,6 +124,7 @@ const logo = {
   filter: "brightness(0) invert(1)",
   maxWidth: "200px",
   height: "auto",
+  display: "block",
 }
 
 const h1 = {
