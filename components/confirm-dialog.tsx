@@ -12,8 +12,8 @@ import { Button } from "@/components/ui/button"
 import { AlertTriangle } from "lucide-react"
 
 interface ConfirmDialogProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  isOpen: boolean
+  onClose: () => void
   title: string
   description: string
   confirmText?: string
@@ -23,8 +23,8 @@ interface ConfirmDialogProps {
 }
 
 export function ConfirmDialog({
-  open,
-  onOpenChange,
+  isOpen,
+  onClose,
   title,
   description,
   confirmText = "Confirm",
@@ -34,15 +34,15 @@ export function ConfirmDialog({
 }: ConfirmDialogProps) {
   const handleConfirm = () => {
     onConfirm()
-    onOpenChange(false)
+    onClose()
   }
 
   const handleCancel = () => {
-    onOpenChange(false)
+    onClose()
   }
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
@@ -58,7 +58,7 @@ export function ConfirmDialog({
           <Button
             variant={variant === "destructive" ? "destructive" : "default"}
             onClick={handleConfirm}
-            className={variant === "default" ? "bg-primary hover:bg-primary-dark" : ""}
+            className={variant === "default" ? "bg-[#7b329b] hover:bg-[#6b2c87]" : ""}
           >
             {confirmText}
           </Button>
@@ -67,3 +67,5 @@ export function ConfirmDialog({
     </Dialog>
   )
 }
+
+export default ConfirmDialog
