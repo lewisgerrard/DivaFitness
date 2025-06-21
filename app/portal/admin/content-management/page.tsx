@@ -288,95 +288,12 @@ export default function ContentManagementPage() {
                         type: "Contact Form Submission",
                         status: "Active",
                         file: "business-notification.tsx",
-                        content: `import { Html, Head, Preview, Body, Container, Section, Text, Hr, Button } from '@react-email/components'
-
-interface BusinessNotificationEmailProps {
-  name: string
-  email: string
-  phone: string
-  message: string
-  service: string
-}
-
-export function BusinessNotificationEmail({
-  name,
-  email,
-  phone,
-  message,
-  service,
-}: BusinessNotificationEmailProps) {
-  return (
-    <Html>
-      <Head />
-      <Preview>New contact form submission from {name}</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Section style={section}>
-            <Text style={heading}>New Contact Form Submission</Text>
-            <Hr style={hr} />
-            <Text style={paragraph}>
-              <strong>Name:</strong> {name}
-            </Text>
-            <Text style={paragraph}>
-              <strong>Email:</strong> {email}
-            </Text>
-            <Text style={paragraph}>
-              <strong>Phone:</strong> {phone}
-            </Text>
-            <Text style={paragraph}>
-              <strong>Service:</strong> {service}
-            </Text>
-            <Text style={paragraph}>
-              <strong>Message:</strong>
-            </Text>
-            <Text style={messageStyle}>{message}</Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  )
-}`,
                       },
                       {
                         name: "Customer Thank You Email",
                         type: "Contact Form Response",
                         status: "Active",
                         file: "customer-thank-you.tsx",
-                        content: `import { Html, Head, Preview, Body, Container, Section, Text, Button } from '@react-email/components'
-
-interface CustomerThankYouEmailProps {
-  name: string
-}
-
-export function CustomerThankYouEmail({ name }: CustomerThankYouEmailProps) {
-  return (
-    <Html>
-      <Head />
-      <Preview>Thank you for contacting Diva Fitness!</Preview>
-      <Body style={main}>
-        <Container style={container}>
-          <Section style={section}>
-            <Text style={heading}>Thank you for contacting Diva Fitness!</Text>
-            <Text style={paragraph}>Hi {name},</Text>
-            <Text style={paragraph}>
-              Thank you for reaching out to us. We've received your message and will get back to you within 24 hours.
-            </Text>
-            <Text style={paragraph}>
-              In the meantime, feel free to explore our website to learn more about our services.
-            </Text>
-            <Button style={button} href="https://divafitness.com">
-              Visit Our Website
-            </Button>
-            <Text style={footer}>
-              Best regards,<br />
-              The Diva Fitness Team
-            </Text>
-          </Section>
-        </Container>
-      </Body>
-    </Html>
-  )
-}`,
                       },
                     ].map((template) => (
                       <div key={template.name} className="border rounded-lg">
