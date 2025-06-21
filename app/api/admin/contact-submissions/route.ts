@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { getContactSubmissions } from "@/lib/database"
 
+// Force dynamic rendering
+export const dynamic = "force-dynamic"
+
 const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
 export async function GET(request: NextRequest) {

@@ -2,6 +2,9 @@ import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { getUserById } from "@/lib/auth"
 
+// Force dynamic rendering
+export const dynamic = "force-dynamic"
+
 // Make sure we use the same secret everywhere
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
 const secret = new TextEncoder().encode(JWT_SECRET)
