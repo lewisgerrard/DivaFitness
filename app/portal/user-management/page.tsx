@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
-import { DashboardTable } from "@/components/dashboard-table"
 import AddUserModal from "@/components/add-user-modal"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { Users, UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail, ToggleLeft, ToggleRight } from "lucide-react"
@@ -167,66 +166,6 @@ export default function UserManagementPage() {
         return <Badge variant="secondary">{status}</Badge>
     }
   }
-
-  const userTableColumns = [
-    { key: "full_name", label: "Full Name" },
-    { key: "email", label: "Email" },
-    { key: "phone", label: "Phone" },
-    { key: "access", label: "Access" },
-    { key: "status", label: "Status" },
-    { key: "actions", label: "Actions" },
-  ]
-
-  const userTableData = filteredUsers.map((user) => ({
-    id: user.id,
-    full_name: `${user.first_name} ${user.last_name}`,
-    email: user.email,
-    phone: user.phone || "Not provided",
-    access: getRoleBadge(user.role),
-    status: getStatusBadge(user.status),
-    actions: (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="sm">
-            <MoreHorizontal className="w-4 h-4" />
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuItem>
-            <Edit className="w-4 h-4 mr-2" />
-            Edit User
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={() => handleToggleStatus(user)}>
-            {user.status === "active" ? (
-              <>
-                <ToggleLeft className="w-4 h-4 mr-2" />
-                Deactivate
-              </>
-            ) : (
-              <>
-                <ToggleRight className="w-4 h-4 mr-2" />
-                Activate
-              </>
-            )}
-          </DropdownMenuItem>
-          <DropdownMenuItem>
-            <Mail className="w-4 h-4 mr-2" />
-            Send Email
-          </DropdownMenuItem>
-          <DropdownMenuItem
-            className="text-red-600"
-            onClick={() => {
-              setSelectedUser(user)
-              setIsDeleteDialogOpen(true)
-            }}
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete User
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
-    ),
-  }))
 
   const userStats = {
     total: users.length,
@@ -456,7 +395,73 @@ export default function UserManagementPage() {
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#7b329b]"></div>
               </div>
             ) : (
-              <DashboardTable columns={userTableColumns} data={userTableData} />
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr>
+                      <th className="text-left">Full Name</th>
+                      <th className="text-left">Email</th>
+                      <th className="text-left">Phone</th>
+                      <th className="text-left">Access</th>
+                      <th className="text-left">Status</th>
+                      <th className="text-left">Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {filteredUsers.map((user) => (
+                      <tr key={user.id}>
+                        <td>{`${user.first_name} ${user.last_name}`}</td>
+                        <td>{user.email}</td>
+                        <td>{user.phone || "Not provided"}</td>
+                        <td>{getRoleBadge(user.role)}</td>
+                        <td>{getStatusBadge(user.status)}</td>
+                        <td>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                              <Button variant="ghost" size="sm">
+                                <MoreHorizontal className="w-4 h-4" />
+                              </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                              <DropdownMenuItem>
+                                <Edit className="w-4 h-4 mr-2" />
+                                Edit User
+                              </DropdownMenuItem>
+                              <DropdownMenuItem onClick={() => handleToggleStatus(user)}>
+                                {user.status === "active" ? (
+                                  <>
+                                    <ToggleLeft className="w-4 h-4 mr-2" />
+                                    Deactivate
+                                  </>
+                                ) : (
+                                  <>
+                                    <ToggleRight className="w-4 h-4 mr-2" />
+                                    Activate
+                                  </>
+                                )}
+                              </DropdownMenuItem>
+                              <DropdownMenuItem>
+                                <Mail className="w-4 h-4 mr-2" />
+                                Send Email
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                className="text-red-600"
+                                onClick={() => {
+                                  setSelectedUser(user)
+                                  setIsDeleteDialogOpen(true)
+                                }}
+                              >
+                                <Trash2 className="w-4 h-4 mr-2" />
+                                Delete User
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             )}
           </CardContent>
         </Card>
