@@ -10,7 +10,7 @@ import { Label } from "@/components/ui/label"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
-import { User, Mail, Phone, MapPin, Calendar, Activity, Weight, Target, TrendingUp } from "lucide-react"
+import { ArrowLeft, User, Mail, Phone, MapPin, Calendar, Activity, Weight, Target, TrendingUp } from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/hooks/use-auth"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
@@ -181,6 +181,15 @@ export default function ClientProfilePage() {
       <div className="space-y-6">
         {/* Header */}
         <div className="flex items-center gap-4">
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => router.push("/portal/client-management")}
+            className="border-[#7b329b]/20 hover:bg-[#7b329b]/10"
+          >
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Clients
+          </Button>
           <div className="flex-1">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-[#7b329b]/10 rounded-full flex items-center justify-center">
@@ -227,15 +236,10 @@ export default function ClientProfilePage() {
               {/* Personal Information */}
               <Card className="border-[#7b329b]/20 shadow-sm">
                 <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-[#7b329b] flex items-center gap-2">
-                      <User className="w-5 h-5" />
-                      Personal Information
-                    </CardTitle>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-[#7b329b]/10">
-                      <Edit className="w-4 h-4 text-[#7b329b]" />
-                    </Button>
-                  </div>
+                  <CardTitle className="text-[#7b329b] flex items-center gap-2">
+                    <User className="w-5 h-5" />
+                    Personal Information
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -286,15 +290,10 @@ export default function ClientProfilePage() {
               {/* Account Information */}
               <Card className="border-[#7b329b]/20 shadow-sm">
                 <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-[#7b329b] flex items-center gap-2">
-                      <Activity className="w-5 h-5" />
-                      Account Information
-                    </CardTitle>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0 hover:bg-[#7b329b]/10">
-                      <Edit className="w-4 h-4 text-[#7b329b]" />
-                    </Button>
-                  </div>
+                  <CardTitle className="text-[#7b329b] flex items-center gap-2">
+                    <Activity className="w-5 h-5" />
+                    Account Information
+                  </CardTitle>
                 </CardHeader>
                 <CardContent className="pt-6 space-y-4">
                   <div>

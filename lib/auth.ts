@@ -44,12 +44,6 @@ export async function authenticateUser(email: string, password: string): Promise
 
     const user = result[0] as any
 
-    // Remove the status check since the column doesn't exist
-    // if (user.status === "inactive") {
-    //   console.log("User account is inactive:", email)
-    //   return null
-    // }
-
     // Check if password_hash exists
     if (!user.password_hash) {
       console.error("No password hash found for user")
