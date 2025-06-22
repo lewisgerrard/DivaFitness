@@ -53,7 +53,7 @@ export default function HomePage() {
         ]}
       />
 
-      <section className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
+      <section className={`${brandKit.components.section.base} bg-[#fefcff]`}>
         <div className={brandKit.components.section.container}>
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -114,7 +114,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className={`${brandKit.components.section.base} bg-white`}>
+      <section className={`${brandKit.components.section.base} bg-[#fefcff]`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
             badge="Services"
@@ -195,7 +195,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section id="reviews" className={`${brandKit.components.section.base} ${brandKit.gradients.background}`}>
+      <section id="reviews" className={`${brandKit.components.section.base} bg-[#fefcff]`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
             title="Strong Women."

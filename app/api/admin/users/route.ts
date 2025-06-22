@@ -1,97 +1,45 @@
-import { type NextRequest, NextResponse } from "next/server"
-import { jwtVerify } from "jose"
-import { getAllUsers, createUser } from "@/lib/auth"
-
-// Force dynamic rendering
-export const dynamic = "force-dynamic"
-
-const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
-const secret = new TextEncoder().encode(JWT_SECRET)
+import type { NextRequest } from "next/server"
+import { UserService } from "@/lib/services/user-service"
+import { authenticateRequest, requireRole } from "@/lib/middleware/auth-middleware"
+import { ApiResponse } from "@/lib/utils/api-response"
 
 export async function GET(request: NextRequest) {
-  console.log("=== Admin users API called ===")
-
   try {
-    // Try to get token from Authorization header first, then cookie
-    const authHeader = request.headers.get("authorization")
-    const cookieToken = request.cookies.get("auth-token")?.value
+    const user = await authenticateRequest(request)
+    requireRole(["admin"])(user)
 
-    console.log("🎫 Auth header:", authHeader ? "Found" : "Not found")
-    console.log("🍪 Cookie token:", cookieToken ? "Found" : "Not found")
-
-    let token = null
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7)
-      console.log("✅ Using token from Authorization header")
-    } else if (cookieToken) {
-      token = cookieToken
-      console.log("✅ Using token from cookie")
-    }
-
-    if (!token) {
-      console.log("❌ No auth token found in header or cookie")
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
-    }
-
-    console.log("🔍 Verifying token...")
-    const { payload } = await jwtVerify(token, secret)
-    console.log("✅ JWT payload verified:", payload)
-
-    if (payload.role !== "admin") {
-      console.log("❌ User is not admin:", payload.role)
-      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
-    }
-
-    console.log("✅ User is admin, fetching users...")
-    const users = await getAllUsers()
-    console.log("✅ Found users:", users.length)
-
-    return NextResponse.json({ users })
+    const users = await UserService.getAll()
+    return ApiResponse.success({ users })
   } catch (error) {
-    console.error("❌ Admin users API error:", error)
-    return NextResponse.json({ error: "Server error" }, { status: 500 })
+    if (error.message.includes("token")) {
+      return ApiResponse.unauthorized()
+    }
+    if (error.message.includes("permissions")) {
+      return ApiResponse.forbidden()
+    }
+    return ApiResponse.serverError()
   }
 }
 
 export async function POST(request: NextRequest) {
-  console.log("=== Create user API called ===")
-
   try {
-    const authHeader = request.headers.get("authorization")
-    const cookieToken = request.cookies.get("auth-token")?.value
-
-    let token = null
-
-    if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7)
-    } else if (cookieToken) {
-      token = cookieToken
-    }
-
-    if (!token) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
-    }
-
-    const { payload } = await jwtVerify(token, secret)
-
-    if (payload.role !== "admin") {
-      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
-    }
+    const user = await authenticateRequest(request)
+    requireRole(["admin"])(user)
 
     const userData = await request.json()
-    console.log("📝 Creating user with data:", userData)
+    const newUser = await UserService.create(userData)
 
-    const newUser = await createUser(userData)
-
-    if (!newUser) {
-      return NextResponse.json({ error: "Failed to create user" }, { status: 400 })
-    }
-
-    console.log("✅ User created successfully:", newUser)
-    return NextResponse.json({ user: newUser })
+    return ApiResponse.success({ user: newUser }, 201)
   } catch (error) {
-    console.error("❌ Create user API error:", error)
-    return NextResponse.json({ error: "Server error" }, { status: 500 })
+    if (error.message.includes("token")) {
+      return ApiResponse.unauthorized()
+    }
+    if (error.message.includes("permissions")) {
+      return ApiResponse.forbidden()
+    }
+    if (error.message.includes("validation") || error.message.includes("required")) {
+      return ApiResponse.error(error.message, 400)
+    }
+    return ApiResponse.serverError()
   }
 }

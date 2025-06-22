@@ -180,7 +180,7 @@ export default function TrainingPage() {
   }
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-[#fefcff]">
       {/* Hero Section */}
       <HeroPage
         title="Personal Training"
@@ -193,8 +193,30 @@ export default function TrainingPage() {
         badge="Women-Only Training"
       />
 
+      {/* Quick Navigation */}
+      <section className="py-8 bg-[#fefcff]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto">
+            <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+              {trainingServices.map((service) => (
+                <Button
+                  key={service.id}
+                  variant="outline"
+                  size="sm"
+                  onClick={() => scrollToService(service.id)}
+                  className="rounded-full border-primary/20 text-primary hover:bg-primary hover:text-white transition-all duration-200 px-4 py-2 text-sm font-medium"
+                >
+                  <service.icon className="w-4 h-4 mr-2" />
+                  {service.title}
+                </Button>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Service Details */}
-      <section className="py-16">
+      <section className="py-16 bg-[#fefcff]">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto space-y-24">
             {trainingServices.map((service, index) => (
@@ -260,7 +282,7 @@ export default function TrainingPage() {
       </section>
 
       {/* Payment Details */}
-      <section className="py-12 bg-gray-50/50">
+      <section className="py-12 bg-[#fefcff]">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <Card className="border-0 shadow-lg">
@@ -290,7 +312,7 @@ export default function TrainingPage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 bg-primary/5">
+      <section className="py-16 bg-[#fefcff]">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Ready to start your fitness journey?</h2>

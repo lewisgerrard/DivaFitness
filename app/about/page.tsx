@@ -8,7 +8,7 @@ import { brandKit, brandClasses } from "@/lib/brand-kit"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#fefcff]">
       {/* Hero Section */}
       <HeroPage
         title="From Vision"
@@ -24,7 +24,7 @@ export default function AboutPage() {
       />
 
       {/* Story Section */}
-      <section id="story" className={`${brandKit.spacing.section.md} ${brandKit.gradients.background}`}>
+      <section id="story" className={`${brandKit.spacing.section.md} bg-[#fefcff]`}>
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
@@ -122,7 +122,7 @@ export default function AboutPage() {
       </section>
 
       {/* Certifications Section */}
-      <section id="certifications" className={`${brandKit.spacing.section.md} bg-gradient-to-b from-gray-50 to-white`}>
+      <section id="certifications" className={`${brandKit.spacing.section.md} bg-[#fefcff]`}>
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           <div className={brandKit.components.section.header}>
             <div className={brandKit.components.section.badge}>
@@ -247,7 +247,7 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section id="values" className={`${brandKit.spacing.section.md} bg-white`}>
+      <section id="values" className={`${brandKit.spacing.section.md} bg-[#fefcff]`}>
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           <div className={brandKit.components.section.header}>
             <div className={brandKit.components.section.badge}>
@@ -313,7 +313,7 @@ export default function AboutPage() {
       {/* Journey Transformation Section */}
       <section
         id="journey"
-        className={`${brandKit.spacing.section.md} bg-gradient-to-b from-white via-purple-50/30 to-white relative overflow-hidden before:absolute before:top-20 before:left-20 before:w-32 before:h-32 before:border before:border-primary/20 before:rounded-full before:opacity-10 after:absolute after:bottom-20 after:right-20 after:w-24 after:h-24 after:border after:border-secondary/20 after:rounded-full after:opacity-10`}
+        className={`${brandKit.spacing.section.md} bg-[#fefcff] relative overflow-hidden before:absolute before:top-20 before:left-20 before:w-32 before:h-32 before:border before:border-primary/20 before:rounded-full before:opacity-10 after:absolute after:bottom-20 after:right-20 after:w-24 after:h-24 after:border after:border-secondary/20 after:rounded-full after:opacity-10`}
       >
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           {/* Section Header */}

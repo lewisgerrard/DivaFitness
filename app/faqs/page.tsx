@@ -72,7 +72,7 @@ export default function FAQsPage() {
   }
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-[#fefcff]">
       {/* Hero Section */}
       <HeroPage
         title="Frequently Asked"
@@ -84,7 +84,7 @@ export default function FAQsPage() {
       />
 
       {/* Search Section */}
-      <section className="py-6 px-4 max-w-4xl mx-auto">
+      <section className="py-6 px-4 max-w-4xl mx-auto bg-[#fefcff]">
         <div className="relative">
           <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
           <input
@@ -111,7 +111,7 @@ export default function FAQsPage() {
       </section>
 
       {/* FAQs Section */}
-      <section className="py-16 px-4 max-w-6xl mx-auto">
+      <section className="py-16 px-4 max-w-6xl mx-auto bg-[#fefcff]">
         <div className="max-w-4xl mx-auto">
           {/* Right Column - FAQ List */}
           <div>
