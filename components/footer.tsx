@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-50 text-secondary border-t border-gray-200">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-4 gap-6">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
@@ -17,6 +17,7 @@ export function Footer() {
               Empowering women to achieve their health and fitness goals in a supportive, private environment since
               2017.
             </p>
+            {/* Award Badge */}
             <div className="flex space-x-3">
               <a
                 href="https://instagram.com/divafitnesschester"
@@ -101,6 +102,17 @@ export function Footer() {
                 <span className="text-secondary/70 text-sm">Chester, UK</span>
               </div>
             </div>
+          </div>
+
+          {/* Award Badge */}
+          <div className="flex justify-center md:justify-end">
+            <Image
+              src="/images/awards/nfa-runner-up-2024.png"
+              alt="National Fitness Awards 2024 Runner-Up"
+              width={120}
+              height={120}
+              className="h-32 w-auto"
+            />
           </div>
         </div>
 

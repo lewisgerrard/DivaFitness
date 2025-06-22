@@ -150,8 +150,8 @@ export default function AboutPage() {
                 issuer: "Precision Nutrition",
               },
               {
-                image: "/images/certifications/ymca-awards.jpeg",
-                alt: "YMCA Awards Premier Fitness",
+                image: "/images/certifications/premier-qualified.png",
+                alt: "Premier Qualified Fitness Certification",
                 title: "Premier Fitness",
                 description:
                   "Comprehensive personal training qualification covering exercise science and program design",
