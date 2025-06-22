@@ -74,14 +74,14 @@ export default function HomePage() {
 
               <div className="grid grid-cols-2 gap-6">
                 <div className="group">
-                  <div className={`${brandKit.components.card.icon} ${brandKit.gradients.primary} mb-3`}>
+                  <div className="w-12 h-12 bg-gradient-to-br from-primary to-primary/80 rounded-xl flex items-center justify-center mb-3 shadow-lg">
                     <User className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-secondary mb-2">1-to-1 Focus</h3>
                   <p className="text-sm text-muted-foreground">Completely personalised attention</p>
                 </div>
                 <div className="group">
-                  <div className={`${brandKit.components.card.icon} ${brandKit.gradients.secondary} mb-3`}>
+                  <div className="w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-xl flex items-center justify-center mb-3 shadow-lg">
                     <Leaf className="w-6 h-6 text-white" />
                   </div>
                   <h3 className="font-semibold text-secondary mb-2">Holistic Approach</h3>
@@ -117,7 +117,7 @@ export default function HomePage() {
       <section className={`${brandKit.components.section.base} bg-white`}>
         <div className={brandKit.components.section.container}>
           <SectionHeader
-            badge="Our Services"
+            badge="Services"
             badgeIcon={Sparkles}
             title="Transform Your"
             subtitle="Health & Fitness"
@@ -173,8 +173,7 @@ export default function HomePage() {
                 <div>
                   <h3 className="text-4xl font-bold mb-4 tracking-wide">NUTRITION</h3>
                   <p className="text-lg leading-relaxed opacity-90">
-                    Fuel your transformation with expert nutrition coaching, personalised meal planning, and lifestyle
-                    integration strategies that work for your busy life.
+                    Fuel your transformation with expert nutrition coaching, personalised meal planning that work for your busy lifestyle.
                   </p>
                 </div>
 

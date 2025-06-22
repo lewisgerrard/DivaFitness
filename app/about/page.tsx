@@ -41,18 +41,19 @@ export default function AboutPage() {
               <div className="space-y-6 text-lg leading-relaxed text-secondary">
                 <p>
                   Since establishing Diva Fitness in 2017, I've been on a mission to create something truly special – a
-                  sanctuary where women can pursue their fitness goals without judgment, intimidation, or compromise.
+                  fitness studio where women can pursue their health and weight management goals and regain their self
+                  confidence.
                 </p>
 
                 <p>
-                  My journey began with a simple realization: traditional gyms weren't serving women's unique needs. Too
+                  My journey began with a simple realisation: traditional gyms weren't serving women's unique needs. Too
                   many brilliant women were holding back, feeling uncomfortable, or simply not getting the personalised
                   attention they deserved.
                 </p>
 
                 <p>
                   That's when I decided to create something different – a private, purpose-built garden studio where
-                  every detail is designed with women's empowerment in mind.
+                  every detail is designed to encourage and motivate you along this journey.
                 </p>
               </div>
 
@@ -170,9 +171,7 @@ export default function AboutPage() {
                 />
 
                 <CardContent className={brandKit.components.card.content}>
-                  <div
-                    className={`w-16 h-16 ${value.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}
-                  >
+                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
                     <value.icon className="w-8 h-8 text-white" />
                   </div>
 
