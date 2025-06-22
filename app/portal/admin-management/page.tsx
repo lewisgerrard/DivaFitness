@@ -8,7 +8,18 @@ import { Input } from "@/components/ui/input"
 import { Badge } from "@/components/ui/badge"
 import AddUserModal from "@/components/add-user-modal"
 import { ConfirmDialog } from "@/components/confirm-dialog"
-import { Users, UserPlus, Search, MoreHorizontal, Edit, Trash2, Mail, ToggleLeft, ToggleRight } from "lucide-react"
+import {
+  Users,
+  UserPlus,
+  Search,
+  MoreHorizontal,
+  Edit,
+  Trash2,
+  Mail,
+  ToggleLeft,
+  ToggleRight,
+  Shield,
+} from "lucide-react"
 import { toast } from "sonner"
 import { useAuth } from "@/hooks/use-auth"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
@@ -26,12 +37,11 @@ interface User {
   date_of_birth?: string
 }
 
-export default function UserManagementPage() {
+export default function AdminManagementPage() {
   const { user: currentUser } = useAuth()
   const [users, setUsers] = useState<User[]>([])
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState("")
-  const [roleFilter, setRoleFilter] = useState("all")
   const [statusFilter, setStatusFilter] = useState("all")
   const [isAddModalOpen, setIsAddModalOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<User | null>(null)
@@ -56,13 +66,15 @@ export default function UserManagementPage() {
 
       if (response.ok) {
         const data = await response.json()
-        setUsers(data.users || [])
+        // Filter only admin users
+        const adminUsers = (data.users || []).filter((user: User) => user.role === "admin")
+        setUsers(adminUsers)
       } else {
-        toast.error("Failed to fetch users")
+        toast.error("Failed to fetch administrators")
       }
     } catch (error) {
       console.error("Error fetching users:", error)
-      toast.error("Error loading users")
+      toast.error("Error loading administrators")
     } finally {
       setLoading(false)
     }
@@ -74,17 +86,16 @@ export default function UserManagementPage() {
     }
   }, [currentUser])
 
-  // Filter users based on search, role, and status
+  // Filter users based on search and status
   const filteredUsers = users.filter((user) => {
     const matchesSearch =
       user.first_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.last_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       user.email?.toLowerCase().includes(searchTerm.toLowerCase())
 
-    const matchesRole = roleFilter === "all" || user.role === roleFilter
     const matchesStatus = statusFilter === "all" || user.status === statusFilter
 
-    return matchesSearch && matchesRole && matchesStatus
+    return matchesSearch && matchesStatus
   })
 
   // Handle user deletion
@@ -102,14 +113,14 @@ export default function UserManagementPage() {
       })
 
       if (response.ok) {
-        toast.success("User deleted successfully")
+        toast.success("Administrator deleted successfully")
         fetchUsers() // Refresh the list
       } else {
-        toast.error("Failed to delete user")
+        toast.error("Failed to delete administrator")
       }
     } catch (error) {
       console.error("Error deleting user:", error)
-      toast.error("Error deleting user")
+      toast.error("Error deleting administrator")
     } finally {
       setIsDeleteDialogOpen(false)
       setSelectedUser(null)
@@ -132,27 +143,14 @@ export default function UserManagementPage() {
       })
 
       if (response.ok) {
-        toast.success(`User ${newStatus === "active" ? "activated" : "deactivated"} successfully`)
+        toast.success(`Administrator ${newStatus === "active" ? "activated" : "deactivated"} successfully`)
         fetchUsers() // Refresh the list
       } else {
-        toast.error("Failed to update user status")
+        toast.error("Failed to update administrator status")
       }
     } catch (error) {
       console.error("Error updating user status:", error)
-      toast.error("Error updating user status")
-    }
-  }
-
-  const getRoleBadge = (role: string) => {
-    switch (role) {
-      case "admin":
-        return <Badge className="bg-red-100 text-red-800 hover:bg-red-100">Admin</Badge>
-      case "client":
-        return <Badge className="bg-[#7b329b]/10 text-[#7b329b] hover:bg-[#7b329b]/10">Client</Badge>
-      case "member":
-        return <Badge className="bg-blue-100 text-blue-800 hover:bg-blue-100">Member</Badge>
-      default:
-        return <Badge variant="secondary">{role}</Badge>
+      toast.error("Error updating administrator status")
     }
   }
 
@@ -171,9 +169,6 @@ export default function UserManagementPage() {
     total: users.length,
     active: users.filter((u) => u.status === "active").length,
     inactive: users.filter((u) => u.status === "inactive").length,
-    admins: users.filter((u) => u.role === "admin").length,
-    clients: users.filter((u) => u.role === "client").length,
-    members: users.filter((u) => u.role === "member").length,
   }
 
   if (currentUser?.role !== "admin") {
@@ -195,26 +190,26 @@ export default function UserManagementPage() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold text-[#7b329b]">User Management</h1>
-            <p className="text-gray-600">Manage user accounts and permissions</p>
+            <h1 className="text-3xl font-bold text-[#7b329b]">Administrator Management</h1>
+            <p className="text-gray-600">Manage administrator accounts and permissions</p>
           </div>
           <Button onClick={() => setIsAddModalOpen(true)} className="bg-[#7b329b] hover:bg-[#6b2c87]">
             <UserPlus className="w-4 h-4 mr-2" />
-            Add User
+            Add Administrator
           </Button>
         </div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <Card className="border-[#7b329b]/20 shadow-sm">
             <CardContent className="p-4">
               <div className="flex items-center gap-3">
                 <div className="p-2 bg-[#7b329b]/10 rounded-lg">
-                  <Users className="w-5 h-5 text-[#7b329b]" />
+                  <Shield className="w-5 h-5 text-[#7b329b]" />
                 </div>
                 <div>
                   <p className="text-2xl font-bold text-gray-900">{userStats.total}</p>
-                  <p className="text-sm text-gray-600">Total</p>
+                  <p className="text-sm text-gray-600">Total Administrators</p>
                 </div>
               </div>
             </CardContent>
@@ -247,62 +242,20 @@ export default function UserManagementPage() {
               </div>
             </CardContent>
           </Card>
-
-          <Card className="border-[#7b329b]/20 shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-red-100 rounded-lg">
-                  <Users className="w-5 h-5 text-red-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.admins}</p>
-                  <p className="text-sm text-gray-600">Admins</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-[#7b329b]/20 shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-[#7b329b]/10 rounded-lg">
-                  <Users className="w-5 h-5 text-[#7b329b]" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.clients}</p>
-                  <p className="text-sm text-gray-600">Clients</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="border-[#7b329b]/20 shadow-sm">
-            <CardContent className="p-4">
-              <div className="flex items-center gap-3">
-                <div className="p-2 bg-blue-100 rounded-lg">
-                  <Users className="w-5 h-5 text-blue-600" />
-                </div>
-                <div>
-                  <p className="text-2xl font-bold text-gray-900">{userStats.members}</p>
-                  <p className="text-sm text-gray-600">Members</p>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
         </div>
 
         {/* Filters and Search */}
         <Card className="border-[#7b329b]/20 shadow-sm">
           <CardHeader className="bg-gradient-to-r from-[#7b329b]/5 to-white border-b border-[#7b329b]/20">
-            <CardTitle className="text-[#7b329b]">User Directory</CardTitle>
-            <CardDescription>Search and filter user accounts</CardDescription>
+            <CardTitle className="text-[#7b329b]">Administrator Directory</CardTitle>
+            <CardDescription>Search and manage administrator accounts</CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
             <div className="flex flex-col sm:flex-row gap-4 mb-6">
               <div className="relative flex-1">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <Input
-                  placeholder="Search users by name or email..."
+                  placeholder="Search administrators by name or email..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="pl-10 border-[#7b329b]/20 focus:border-[#7b329b] focus:ring-[#7b329b]"
@@ -310,48 +263,15 @@ export default function UserManagementPage() {
               </div>
               <div className="flex gap-2 flex-wrap">
                 <Button
-                  variant={roleFilter === "all" ? "default" : "outline"}
-                  onClick={() => setRoleFilter("all")}
+                  variant={statusFilter === "all" ? "default" : "outline"}
+                  onClick={() => setStatusFilter("all")}
                   className={
-                    roleFilter === "all"
+                    statusFilter === "all"
                       ? "bg-[#7b329b] hover:bg-[#6b2c87]"
                       : "border-[#7b329b]/20 hover:bg-[#7b329b]/10"
                   }
                 >
-                  All Roles
-                </Button>
-                <Button
-                  variant={roleFilter === "admin" ? "default" : "outline"}
-                  onClick={() => setRoleFilter("admin")}
-                  className={
-                    roleFilter === "admin"
-                      ? "bg-[#7b329b] hover:bg-[#6b2c87]"
-                      : "border-[#7b329b]/20 hover:bg-[#7b329b]/10"
-                  }
-                >
-                  Admins
-                </Button>
-                <Button
-                  variant={roleFilter === "client" ? "default" : "outline"}
-                  onClick={() => setRoleFilter("client")}
-                  className={
-                    roleFilter === "client"
-                      ? "bg-[#7b329b] hover:bg-[#6b2c87]"
-                      : "border-[#7b329b]/20 hover:bg-[#7b329b]/10"
-                  }
-                >
-                  Clients
-                </Button>
-                <Button
-                  variant={roleFilter === "member" ? "default" : "outline"}
-                  onClick={() => setRoleFilter("member")}
-                  className={
-                    roleFilter === "member"
-                      ? "bg-[#7b329b] hover:bg-[#6b2c87]"
-                      : "border-[#7b329b]/20 hover:bg-[#7b329b]/10"
-                  }
-                >
-                  Members
+                  All Status
                 </Button>
                 <Button
                   variant={statusFilter === "active" ? "default" : "outline"}
@@ -375,16 +295,13 @@ export default function UserManagementPage() {
                 >
                   Inactive
                 </Button>
-                {(roleFilter !== "all" || statusFilter !== "all") && (
+                {statusFilter !== "all" && (
                   <Button
                     variant="outline"
-                    onClick={() => {
-                      setRoleFilter("all")
-                      setStatusFilter("all")
-                    }}
+                    onClick={() => setStatusFilter("all")}
                     className="border-[#7b329b]/20 hover:bg-[#7b329b]/10"
                   >
-                    Clear Filters
+                    Clear Filter
                   </Button>
                 )}
               </div>
@@ -398,67 +315,82 @@ export default function UserManagementPage() {
               <div className="overflow-x-auto">
                 <table className="w-full">
                   <thead>
-                    <tr>
-                      <th className="text-left">Full Name</th>
-                      <th className="text-left">Email</th>
-                      <th className="text-left">Phone</th>
-                      <th className="text-left">Access</th>
-                      <th className="text-left">Status</th>
-                      <th className="text-left">Actions</th>
+                    <tr className="border-b border-gray-200">
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">Full Name</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">Email</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">Phone</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">Status</th>
+                      <th className="text-left py-3 px-4 font-medium text-gray-900">Actions</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredUsers.map((user) => (
-                      <tr key={user.id}>
-                        <td>{`${user.first_name} ${user.last_name}`}</td>
-                        <td>{user.email}</td>
-                        <td>{user.phone || "Not provided"}</td>
-                        <td>{getRoleBadge(user.role)}</td>
-                        <td>{getStatusBadge(user.status)}</td>
-                        <td>
-                          <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                              <Button variant="ghost" size="sm">
-                                <MoreHorizontal className="w-4 h-4" />
-                              </Button>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent align="end">
-                              <DropdownMenuItem>
-                                <Edit className="w-4 h-4 mr-2" />
-                                Edit User
-                              </DropdownMenuItem>
-                              <DropdownMenuItem onClick={() => handleToggleStatus(user)}>
-                                {user.status === "active" ? (
-                                  <>
-                                    <ToggleLeft className="w-4 h-4 mr-2" />
-                                    Deactivate
-                                  </>
-                                ) : (
-                                  <>
-                                    <ToggleRight className="w-4 h-4 mr-2" />
-                                    Activate
-                                  </>
-                                )}
-                              </DropdownMenuItem>
-                              <DropdownMenuItem>
-                                <Mail className="w-4 h-4 mr-2" />
-                                Send Email
-                              </DropdownMenuItem>
-                              <DropdownMenuItem
-                                className="text-red-600"
-                                onClick={() => {
-                                  setSelectedUser(user)
-                                  setIsDeleteDialogOpen(true)
-                                }}
-                              >
-                                <Trash2 className="w-4 h-4 mr-2" />
-                                Delete User
-                              </DropdownMenuItem>
-                            </DropdownMenuContent>
-                          </DropdownMenu>
+                    {filteredUsers.length === 0 ? (
+                      <tr>
+                        <td colSpan={5} className="text-center py-8 text-gray-500">
+                          {searchTerm || statusFilter !== "all"
+                            ? "No administrators found matching your criteria."
+                            : "No administrators found."}
                         </td>
                       </tr>
-                    ))}
+                    ) : (
+                      filteredUsers.map((user) => (
+                        <tr key={user.id} className="border-b border-gray-100 hover:bg-gray-50">
+                          <td className="py-3 px-4">
+                            <div className="flex items-center gap-3">
+                              <div className="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                <Shield className="w-4 h-4 text-red-600" />
+                              </div>
+                              <span className="font-medium text-gray-900">{`${user.first_name} ${user.last_name}`}</span>
+                            </div>
+                          </td>
+                          <td className="py-3 px-4 text-gray-600">{user.email}</td>
+                          <td className="py-3 px-4 text-gray-600">{user.phone || "Not provided"}</td>
+                          <td className="py-3 px-4">{getStatusBadge(user.status)}</td>
+                          <td className="py-3 px-4">
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" size="sm">
+                                  <MoreHorizontal className="w-4 h-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem>
+                                  <Edit className="w-4 h-4 mr-2" />
+                                  Edit Administrator
+                                </DropdownMenuItem>
+                                <DropdownMenuItem onClick={() => handleToggleStatus(user)}>
+                                  {user.status === "active" ? (
+                                    <>
+                                      <ToggleLeft className="w-4 h-4 mr-2" />
+                                      Deactivate
+                                    </>
+                                  ) : (
+                                    <>
+                                      <ToggleRight className="w-4 h-4 mr-2" />
+                                      Activate
+                                    </>
+                                  )}
+                                </DropdownMenuItem>
+                                <DropdownMenuItem>
+                                  <Mail className="w-4 h-4 mr-2" />
+                                  Send Email
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  className="text-red-600"
+                                  onClick={() => {
+                                    setSelectedUser(user)
+                                    setIsDeleteDialogOpen(true)
+                                  }}
+                                >
+                                  <Trash2 className="w-4 h-4 mr-2" />
+                                  Delete Administrator
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </td>
+                        </tr>
+                      ))
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -473,6 +405,7 @@ export default function UserManagementPage() {
           onAddUser={async () => {
             await fetchUsers() // Refresh the list
           }}
+          defaultRole="admin"
         />
 
         {/* Delete Confirmation Dialog */}
@@ -483,7 +416,7 @@ export default function UserManagementPage() {
             setSelectedUser(null)
           }}
           onConfirm={handleDeleteUser}
-          title="Delete User"
+          title="Delete Administrator"
           description={`Are you sure you want to delete ${selectedUser?.first_name} ${selectedUser?.last_name}? This action cannot be undone.`}
           confirmText="Delete"
           cancelText="Cancel"

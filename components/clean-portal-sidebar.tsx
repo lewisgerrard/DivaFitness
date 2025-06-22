@@ -12,25 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import {
-  User,
-  Settings,
-  LogOut,
-  Home,
-  ChevronLeft,
-  ChevronRight,
-  Calendar,
-  Apple,
-  MessageSquare,
-  BookOpen,
-  HelpCircle,
-  Edit3,
-  TrendingUp,
-  Scale,
-  Users,
-  FileText,
-  Shield,
-} from "lucide-react"
+import { User, Settings, LogOut, Home, ChevronLeft, ChevronRight, Users, Shield } from "lucide-react"
 import { useAuth } from "@/hooks/use-auth"
 import { cn } from "@/lib/utils"
 import Image from "next/image"
@@ -46,22 +28,28 @@ export function CleanPortalSidebar() {
     router.push("/")
   }
 
-  const navItems = [
-    { label: "Portal Home", href: "/portal", icon: Home, roles: ["member", "client", "admin"] },
-    { label: "My Profile", href: "/portal/profile", icon: User, roles: ["member", "client", "admin"] },
-    { label: "Bookings", href: "/portal/bookings", icon: Calendar, roles: ["member", "client", "admin"] },
-    { label: "Messages", href: "/portal/messages", icon: MessageSquare, roles: ["member", "client", "admin"] },
-    { label: "Resources", href: "/portal/resources", icon: BookOpen, roles: ["member", "client", "admin"] },
-    { label: "Support", href: "/portal/support", icon: HelpCircle, roles: ["member", "client", "admin"] },
-    { label: "Body Composition", href: "/portal/body-composition", icon: Scale, roles: ["client", "admin"] },
-    { label: "Nutrition", href: "/portal/nutrition", icon: Apple, roles: ["client", "admin"] },
-    { label: "Session History", href: "/portal/session-history", icon: FileText, roles: ["client", "admin"] },
-    { label: "User Management", href: "/portal/user-management", icon: Users, roles: ["admin"] },
-    { label: "Content Manager", href: "/portal/content-manager", icon: Edit3, roles: ["admin"] },
-    { label: "Web Analytics", href: "/portal/analytics", icon: TrendingUp, roles: ["admin"] },
-    { label: "System Settings", href: "/portal/settings", icon: Settings, roles: ["admin"] },
-    { label: "Admin Panel", href: "/portal/admin", icon: Shield, roles: ["admin"] },
-  ]
+  // Define navigation items based on role
+  const getNavItems = () => {
+    const baseItems = [{ label: "Dashboard", href: "/portal", icon: Home }]
+
+    if (user?.role === "admin") {
+      return [
+        ...baseItems,
+        { label: "Client Management", href: "/portal/client-management", icon: Users },
+        { label: "Admin Management", href: "/portal/admin-management", icon: Shield },
+      ]
+    }
+
+    return baseItems
+  }
+
+  // Only allow client or admin access
+  if (!user || (user.role !== "admin" && user.role !== "client")) {
+    return null
+  }
+
+  const navItems = getNavItems()
+  const isAdmin = user.role === "admin"
 
   return (
     <div
@@ -86,26 +74,15 @@ export function CleanPortalSidebar() {
               </div>
               <div>
                 <h1 className="font-bold text-white text-lg">Diva Fitness</h1>
-                <p className="text-xs text-[#c77dff]">Member Portal</p>
+                <p className="text-xs text-[#c77dff]">{isAdmin ? "Admin Portal" : "Client Portal"}</p>
               </div>
-            </div>
-          )}
-          {collapsed && (
-            <div className="relative w-8 h-8 bg-white rounded-lg p-1 shadow-sm mx-auto">
-              <Image
-                src="/diva-logo-fitness.png"
-                alt="Diva Fitness"
-                width={24}
-                height={24}
-                className="w-full h-full object-contain"
-              />
             </div>
           )}
           <Button
             variant="ghost"
             size="sm"
             onClick={() => setCollapsed(!collapsed)}
-            className="h-8 w-8 p-0 text-white hover:bg-white/20"
+            className={cn("h-8 w-8 p-0 text-white hover:bg-white/20", collapsed && "mx-auto")}
           >
             {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
           </Button>
@@ -114,107 +91,23 @@ export function CleanPortalSidebar() {
 
       {/* Navigation */}
       <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-        {/* Core Navigation */}
         <div className="space-y-1">
-          {navItems
-            .filter(
-              (item) =>
-                (item.roles.includes(user?.role || "member") &&
-                  !["client", "admin"].every((role) => item.roles.includes(role) && item.roles.length === 1) &&
-                  !item.roles.includes("admin")) ||
-                item.roles.includes("member") ||
-                item.roles.includes("client"),
-            )
-            .slice(0, 6)
-            .map((item) => (
-              <Link key={item.href} href={item.href}>
-                <Button
-                  variant={pathname === item.href ? "secondary" : "ghost"}
-                  className={cn(
-                    "w-full justify-start gap-3 h-10 text-gray-700 hover:text-[#7b329b] hover:bg-[#7b329b]/10",
-                    pathname === item.href && "bg-[#7b329b]/10 text-[#7b329b] font-medium shadow-sm",
-                    collapsed && "justify-center px-2",
-                  )}
-                >
-                  <item.icon className="h-4 w-4 flex-shrink-0" />
-                  {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
-                </Button>
-              </Link>
-            ))}
+          {navItems.map((item) => (
+            <Link key={item.href} href={item.href}>
+              <Button
+                variant={pathname === item.href ? "secondary" : "ghost"}
+                className={cn(
+                  "w-full justify-start gap-3 h-10 text-gray-700 hover:text-[#7b329b] hover:bg-[#7b329b]/10",
+                  pathname === item.href && "bg-[#7b329b]/10 text-[#7b329b] font-medium shadow-sm",
+                  collapsed && "justify-center px-2",
+                )}
+              >
+                <item.icon className="h-4 w-4 flex-shrink-0" />
+                {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
+              </Button>
+            </Link>
+          ))}
         </div>
-
-        {/* Client Features Section */}
-        {(user?.role === "client" || user?.role === "admin") && (
-          <>
-            {!collapsed && (
-              <div className="pt-6 pb-2">
-                <div className="flex items-center gap-2 px-3">
-                  <div className="h-px bg-gradient-to-r from-[#7b329b]/20 to-transparent flex-1"></div>
-                  <p className="text-xs font-semibold text-[#7b329b] uppercase tracking-wider">Client Features</p>
-                  <div className="h-px bg-gradient-to-l from-[#7b329b]/20 to-transparent flex-1"></div>
-                </div>
-              </div>
-            )}
-            <div className="space-y-1">
-              {navItems
-                .filter(
-                  (item) =>
-                    (item.roles.includes("client") || item.roles.includes("admin")) &&
-                    !item.roles.includes("member") &&
-                    !["admin"].every((role) => item.roles.includes(role) && item.roles.length === 1),
-                )
-                .map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <Button
-                      variant={pathname === item.href ? "secondary" : "ghost"}
-                      className={cn(
-                        "w-full justify-start gap-3 h-10 text-gray-700 hover:text-[#7b329b] hover:bg-[#7b329b]/10",
-                        pathname === item.href && "bg-[#7b329b]/10 text-[#7b329b] font-medium shadow-sm",
-                        collapsed && "justify-center px-2",
-                      )}
-                    >
-                      <item.icon className="h-4 w-4 flex-shrink-0" />
-                      {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
-                    </Button>
-                  </Link>
-                ))}
-            </div>
-          </>
-        )}
-
-        {/* Admin Tools Section */}
-        {user?.role === "admin" && (
-          <>
-            {!collapsed && (
-              <div className="pt-6 pb-2">
-                <div className="flex items-center gap-2 px-3">
-                  <div className="h-px bg-gradient-to-r from-[#7b329b]/20 to-transparent flex-1"></div>
-                  <p className="text-xs font-semibold text-[#7b329b] uppercase tracking-wider">Admin Tools</p>
-                  <div className="h-px bg-gradient-to-l from-[#7b329b]/20 to-transparent flex-1"></div>
-                </div>
-              </div>
-            )}
-            <div className="space-y-1">
-              {navItems
-                .filter((item) => item.roles.includes("admin") && item.roles.length === 1)
-                .map((item) => (
-                  <Link key={item.href} href={item.href}>
-                    <Button
-                      variant={pathname === item.href ? "secondary" : "ghost"}
-                      className={cn(
-                        "w-full justify-start gap-3 h-10 text-gray-700 hover:text-[#7b329b] hover:bg-[#7b329b]/10",
-                        pathname === item.href && "bg-[#7b329b]/10 text-[#7b329b] font-medium shadow-sm",
-                        collapsed && "justify-center px-2",
-                      )}
-                    >
-                      <item.icon className="h-4 w-4 flex-shrink-0" />
-                      {!collapsed && <span className="flex-1 text-left">{item.label}</span>}
-                    </Button>
-                  </Link>
-                ))}
-            </div>
-          </>
-        )}
       </nav>
 
       {/* Branded User Menu */}

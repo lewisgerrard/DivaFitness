@@ -11,7 +11,7 @@ export interface User {
   phone?: string
   date_of_birth?: string
   photo_url?: string
-  role: "admin" | "client" | "member"
+  role: "admin" | "client"
   status: "active" | "inactive"
   created_at?: string
 }
@@ -122,7 +122,7 @@ export async function createUser(data: {
   last_name: string
   email: string
   password: string
-  role?: "admin" | "client" | "member"
+  role?: "admin" | "client"
   status?: "active" | "inactive"
   phone?: string
   address?: string
@@ -144,7 +144,7 @@ export async function createUser(data: {
       )
       VALUES (
         ${data.first_name}, ${data.last_name}, ${data.email}, ${password_hash}, 
-        ${data.role || "member"}, ${data.status || "active"}, ${data.phone || null}, ${data.address || null},
+        ${data.role || "client"}, ${data.status || "active"}, ${data.phone || null}, ${data.address || null},
         ${data.date_of_birth || null}, ${data.photo_url || null}
       )
       RETURNING id, first_name, last_name, email, address, phone, 
