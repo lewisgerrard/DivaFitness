@@ -72,7 +72,7 @@ export default function AboutPage() {
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/placeholder.svg?height=400&width=600&text=Studio+Exterior"
+                      src="/images/studio-exterior-cropped.jpg"
                       alt="Studio Exterior"
                       fill
                       className="object-cover"
@@ -83,7 +83,7 @@ export default function AboutPage() {
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/placeholder.svg?height=300&width=600&text=Professional+Equipment"
+                      src="/images/equipment-wide-shot.jpg"
                       alt="Professional Equipment"
                       fill
                       className="object-cover"
@@ -96,7 +96,7 @@ export default function AboutPage() {
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/placeholder.svg?height=300&width=600&text=Training+Equipment"
+                      src="/images/weights-close-up.jpg"
                       alt="Training Equipment"
                       fill
                       className="object-cover"
@@ -107,7 +107,7 @@ export default function AboutPage() {
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/placeholder.svg?height=400&width=600&text=Training+Session"
+                      src="/images/action-training-session.jpg"
                       alt="Training Session"
                       fill
                       className="object-cover"
@@ -348,7 +348,7 @@ export default function AboutPage() {
             <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-20 max-w-7xl mx-auto">
               {[
                 {
-                  year: "2017",
+                  year: "2016",
                   title: "The Beginning",
                   description: "An empty garden with endless possibilities",
                   image: "/images/journey-before.jpg",
