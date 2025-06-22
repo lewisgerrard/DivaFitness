@@ -31,7 +31,7 @@ export function HeroPage({
 }: HeroPageProps) {
   return (
     <section
-      className="relative min-h-[400px] bg-gradient-to-br from-primary via-primary/95 to-primary/90 flex items-center justify-center overflow-hidden w-screen mb-0"
+      className="relative min-h-[400px] bg-gradient-to-br from-[#7b329b] via-[#7b329b]/95 to-[#7b329b]/90 flex items-center justify-center overflow-hidden w-screen mb-0"
       style={{
         marginLeft: "calc(-50vw + 50%)",
         marginRight: "calc(-50vw + 50%)",
@@ -53,7 +53,7 @@ export function HeroPage({
         {(primaryButtonText || secondaryButtonText || tertiaryButtonText) && (
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mt-8">
             {primaryButtonText && (
-              <Button asChild size="lg" className="bg-white text-primary hover:bg-gray-100 font-semibold px-8">
+              <Button asChild size="lg" className="bg-white text-[#7b329b] hover:bg-gray-100 font-semibold px-8">
                 <Link href={primaryButtonHref || "#"} className="flex items-center gap-2">
                   {primaryButtonText}
                 </Link>
@@ -65,7 +65,7 @@ export function HeroPage({
                 asChild
                 variant="outline"
                 size="lg"
-                className="border-white text-white hover:bg-white hover:text-primary font-semibold px-8"
+                className="border-white text-white hover:bg-white hover:text-[#7b329b] font-semibold px-8"
               >
                 <Link href={secondaryButtonHref || "#"} className="flex items-center gap-2">
                   {secondaryButtonText}

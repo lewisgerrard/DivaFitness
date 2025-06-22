@@ -193,44 +193,6 @@ export default function TrainingPage() {
         badge="Women-Only Training"
       />
 
-      {/* Services Overview */}
-      <section className="py-12 bg-gray-50/50">
-        <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Choose Your Training Journey</h2>
-              <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-                From one-to-one sessions to comprehensive transformation programs, find the perfect approach to reach
-                your fitness goals.
-              </p>
-            </div>
-
-            <div className="grid grid-cols-5 gap-6 items-stretch">
-              {trainingServices.map((service) => (
-                <Card
-                  key={service.id}
-                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden h-full"
-                  onClick={() => scrollToService(service.id)}
-                >
-                  <CardContent className="p-6 text-center flex flex-col items-center justify-between h-full">
-                    <div className="flex flex-col items-center flex-1 justify-start">
-                      <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0">
-                        <service.icon className="w-8 h-8 text-primary flex-shrink-0" />
-                      </div>
-                      <div className="h-20 flex items-start justify-center">
-                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight text-center">
-                          {service.title}
-                        </h3>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Service Details */}
       <section className="py-16">
         <div className="container mx-auto px-4">
