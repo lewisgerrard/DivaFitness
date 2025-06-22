@@ -151,23 +151,6 @@ export default function AboutPage() {
                 issuer: "YMCA Awards",
               },
               {
-                image: "/images/certifications/precision-nutrition-l1.webp",
-                alt: "Precision Nutrition Level 1 Coach Certification",
-                title: "Level 1 Precision Nutrition",
-                description: "Evidence-based certification in nutrition and health coaching",
-                year: "2019",
-                issuer: "Precision Nutrition",
-              },
-              {
-                image: "/images/certifications/senior-fitness-nasm.png",
-                alt: "NASM Senior Fitness Specialisation",
-                title: "Senior Fitness Specialist",
-                description:
-                  "Advanced certification covering the specific requirements of people with joint and mobility limitations",
-                year: "2020",
-                issuer: "NASM",
-              },
-              {
                 image: "/images/certifications/womens-fitness-nasm.png",
                 alt: "NASM Women's Fitness Specialization",
                 title: "Women's Fitness Specialist",
@@ -175,6 +158,14 @@ export default function AboutPage() {
                   "Advanced certification covering the specific physiological needs of women of all age groups",
                 year: "2021",
                 issuer: "NASM",
+              },
+              {
+                image: "/images/certifications/precision-nutrition-l1.webp",
+                alt: "Precision Nutrition Level 1 Coach Certification",
+                title: "Level 1 Precision Nutrition",
+                description: "Evidence-based certification in nutrition and health coaching",
+                year: "2019",
+                issuer: "Precision Nutrition",
               },
               {
                 image: "/images/certifications/fitness-pilates.png",
@@ -193,12 +184,13 @@ export default function AboutPage() {
                 issuer: "YMCA Awards",
               },
               {
-                image: "/images/certifications/mind-mental-health.png",
-                alt: "Mind Mental Health Awareness",
-                title: "Mental Health Awareness for Sport & Physical Activity",
-                description: "Supporting clients' mental wellbeing alongside their physical fitness journey",
-                year: "2021",
-                issuer: "Mind",
+                image: "/images/certifications/senior-fitness-nasm.png",
+                alt: "NASM Senior Fitness Specialisation",
+                title: "Senior Fitness Specialist",
+                description:
+                  "Advanced certification covering the specific requirements of people with joint and mobility limitations",
+                year: "2020",
+                issuer: "NASM",
               },
               {
                 image: "/images/certifications/water-fitness.png",
@@ -207,6 +199,14 @@ export default function AboutPage() {
                 description: "Specialised training in aquatic fitness and water-based exercise programs",
                 year: "2019",
                 issuer: "WV Fitness",
+              },
+              {
+                image: "/images/certifications/mind-mental-health.png",
+                alt: "Mind Mental Health Awareness",
+                title: "Mental Health Awareness for Sport & Physical Activity",
+                description: "Supporting clients' mental wellbeing alongside their physical fitness journey",
+                year: "2021",
+                issuer: "Mind",
               },
               {
                 image: "/images/certifications/first-aid-st-johns.png",
@@ -220,14 +220,14 @@ export default function AboutPage() {
               <div key={index} className="group">
                 <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 h-full flex flex-col">
                   {cert.image && (
-                    <div className="relative mb-4 mx-auto w-20 h-20">
+                    <div className="relative mb-4 mx-auto w-32 h-32">
                       <div className="absolute inset-0 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-all duration-300">
                         <div className="p-2 h-full flex items-center justify-center">
                           <Image
                             src={cert.image || "/placeholder.svg"}
                             alt={cert.alt}
-                            width={60}
-                            height={60}
+                            width={100}
+                            height={100}
                             className="object-contain max-w-full max-h-full"
                           />
                         </div>
@@ -398,9 +398,6 @@ export default function AboutPage() {
                           <p className="text-gray-600 text-xs leading-relaxed">{item.description}</p>
                         </div>
                       </div>
-
-                      {/* Decorative tape */}
-                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-yellow-200/80 rounded-sm shadow-md border border-yellow-300/50 rotate-3"></div>
                     </div>
 
                     {/* Connection Line to Timeline */}

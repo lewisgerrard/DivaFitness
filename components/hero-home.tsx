@@ -39,7 +39,7 @@ export function HeroHome({
     <section
       className={`${brandKit.components.hero.container} min-h-screen bg-cover bg-center bg-no-repeat relative`}
       style={{
-        backgroundImage: "url('/images/studio-exterior-cropped.jpg')",
+        backgroundImage: "url('/images/studio-exterior-full.jpg')",
       }}
     >
       {/* Overlay */}

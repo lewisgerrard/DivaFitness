@@ -2,9 +2,8 @@ import type { Metadata } from "next"
 import ContactPageClient from "./ContactPageClient"
 
 export const metadata: Metadata = {
-  title: "Contact Diva Fitness",
-  description:
-    "Contact Diva Fitness for inquiries, personal training, and fitness classes. Get in touch with us today!",
+  title: "Contact - Diva Fitness",
+  description: "Contact Emma at Diva Fitness",
 }
 
 export default function ContactPage() {
