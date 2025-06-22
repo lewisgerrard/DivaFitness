@@ -40,7 +40,7 @@ export function Navigation() {
           {/* Logo - Left Side */}
           <Link href="/" className="flex items-center space-x-3">
             <Image
-              src="/images/diva-logo.png"
+              src="/diva-logo-fitness.png"
               alt="Diva Fitness"
               width={40}
               height={40}

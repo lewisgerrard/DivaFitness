@@ -139,26 +139,27 @@ export default function AboutPage() {
           </div>
 
           {/* All Certifications Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
                 image: "/images/certifications/precision-nutrition-l1.webp",
                 alt: "Precision Nutrition Level 1 Coach Certification",
-                title: "Precision Nutrition L1",
+                title: "Precision Nutrition",
                 description: "Evidence-based nutrition coaching certification",
                 year: "2019",
                 issuer: "Precision Nutrition",
               },
               {
-                image: "/images/certifications/cimspa-member.png",
-                alt: "CIMSPA Member",
-                title: "CIMSPA Member",
-                description: "Chartered Institute for the Management of Sport and Physical Activity",
+                image: "/images/certifications/ymca-awards.jpeg",
+                alt: "YMCA Awards Premier Fitness",
+                title: "Premier Fitness",
+                description:
+                  "Comprehensive personal training qualification covering exercise science and program design",
                 year: "2017",
-                issuer: "CIMSPA",
+                issuer: "YMCA Awards",
               },
               {
-                image: "/images/certifications/nasm-senior-fitness.png",
+                image: "/images/certifications/senior-fitness-nasm.png",
                 alt: "NASM Senior Fitness Specialization",
                 title: "Senior Fitness Specialist",
                 description: "NASM specialization in senior fitness training",
@@ -166,7 +167,7 @@ export default function AboutPage() {
                 issuer: "NASM",
               },
               {
-                image: "/images/certifications/nasm-womens-fitness.png",
+                image: "/images/certifications/womens-fitness-nasm.png",
                 alt: "NASM Women's Fitness Specialization",
                 title: "Women's Fitness Specialist",
                 description: "NASM specialization in women's fitness and training",
@@ -174,30 +175,44 @@ export default function AboutPage() {
                 issuer: "NASM",
               },
               {
-                title: "Level 3 Personal Training",
-                description:
-                  "Comprehensive personal training qualification covering exercise science and program design",
-                year: "2017",
-                issuer: "REPS UK",
+                image: "/images/certifications/fitness-pilates.png",
+                alt: "Fitness Pilates Certification",
+                title: "Pilates",
+                description: "Specialized training in Pilates methodology and instruction",
+                year: "2022",
+                issuer: "Fitness Pilates",
               },
               {
-                title: "Level 3 Pre/Post Natal",
+                image: "/images/certifications/ymca-awards.jpeg",
+                alt: "YMCA Awards Pre/Post Natal",
+                title: "Pre/Post Natal",
                 description: "Providing safe expertise and adaptations for clients throughout their pregnancy journey",
                 year: "2020",
-                issuer: "UKSCA",
+                issuer: "YMCA Awards",
               },
               {
-                title: "Mental Health Awareness for Sport and Physical Activity",
+                image: "/images/certifications/mind-mental-health.png",
+                alt: "Mind Mental Health Awareness",
+                title: "Mental Health Awareness for Sport & Physical Activity",
                 description: "Supporting clients' mental wellbeing alongside their physical fitness journey",
                 year: "2021",
-                issuer: "MHFA England",
+                issuer: "Mind",
               },
               {
-                title: "Menopause Fitness Specialist",
-                description:
-                  "Specialized training for supporting women through menopause with targeted fitness approaches",
-                year: "2022",
-                issuer: "MenoPro",
+                image: "/images/certifications/water-fitness.png",
+                alt: "Water Fitness Certification",
+                title: "Water Fitness",
+                description: "Specialized training in aquatic fitness and water-based exercise programs",
+                year: "2019",
+                issuer: "WV Fitness",
+              },
+              {
+                image: "/images/certifications/first-aid-st-johns.png",
+                alt: "St John Ambulance First Aid at Work",
+                title: "First Aid at Work",
+                description: "Comprehensive first aid training for workplace and fitness environments",
+                year: "2023",
+                issuer: "St John Ambulance",
               },
             ].map((cert, index) => (
               <div key={index} className="group">
@@ -395,35 +410,6 @@ export default function AboutPage() {
                   </div>
                 </div>
               ))}
-            </div>
-          </div>
-
-          {/* Bottom Quote */}
-          <div className="text-center mt-20">
-            <div className="relative max-w-3xl mx-auto">
-              {/* Background decorative elements */}
-              <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
-              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary/10 rounded-full blur-xl"></div>
-
-              {/* Main quote container */}
-              <div className="relative bg-white rounded-xl p-6 md:p-8 shadow-md border border-gray-100">
-                {/* Quote text */}
-                <blockquote className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6 text-center">
-                  "Every great dream begins with a dreamer. Always remember, you have within you the strength, the
-                  patience, and the passion to reach for the stars to change the world."
-                </blockquote>
-
-                {/* Author section */}
-                <div className="flex items-center justify-center gap-3">
-                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
-                    <Heart className="w-5 h-5 text-white" />
-                  </div>
-                  <div className="text-left">
-                    <p className="font-semibold text-gray-900 text-sm">Emma Fisher</p>
-                    <p className="text-xs text-gray-600">Founder, Diva Fitness</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
