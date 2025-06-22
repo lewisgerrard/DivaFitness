@@ -11,8 +11,8 @@ export default function AboutPage() {
     <div className="min-h-screen">
       {/* Hero Section */}
       <HeroPage
-        title="Meet Emma"
-        subtitle="Fisher"
+        title="From Vision"
+        subtitle="to Reality"
         description="Empowering women since 2017 with personalised fitness journeys that transform bodies, minds, and lives."
         primaryButtonText="My Story"
         primaryButtonHref="#story"
@@ -34,8 +34,8 @@ export default function AboutPage() {
               </div>
 
               <h2 className={brandClasses.sectionTitle}>
-                From Vision to
-                <span className={brandKit.components.section.subtitle}>Reality</span>
+                Behind the
+                <span className={brandKit.components.section.subtitle}>Concept</span>
               </h2>
 
               <div className="space-y-6 text-lg leading-relaxed text-secondary">
