@@ -43,11 +43,16 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: "Not authorized" }, { status: 403 })
     }
 
-    console.log("✅ User is admin, fetching users...")
     const users = await getAllUsers()
     console.log("✅ Found users:", users.length)
 
-    return NextResponse.json({ users })
+    // Add default status for users that don't have it
+    const usersWithStatus = users.map((user) => ({
+      ...user,
+      status: "active", // Default all users to active since status column doesn't exist yet
+    }))
+
+    return NextResponse.json({ users: usersWithStatus })
   } catch (error) {
     console.error("❌ Admin users API error:", error)
     return NextResponse.json({ error: "Server error" }, { status: 500 })

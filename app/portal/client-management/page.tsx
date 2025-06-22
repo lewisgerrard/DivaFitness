@@ -43,18 +43,29 @@ export default function ClientManagementPage() {
         return
       }
 
+      console.log("🔍 Fetching users with token:", token ? "Present" : "Missing")
+
       const response = await fetch("/api/admin/users", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
 
+      console.log("📡 Response status:", response.status)
+
       if (response.ok) {
         const data = await response.json()
+        console.log("📊 Raw data received:", data)
+        console.log("👥 All users:", data.users)
+
         // Filter only client users
         const clientUsers = (data.users || []).filter((user: UserType) => user.role === "client")
+        console.log("🎯 Filtered client users:", clientUsers)
+
         setUsers(clientUsers)
       } else {
+        const errorData = await response.text()
+        console.error("❌ Error response:", errorData)
         toast.error("Failed to fetch clients")
       }
     } catch (error) {
@@ -172,6 +183,19 @@ export default function ClientManagementPage() {
             </CardContent>
           </Card>
         </div>
+
+        {/* Temporary Debug Info - Remove after fixing */}
+        <Card className="border-red-200 bg-red-50 mb-4">
+          <CardContent className="p-4">
+            <h3 className="font-bold text-red-800 mb-2">Debug Info (Remove Later)</h3>
+            <p>Total users loaded: {users.length}</p>
+            <p>Filtered users: {filteredUsers.length}</p>
+            <p>Search term: "{searchTerm}"</p>
+            <p>Status filter: {statusFilter}</p>
+            <p>Loading: {loading ? "Yes" : "No"}</p>
+            <p>Current user role: {currentUser?.role}</p>
+          </CardContent>
+        </Card>
 
         {/* Filters and Search */}
         <Card className="border-[#7b329b]/20 shadow-sm">
