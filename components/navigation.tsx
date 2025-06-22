@@ -13,11 +13,13 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import Image from "next/image"
+import { usePathname } from "next/navigation"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
   const { user, logout } = useAuth()
+  const pathname = usePathname()
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -54,13 +56,17 @@ export function Navigation() {
               {/* Render Home and About */}
               <Link
                 href="/"
-                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
+                className={`transition-colors duration-200 font-medium text-sm ${
+                  pathname === "/" ? "text-primary" : "text-secondary/80 hover:text-secondary"
+                }`}
               >
                 Home
               </Link>
               <Link
                 href="/about"
-                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
+                className={`transition-colors duration-200 font-medium text-sm ${
+                  pathname === "/about" ? "text-primary" : "text-secondary/80 hover:text-secondary"
+                }`}
               >
                 About
               </Link>
@@ -69,9 +75,12 @@ export function Navigation() {
               <div className="relative">
                 <button
                   onClick={() => setServicesOpen(!servicesOpen)}
-                  className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm flex items-center"
+                  className={`transition-colors duration-200 font-medium text-sm flex items-center ${
+                    pathname === "/training" || pathname === "/nutrition"
+                      ? "text-primary"
+                      : "text-secondary/80 hover:text-secondary"
+                  }`}
                   onBlur={(e) => {
-                    // Close dropdown when clicking outside
                     if (!e.currentTarget.contains(e.relatedTarget)) {
                       setTimeout(() => setServicesOpen(false), 150)
                     }
@@ -105,13 +114,17 @@ export function Navigation() {
               {/* Render FAQs and Contact */}
               <Link
                 href="/faqs"
-                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
+                className={`transition-colors duration-200 font-medium text-sm ${
+                  pathname === "/faqs" ? "text-primary" : "text-secondary/80 hover:text-secondary"
+                }`}
               >
                 FAQs
               </Link>
               <Link
                 href="/contact"
-                className="text-secondary/80 hover:text-secondary transition-colors duration-200 font-medium text-sm"
+                className={`transition-colors duration-200 font-medium text-sm ${
+                  pathname === "/contact" ? "text-primary" : "text-secondary/80 hover:text-secondary"
+                }`}
               >
                 Contact
               </Link>

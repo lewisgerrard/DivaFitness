@@ -121,70 +121,6 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Values Section */}
-      <section id="values" className={`${brandKit.spacing.section.md} bg-white`}>
-        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
-          <div className={brandKit.components.section.header}>
-            <div className={brandKit.components.section.badge}>
-              <Heart className="w-4 h-4 text-primary" />
-              <span className="text-primary font-medium text-sm">My Philosophy</span>
-            </div>
-            <h2 className={brandClasses.sectionTitle}>
-              What Drives
-              <span className={brandKit.components.section.subtitle}>Everything I Do</span>
-            </h2>
-            <p className={brandClasses.sectionDescription}>
-              Every aspect of my approach is designed with women's unique needs, challenges, and strengths in mind.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-              {
-                icon: Heart,
-                title: "Supportive",
-                description: "Creating a non-judgmental space where you feel comfortable and encouraged to grow.",
-                color: brandKit.gradients.accent,
-              },
-              {
-                icon: Users,
-                title: "Personal",
-                description: "Tailored programmes that adapt to your lifestyle, preferences, and individual goals.",
-                color: brandKit.gradients.primary,
-              },
-              {
-                icon: Zap,
-                title: "Holistic",
-                description: "Combining fitness, nutrition, and wellness for comprehensive, lasting transformation.",
-                color: brandKit.gradients.secondary,
-              },
-              {
-                icon: Award,
-                title: "Professional",
-                description: "Qualified, experienced, and committed to ongoing education and development.",
-                color: brandKit.gradients.accent,
-              },
-            ].map((value, index) => (
-              <Card key={index} className={brandClasses.cardBase}>
-                <div
-                  className={`absolute inset-0 ${value.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
-                />
-
-                <CardContent className={brandKit.components.card.content}>
-                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
-                    <value.icon className="w-8 h-8 text-white" />
-                  </div>
-
-                  <h3 className={brandKit.components.card.title}>{value.title}</h3>
-
-                  <p className={brandKit.components.card.description}>{value.description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Certifications Section */}
       <section id="certifications" className={`${brandKit.spacing.section.md} bg-gradient-to-b from-gray-50 to-white`}>
         <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
@@ -245,13 +181,13 @@ export default function AboutPage() {
                 issuer: "REPS UK",
               },
               {
-                title: "Strength & Conditioning",
-                description: "Advanced strength training methodologies and periodization principles",
+                title: "Level 3 Pre/Post Natal",
+                description: "Providing safe expertise and adaptations for clients throughout their pregnancy journey",
                 year: "2020",
                 issuer: "UKSCA",
               },
               {
-                title: "Mental Health First Aid",
+                title: "Mental Health Awareness for Sport and Physical Activity",
                 description: "Supporting clients' mental wellbeing alongside their physical fitness journey",
                 year: "2021",
                 issuer: "MHFA England",
@@ -288,6 +224,70 @@ export default function AboutPage() {
                   </div>
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section id="values" className={`${brandKit.spacing.section.md} bg-white`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+          <div className={brandKit.components.section.header}>
+            <div className={brandKit.components.section.badge}>
+              <Heart className="w-4 h-4 text-primary" />
+              <span className="text-primary font-medium text-sm">My Philosophy</span>
+            </div>
+            <h2 className={brandClasses.sectionTitle}>
+              What Drives
+              <span className={brandKit.components.section.subtitle}>Everything I Do</span>
+            </h2>
+            <p className={brandClasses.sectionDescription}>
+              Every aspect of my approach is designed with women's unique needs, challenges, and strengths in mind.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {[
+              {
+                icon: Heart,
+                title: "Supportive",
+                description: "Creating a non-judgmental space where you feel comfortable and encouraged to grow.",
+                color: brandKit.gradients.accent,
+              },
+              {
+                icon: Users,
+                title: "Personal",
+                description: "Tailored programmes that adapt to your lifestyle, preferences, and individual goals.",
+                color: brandKit.gradients.primary,
+              },
+              {
+                icon: Zap,
+                title: "Holistic",
+                description: "Combining fitness, nutrition, and behaviour change for sustainable results.",
+                color: brandKit.gradients.secondary,
+              },
+              {
+                icon: Award,
+                title: "Professional",
+                description: "Qualified, experienced, and committed to ongoing education and development.",
+                color: brandKit.gradients.accent,
+              },
+            ].map((value, index) => (
+              <Card key={index} className={brandClasses.cardBase}>
+                <div
+                  className={`absolute inset-0 ${value.color} opacity-0 group-hover:opacity-10 transition-opacity duration-500`}
+                />
+
+                <CardContent className={brandKit.components.card.content}>
+                  <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <value.icon className="w-8 h-8 text-white" />
+                  </div>
+
+                  <h3 className={brandKit.components.card.title}>{value.title}</h3>
+
+                  <p className={brandKit.components.card.description}>{value.description}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
         </div>
