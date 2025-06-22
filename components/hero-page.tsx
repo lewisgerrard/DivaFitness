@@ -1,8 +1,5 @@
 "use client"
-
-import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
-import { Button } from "@/components/ui/button"
+import { Sparkles } from "lucide-react"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
 
 interface HeroPageProps {
@@ -50,37 +47,6 @@ export function HeroPage({
         </h1>
 
         <p className={brandClasses.heroDescription}>{description}</p>
-
-        {(primaryButtonText || secondaryButtonText || tertiaryButtonText) && (
-          <div className={brandKit.components.hero.buttonContainer}>
-            {primaryButtonText && primaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={primaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {primaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            )}
-
-            {secondaryButtonText && secondaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={secondaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {secondaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            )}
-
-            {tertiaryButtonText && tertiaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={tertiaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {tertiaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            )}
-          </div>
-        )}
       </div>
     </section>
   )

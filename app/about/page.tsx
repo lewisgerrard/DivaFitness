@@ -14,18 +14,18 @@ export default function AboutPage() {
         title="Meet Emma"
         subtitle="Fisher"
         description="Empowering women since 2017 with personalised fitness journeys that transform bodies, minds, and lives."
-        primaryButtonText="Work With Emma"
-        primaryButtonHref="/contact"
-        secondaryButtonText="View Services"
-        secondaryButtonHref="/services"
-        tertiaryButtonText="See Reviews"
-        tertiaryButtonHref="/#reviews"
+        primaryButtonText="My Story"
+        primaryButtonHref="#story"
+        secondaryButtonText="My Values"
+        secondaryButtonHref="#values"
+        tertiaryButtonText="Qualifications"
+        tertiaryButtonHref="#certifications"
         badge="Your Personal Trainer"
       />
 
       {/* Story Section */}
-      <section className={`${brandKit.spacing.section.lg} ${brandKit.gradients.background}`}>
-        <div className={brandKit.components.section.container}>
+      <section id="story" className={`${brandKit.spacing.section.md} ${brandKit.gradients.background}`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div className="space-y-8">
               <div className={brandKit.components.section.badge}>
@@ -121,8 +121,8 @@ export default function AboutPage() {
       </section>
 
       {/* Values Section */}
-      <section className={`${brandKit.spacing.section.lg} bg-white`}>
-        <div className={brandKit.components.section.container}>
+      <section id="values" className={`${brandKit.spacing.section.md} bg-white`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
           <div className={brandKit.components.section.header}>
             <div className={brandKit.components.section.badge}>
               <Heart className="w-4 h-4 text-primary" />
@@ -186,100 +186,246 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* Journey Transformation Section */}
-      <section className="py-24 bg-gradient-to-b from-purple-50 to-white relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 bg-purple-100 text-purple-700 px-4 py-2 rounded-full text-sm font-medium mb-6">
-              <Heart className="w-4 h-4" />
-              The Journey
+      {/* Certifications Section */}
+      <section id="certifications" className={`${brandKit.spacing.section.md} bg-gradient-to-b from-gray-50 to-white`}>
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+          <div className={brandKit.components.section.header}>
+            <div className={brandKit.components.section.badge}>
+              <Award className="w-4 h-4 text-primary" />
+              <span className="text-primary font-medium text-sm">Qualifications</span>
             </div>
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-              My Studio
-              <span className="bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent"> Story</span>
+            <h2 className={brandClasses.sectionTitle}>
+              Professional
+              <span className={brandKit.components.section.subtitle}>Certifications</span>
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-              From an empty garden to a dream studio - captured in moments
+            <p className={brandClasses.sectionDescription}>
+              Committed to excellence through continuous education and professional development.
             </p>
           </div>
 
-          {/* Purple Rope */}
-          <div className="relative mb-8">
-            <div className="absolute top-0 left-0 right-0 h-2 bg-gradient-to-r from-purple-400 via-purple-500 to-purple-400 rounded-full shadow-lg" />
-            <div className="absolute top-0.5 left-0 right-0 h-1 bg-gradient-to-r from-purple-300 via-purple-400 to-purple-300 rounded-full" />
-          </div>
-
-          {/* Polaroid Photos */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4 relative">
+          {/* All Certifications Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {[
               {
-                image: "/images/journey-before.jpg",
-                caption: "The empty garden - where it all began!",
-                rotation: "-rotate-3",
-                marginTop: "mt-8",
+                image: "/images/certifications/precision-nutrition-l1.webp",
+                alt: "Precision Nutrition Level 1 Coach Certification",
+                title: "Precision Nutrition L1",
+                description: "Evidence-based nutrition coaching certification",
+                year: "2019",
+                issuer: "Precision Nutrition",
               },
               {
-                image: "/images/journey-plan.jpg",
-                caption: "Planning every detail on paper",
-                rotation: "rotate-2",
-                marginTop: "mt-4",
+                image: "/images/certifications/cimspa-member.png",
+                alt: "CIMSPA Member",
+                title: "CIMSPA Member",
+                description: "Chartered Institute for the Management of Sport and Physical Activity",
+                year: "2017",
+                issuer: "CIMSPA",
               },
               {
-                image: "/images/journey-construction.jpg",
-                caption: "Hard work with my furry helpers!",
-                rotation: "-rotate-1",
-                marginTop: "mt-12",
+                image: "/images/certifications/nasm-senior-fitness.png",
+                alt: "NASM Senior Fitness Specialization",
+                title: "Senior Fitness Specialist",
+                description: "NASM specialization in senior fitness training",
+                year: "2020",
+                issuer: "NASM",
               },
               {
-                image: "/images/journey-complete.jpg",
-                caption: "The dream studio is complete! ✨",
-                rotation: "rotate-3",
-                marginTop: "mt-6",
+                image: "/images/certifications/nasm-womens-fitness.png",
+                alt: "NASM Women's Fitness Specialization",
+                title: "Women's Fitness Specialist",
+                description: "NASM specialization in women's fitness and training",
+                year: "2021",
+                issuer: "NASM",
               },
-            ].map((photo, index) => (
-              <div key={index} className={`relative ${photo.marginTop} group`}>
-                {/* Clothespin */}
-                <div className="absolute -top-6 left-1/2 transform -translate-x-1/2 z-20">
-                  <div className="w-6 h-8 bg-gradient-to-b from-amber-200 to-amber-400 rounded-t-lg shadow-md border border-amber-300">
-                    <div className="w-full h-2 bg-amber-300 rounded-t-lg" />
-                    <div className="w-full h-0.5 bg-amber-500 mt-1" />
+              {
+                title: "Level 3 Personal Training",
+                description:
+                  "Comprehensive personal training qualification covering exercise science and program design",
+                year: "2017",
+                issuer: "REPS UK",
+              },
+              {
+                title: "Strength & Conditioning",
+                description: "Advanced strength training methodologies and periodization principles",
+                year: "2020",
+                issuer: "UKSCA",
+              },
+              {
+                title: "Mental Health First Aid",
+                description: "Supporting clients' mental wellbeing alongside their physical fitness journey",
+                year: "2021",
+                issuer: "MHFA England",
+              },
+              {
+                title: "Menopause Fitness Specialist",
+                description:
+                  "Specialized training for supporting women through menopause with targeted fitness approaches",
+                year: "2022",
+                issuer: "MenoPro",
+              },
+            ].map((cert, index) => (
+              <div key={index} className="group">
+                <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 h-full flex flex-col">
+                  {cert.image && (
+                    <div className="relative mb-4 mx-auto w-20 h-20">
+                      <div className="absolute inset-0 bg-white rounded-lg shadow-sm group-hover:shadow-md transition-all duration-300">
+                        <div className="p-2 h-full flex items-center justify-center">
+                          <Image
+                            src={cert.image || "/placeholder.svg"}
+                            alt={cert.alt}
+                            width={60}
+                            height={60}
+                            className="object-contain max-w-full max-h-full"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  <div className="flex-grow text-center">
+                    <h3 className="font-bold text-gray-900 mb-2 text-sm">{cert.title}</h3>
+                    <p className="text-gray-600 text-xs leading-relaxed">{cert.description}</p>
                   </div>
                 </div>
-
-                {/* Polaroid Frame */}
-                <div
-                  className={`bg-white p-4 pb-16 shadow-2xl ${photo.rotation} hover:rotate-0 transition-transform duration-500 group-hover:scale-105 relative z-10`}
-                >
-                  {/* Photo */}
-                  <div className="relative h-64 w-full bg-gray-100 overflow-hidden">
-                    <Image
-                      src={photo.image || "/placeholder.svg"}
-                      alt={photo.caption}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                    />
-                  </div>
-
-                  {/* Caption */}
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <p className="text-gray-700 text-sm font-handwriting text-center leading-relaxed">
-                      {photo.caption}
-                    </p>
-                  </div>
-
-                  {/* Tape corners */}
-                  <div className="absolute -top-2 -left-2 w-8 h-8 bg-yellow-100 opacity-80 rotate-45 border border-yellow-200" />
-                  <div className="absolute -top-2 -right-2 w-8 h-8 bg-yellow-100 opacity-80 -rotate-45 border border-yellow-200" />
-                </div>
-
-                {/* Shadow */}
-                <div
-                  className={`absolute inset-0 bg-black/10 ${photo.rotation} transform translate-x-1 translate-y-1 -z-10`}
-                />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Journey Transformation Section */}
+      <section
+        id="journey"
+        className={`${brandKit.spacing.section.md} bg-gradient-to-b from-white via-purple-50/30 to-white relative overflow-hidden before:absolute before:top-20 before:left-20 before:w-32 before:h-32 before:border before:border-primary/20 before:rounded-full before:opacity-10 after:absolute after:bottom-20 after:right-20 after:w-24 after:h-24 after:border after:border-secondary/20 after:rounded-full after:opacity-10`}
+      >
+        <div className={`max-w-7xl mx-auto px-4 sm:px-6 lg:px-8`}>
+          {/* Section Header */}
+          <div className={brandKit.components.section.header}>
+            <div className={brandKit.components.section.badge}>
+              <Heart className="w-4 h-4 text-primary" />
+              <span className="text-primary font-medium text-sm">The Journey</span>
+            </div>
+            <h2 className={brandClasses.sectionTitle}>
+              Studio
+              <span className={brandKit.components.section.subtitle}>Transformation</span>
+            </h2>
+            <p className={brandClasses.sectionDescription}>
+              From an empty garden space to a fully equipped fitness sanctuary - witness the journey
+            </p>
+          </div>
+
+          {/* Horizontal Timeline */}
+          <div className="relative">
+            {/* Timeline Line */}
+            <div className="absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-secondary to-accent rounded-full transform -translate-y-1/2 z-0"></div>
+
+            {/* Timeline Dots */}
+            <div className="absolute top-1/2 left-0 right-0 flex justify-between transform -translate-y-1/2 z-10">
+              <div className="w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg"></div>
+              <div className="w-6 h-6 bg-secondary rounded-full border-4 border-white shadow-lg"></div>
+              <div className="w-6 h-6 bg-accent rounded-full border-4 border-white shadow-lg"></div>
+              <div className="w-6 h-6 bg-primary rounded-full border-4 border-white shadow-lg"></div>
+            </div>
+
+            {/* Timeline Items */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-8 relative z-20 max-w-7xl mx-auto">
+              {[
+                {
+                  year: "2017",
+                  title: "The Beginning",
+                  description: "An empty garden with endless possibilities",
+                  image: "/images/journey-before.jpg",
+                  position: "top",
+                },
+                {
+                  year: "Planning",
+                  title: "Design Phase",
+                  description: "Sketching dreams on paper, planning every detail",
+                  image: "/images/journey-plan.jpg",
+                  position: "bottom",
+                },
+                {
+                  year: "Building",
+                  title: "Construction",
+                  description: "Hard work with my faithful furry assistants",
+                  image: "/images/journey-construction.jpg",
+                  position: "top",
+                },
+                {
+                  year: "2018",
+                  title: "Dream Realized",
+                  description: "The studio is complete and ready to inspire",
+                  image: "/images/journey-complete.jpg",
+                  position: "bottom",
+                },
+              ].map((item, index) => (
+                <div key={index} className={`relative ${item.position === "top" ? "mb-16" : "mt-16"}`}>
+                  {/* Photo Card */}
+                  <div className="group cursor-pointer">
+                    <div className="relative h-64 w-full rounded-2xl overflow-hidden shadow-xl group-hover:shadow-2xl transition-all duration-500 group-hover:-translate-y-2">
+                      <Image
+                        src={item.image || "/placeholder.svg"}
+                        alt={item.title}
+                        fill
+                        className="object-cover group-hover:scale-110 transition-transform duration-700"
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                      />
+
+                      {/* Polaroid-style bottom */}
+                      <div className="absolute bottom-0 left-0 right-0 bg-white p-4">
+                        <div className="text-center">
+                          <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-bold mb-2">
+                            {item.year}
+                          </div>
+                          <h3 className="font-bold text-gray-900 text-sm mb-1">{item.title}</h3>
+                          <p className="text-gray-600 text-xs leading-relaxed">{item.description}</p>
+                        </div>
+                      </div>
+
+                      {/* Decorative tape */}
+                      <div className="absolute -top-3 left-1/2 transform -translate-x-1/2 w-12 h-6 bg-yellow-200/80 rounded-sm shadow-md border border-yellow-300/50 rotate-3"></div>
+                    </div>
+
+                    {/* Connection Line to Timeline */}
+                    <div
+                      className={`absolute left-1/2 transform -translate-x-1/2 w-0.5 bg-gray-300 ${
+                        item.position === "top" ? "top-full h-16" : "bottom-full h-16"
+                      }`}
+                    ></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Bottom Quote */}
+          <div className="text-center mt-20">
+            <div className="relative max-w-3xl mx-auto">
+              {/* Background decorative elements */}
+              <div className="absolute -top-6 -left-6 w-24 h-24 bg-primary/10 rounded-full blur-xl"></div>
+              <div className="absolute -bottom-6 -right-6 w-32 h-32 bg-secondary/10 rounded-full blur-xl"></div>
+
+              {/* Main quote container */}
+              <div className="relative bg-white rounded-xl p-6 md:p-8 shadow-md border border-gray-100">
+                {/* Quote text */}
+                <blockquote className="text-lg md:text-xl text-gray-700 leading-relaxed mb-6 text-center">
+                  "Every great dream begins with a dreamer. Always remember, you have within you the strength, the
+                  patience, and the passion to reach for the stars to change the world."
+                </blockquote>
+
+                {/* Author section */}
+                <div className="flex items-center justify-center gap-3">
+                  <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center">
+                    <Heart className="w-5 h-5 text-white" />
+                  </div>
+                  <div className="text-left">
+                    <p className="font-semibold text-gray-900 text-sm">Emma Fisher</p>
+                    <p className="text-xs text-gray-600">Founder, Diva Fitness</p>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>

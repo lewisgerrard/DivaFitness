@@ -205,21 +205,23 @@ export default function TrainingPage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-5 gap-6">
+            <div className="grid grid-cols-5 gap-6 items-stretch">
               {trainingServices.map((service) => (
                 <Card
                   key={service.id}
-                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden"
+                  className="group cursor-pointer hover:shadow-xl transition-all duration-300 border-0 shadow-lg overflow-hidden h-full"
                   onClick={() => scrollToService(service.id)}
                 >
-                  <CardContent className="p-6 text-center flex flex-col items-center justify-between h-48">
-                    <div className="flex flex-col items-center flex-1 justify-center">
+                  <CardContent className="p-6 text-center flex flex-col items-center justify-between h-full">
+                    <div className="flex flex-col items-center flex-1 justify-start">
                       <div className="w-16 h-16 bg-primary/10 rounded-xl flex items-center justify-center mb-4 flex-shrink-0">
                         <service.icon className="w-8 h-8 text-primary flex-shrink-0" />
                       </div>
-                      <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight text-center">
-                        {service.title}
-                      </h3>
+                      <div className="h-20 flex items-start justify-center">
+                        <h3 className="text-lg font-bold text-gray-900 group-hover:text-primary transition-colors leading-tight text-center">
+                          {service.title}
+                        </h3>
+                      </div>
                     </div>
                   </CardContent>
                 </Card>

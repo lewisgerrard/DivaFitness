@@ -7,9 +7,17 @@ interface SectionProps {
   padding?: "none" | "sm" | "md" | "lg" | "xl"
   background?: "white" | "gray" | "transparent"
   id?: string
+  container?: boolean
 }
 
-const Section: React.FC<SectionProps> = ({ children, className, padding = "lg", background = "transparent", id }) => {
+const Section: React.FC<SectionProps> = ({
+  children,
+  className,
+  padding = "lg",
+  background = "transparent",
+  id,
+  container = true,
+}) => {
   const paddingClasses = {
     none: "",
     sm: "py-8",
@@ -24,9 +32,11 @@ const Section: React.FC<SectionProps> = ({ children, className, padding = "lg", 
     transparent: "",
   }
 
+  const content = container ? <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">{children}</div> : children
+
   return (
     <section id={id} className={cn(paddingClasses[padding], backgroundClasses[background], className)}>
-      {children}
+      {content}
     </section>
   )
 }

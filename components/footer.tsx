@@ -6,7 +6,7 @@ export function Footer() {
   return (
     <footer className="bg-gray-50 text-secondary border-t border-gray-200">
       <div className="max-w-6xl mx-auto px-4 py-8">
-        <div className="grid md:grid-cols-4 gap-6">
+        <div className="grid md:grid-cols-3 gap-6">
           {/* Brand */}
           <div className="space-y-3">
             <div className="flex items-center space-x-3">
@@ -74,18 +74,6 @@ export function Footer() {
                   Contact
                 </Link>
               </li>
-            </ul>
-          </div>
-
-          {/* Services */}
-          <div>
-            <h4 className="font-heading text-base font-semibold mb-3 text-secondary">Services</h4>
-            <ul className="space-y-1 text-secondary/70 text-sm">
-              <li>1-to-1 Personal Training</li>
-              <li>Group Training</li>
-              <li>Nutrition Coaching</li>
-              <li>Cooking Sessions</li>
-              <li>Free Consultations</li>
             </ul>
           </div>
 
