@@ -31,17 +31,10 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
           </Text>
 
           <Text style={text}>
-            I've received your message and will personally respond within 24 hours. In the meantime, here's what you can
-            expect:
+            I've received your message and will personally respond within 24 hours.
           </Text>
 
-          <Section style={bulletPoints}>
-            <Text style={bulletPoint}>• A personalised response tailored to your goals</Text>
-            <Text style={bulletPoint}>• Information about our services and approach</Text>
-            <Text style={bulletPoint}>• Options to schedule your free consultation</Text>
-            <Text style={bulletPoint}>• A warm welcome to the Diva Fitness community</Text>
-          </Section>
-
+        
           <Text style={text}>
             Every woman's fitness journey is unique, and I'm here to support you every step of the way in our beautiful
             garden studio.

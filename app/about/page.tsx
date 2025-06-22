@@ -72,7 +72,7 @@ export default function AboutPage() {
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/studio-exterior-cropped.jpg"
+                      src="/placeholder.svg?height=400&width=600&text=Studio+Exterior"
                       alt="Studio Exterior"
                       fill
                       className="object-cover"
@@ -83,7 +83,7 @@ export default function AboutPage() {
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/equipment-wide-shot.jpg"
+                      src="/placeholder.svg?height=300&width=600&text=Professional+Equipment"
                       alt="Professional Equipment"
                       fill
                       className="object-cover"
@@ -96,7 +96,7 @@ export default function AboutPage() {
                     className={`relative h-32 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/weights-close-up.jpg"
+                      src="/placeholder.svg?height=300&width=600&text=Training+Equipment"
                       alt="Training Equipment"
                       fill
                       className="object-cover"
@@ -107,7 +107,7 @@ export default function AboutPage() {
                     className={`relative h-48 rounded-2xl overflow-hidden shadow-lg ${brandKit.animations.scaleHover}`}
                   >
                     <Image
-                      src="/images/action-training-session.jpg"
+                      src="/placeholder.svg?height=400&width=600&text=Training+Session"
                       alt="Training Session"
                       fill
                       className="object-cover"
@@ -162,7 +162,8 @@ export default function AboutPage() {
                 image: "/images/certifications/senior-fitness-nasm.png",
                 alt: "NASM Senior Fitness Specialisation",
                 title: "Senior Fitness Specialist",
-                description: "Advanced certification covering the specific requirements of people with joint and mobility limitations",
+                description:
+                  "Advanced certification covering the specific requirements of people with joint and mobility limitations",
                 year: "2020",
                 issuer: "NASM",
               },
@@ -170,7 +171,8 @@ export default function AboutPage() {
                 image: "/images/certifications/womens-fitness-nasm.png",
                 alt: "NASM Women's Fitness Specialization",
                 title: "Women's Fitness Specialist",
-                description: "Advanced certification covering the specific physiological needs of women of all age groups",
+                description:
+                  "Advanced certification covering the specific physiological needs of women of all age groups",
                 year: "2021",
                 issuer: "NASM",
               },

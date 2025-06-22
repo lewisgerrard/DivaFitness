@@ -1,5 +1,6 @@
 // Google Analytics helper functions
-export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || "GA_MEASUREMENT_ID"
+// Use the hardcoded GA ID or empty string if not needed
+export const GA_TRACKING_ID = "G-XL637GHGS1" // Hardcoded, no env var needed
 
 // Track page views
 export const pageview = (url: string) => {
