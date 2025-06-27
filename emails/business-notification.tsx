@@ -1,4 +1,16 @@
-import { Body, Container, Head, Heading, Html, Img, Link, Preview, Section, Text } from "@react-email/components"
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Link,
+  Preview,
+  Section,
+  Text,
+  Button,
+} from "@react-email/components"
 
 interface BusinessNotificationEmailProps {
   name: string
@@ -19,77 +31,97 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
           <Section style={header}>
             <Img
               src="https://diva-fitness.co.uk/logo-with-text.png"
-              width="200"
+              width="180"
               height="auto"
               alt="Diva Fitness"
               style={logo}
             />
-            <Heading style={h1}>New Contact Form Submission</Heading>
           </Section>
 
-          {/* Alert */}
-          <Section style={alertSection}>
-            <Text style={alertText}>✓ You have a new potential client inquiry!</Text>
-          </Section>
+          {/* Main Content */}
+          <Section style={content}>
+            <Heading style={h1}>New Client Inquiry!</Heading>
 
-          {/* Contact Details */}
-          <Section style={detailsSection}>
-            <Heading style={h2}>Contact Details</Heading>
+            <Section style={alertBox}>
+              <Text style={alertText}>✨ You have a new potential client inquiry</Text>
+            </Section>
 
-            <div style={detailRow}>
-              <Text style={label}>Name:</Text>
-              <Text style={value}>{name}</Text>
-            </div>
+            <Text style={text}>
+              Great news! Someone is interested in your services and has reached out through your website.
+            </Text>
 
-            <div style={detailRow}>
-              <Text style={label}>Email:</Text>
-              <Text style={value}>
-                <Link href={`mailto:${email}`} style={emailLink}>
-                  {email}
-                </Link>
-              </Text>
-            </div>
+            {/* Contact Details Card */}
+            <Section style={detailsCard}>
+              <Heading style={h2}>Contact Information</Heading>
 
-            {phone && (
               <div style={detailRow}>
-                <Text style={label}>Phone:</Text>
+                <Text style={label}>Name:</Text>
+                <Text style={value}>{name}</Text>
+              </div>
+
+              <div style={detailRow}>
+                <Text style={label}>Email:</Text>
                 <Text style={value}>
-                  <Link href={`tel:${phone}`} style={phoneLink}>
-                    {phone}
+                  <Link href={`mailto:${email}`} style={emailLink}>
+                    {email}
                   </Link>
                 </Text>
               </div>
-            )}
 
-            <div style={detailRow}>
-              <Text style={label}>Interested In:</Text>
-              <Text style={value}>{service}</Text>
-            </div>
-          </Section>
+              {phone && (
+                <div style={detailRow}>
+                  <Text style={label}>Phone:</Text>
+                  <Text style={value}>
+                    <Link href={`tel:${phone}`} style={phoneLink}>
+                      {phone}
+                    </Link>
+                  </Text>
+                </div>
+              )}
 
-          {/* Message */}
-          <Section style={messageSection}>
-            <Heading style={h2}>Message</Heading>
-            <Text style={messageText}>{message}</Text>
-          </Section>
+              <div style={detailRow}>
+                <Text style={label}>Services of Interest:</Text>
+                <Text style={value}>{service}</Text>
+              </div>
+            </Section>
 
-          {/* Action Section */}
-          <Section style={actionSection}>
+            {/* Message Card */}
+            <Section style={messageCard}>
+              <Heading style={h2}>Their Message</Heading>
+              <Text style={messageText}>{message}</Text>
+            </Section>
+
+            <Section style={buttonContainer}>
+              <Button
+                style={replyButton}
+                href={`mailto:${email}?subject=Re: Your Diva Fitness Inquiry&body=Hi ${name},%0D%0A%0D%0AThank you for your interest in Diva Fitness.%0D%0A%0D%0ABest regards,%0D%0AEmma Fisher`}
+              >
+                Reply to {name}
+              </Button>
+            </Section>
+
             <Text style={reminderText}>
-              • Remember to respond within 24 hours to maintain our excellent customer service standards!
+              💡 Remember to respond within 24 hours to maintain excellent customer service standards.
             </Text>
-            <Link href={`mailto:${email}?subject=Re: Your Diva Fitness Inquiry`} style={replyButton}>
-              Reply to {name}
-            </Link>
           </Section>
 
           {/* Footer */}
           <Section style={footer}>
-            <Text style={footerText}>This email was sent from the Diva Fitness contact form on your website.</Text>
             <Text style={footerText}>
-              <Link href="https://diva-fitness.co.uk/contact" style={footerLink}>
+              <strong>Diva Fitness Contact System</strong>
+              <br />
+              This inquiry was submitted through your website contact form.
+            </Text>
+
+            <Text style={footerText}>
+              🌐{" "}
+              <Link href="https://diva-fitness.co.uk/contact" style={link}>
                 View Contact Page
               </Link>
+            </Text>
+
+            <Text style={footerSmall}>
+              This email was automatically generated from your Diva Fitness website contact form.
             </Text>
           </Section>
         </Container>
@@ -98,7 +130,7 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
   )
 }
 
-// Styles
+// Styles matching the customer email design
 const main = {
   backgroundColor: "#f8f9fa",
   fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
@@ -107,33 +139,37 @@ const main = {
 const container = {
   margin: "0 auto",
   padding: "0",
-  maxWidth: "650px",
+  maxWidth: "600px",
   backgroundColor: "#ffffff",
   borderRadius: "12px",
   overflow: "hidden",
   boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
-  marginBottom: "64px",
 }
 
 const header = {
-  backgroundColor: "#7b329b",
-  padding: "30px 30px 20px",
+  backgroundColor: "#ffffff",
+  padding: "40px 30px 30px",
   textAlign: "center" as const,
+  borderBottom: "1px solid #e5e7eb",
 }
 
 const logo = {
-  margin: "0 auto 20px",
-  filter: "brightness(0) invert(1)",
-  maxWidth: "200px",
+  margin: "0 auto",
+  maxWidth: "180px",
   height: "auto",
 }
 
+const content = {
+  padding: "40px 30px",
+}
+
 const h1 = {
-  color: "#ffffff",
-  fontSize: "24px",
+  color: "#7b329b",
+  fontSize: "28px",
   fontWeight: "bold",
   textAlign: "center" as const,
-  margin: "0",
+  margin: "0 0 30px",
+  lineHeight: "1.3",
 }
 
 const h2 = {
@@ -143,27 +179,35 @@ const h2 = {
   margin: "0 0 20px",
 }
 
-const alertSection = {
-  padding: "20px 30px",
+const text = {
+  color: "#374151",
+  fontSize: "16px",
+  lineHeight: "1.6",
+  margin: "0 0 20px",
+}
+
+const alertBox = {
+  backgroundColor: "#f0f9ff",
+  border: "2px solid #e0c3fc",
+  borderRadius: "12px",
+  padding: "20px",
+  margin: "0 0 30px",
   textAlign: "center" as const,
 }
 
 const alertText = {
-  fontSize: "18px",
   color: "#7b329b",
+  fontSize: "18px",
   fontWeight: "bold",
   margin: "0",
-  padding: "15px",
-  backgroundColor: "#e0c3fc",
-  borderRadius: "8px",
 }
 
-const detailsSection = {
+const detailsCard = {
   backgroundColor: "#f8f9fa",
-  padding: "25px",
+  border: "1px solid #e5e7eb",
   borderRadius: "12px",
-  border: "1px solid #e0c3fc",
-  margin: "0 30px 25px",
+  padding: "25px",
+  margin: "0 0 25px",
 }
 
 const detailRow = {
@@ -177,13 +221,13 @@ const label = {
   color: "#6b7280",
   fontWeight: "bold",
   margin: "0",
-  minWidth: "120px",
+  minWidth: "140px",
   display: "inline-block",
 }
 
 const value = {
   fontSize: "16px",
-  color: "#1a1a1a",
+  color: "#1f2937",
   margin: "0",
   flex: "1",
 }
@@ -200,33 +244,25 @@ const phoneLink = {
   fontWeight: "500",
 }
 
-const messageSection = {
+const messageCard = {
   backgroundColor: "#ffffff",
-  padding: "25px",
-  borderRadius: "12px",
   border: "2px solid #e0c3fc",
-  margin: "0 30px 30px",
+  borderRadius: "12px",
+  padding: "25px",
+  margin: "0 0 30px",
 }
 
 const messageText = {
+  color: "#374151",
   fontSize: "16px",
   lineHeight: "1.6",
-  color: "#1a1a1a",
   margin: "0",
   whiteSpace: "pre-wrap" as const,
 }
 
-const actionSection = {
+const buttonContainer = {
   textAlign: "center" as const,
   margin: "30px 0",
-  padding: "0 30px",
-}
-
-const reminderText = {
-  fontSize: "14px",
-  color: "#7b329b",
-  fontStyle: "italic",
-  margin: "0 0 20px",
 }
 
 const replyButton = {
@@ -234,29 +270,49 @@ const replyButton = {
   borderRadius: "25px",
   color: "#ffffff",
   fontSize: "16px",
-  fontWeight: "bold",
+  fontWeight: "600",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "12px 30px",
+  padding: "14px 28px",
+  border: "none",
+  cursor: "pointer",
+}
+
+const reminderText = {
+  color: "#6b7280",
+  fontSize: "14px",
+  lineHeight: "1.5",
+  margin: "20px 0 0",
+  textAlign: "center" as const,
+  fontStyle: "italic",
 }
 
 const footer = {
   backgroundColor: "#f8f9fa",
-  padding: "20px 30px",
+  padding: "30px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e0c3fc",
+  borderTop: "1px solid #e5e7eb",
 }
 
 const footerText = {
-  fontSize: "12px",
   color: "#6b7280",
-  margin: "0 0 10px",
+  fontSize: "14px",
+  lineHeight: "1.5",
+  margin: "0 0 15px",
 }
 
-const footerLink = {
+const footerSmall = {
+  color: "#9ca3af",
+  fontSize: "12px",
+  lineHeight: "1.4",
+  margin: "20px 0 0",
+}
+
+const link = {
   color: "#7b329b",
   textDecoration: "none",
+  fontWeight: "500",
 }
 
 export default BusinessNotificationEmail
