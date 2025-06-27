@@ -44,14 +44,31 @@ export function ContactForm() {
     setIsSubmitting(true)
     setSubmitStatus({ type: null, message: "" })
 
+    console.log("📤 Submitting form data:", {
+      name: formData.name,
+      email: formData.email,
+      hasPhone: !!formData.phone,
+      serviceCount: formData.service.length,
+      messageLength: formData.message.length,
+    })
+
     try {
       const response = await fetch("/api/contact", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone.trim(),
+          service: formData.service,
+          message: formData.message.trim(),
+        }),
       })
+
+      const responseData = await response.json()
+      console.log("📥 API response:", responseData)
 
       if (response.ok) {
         setSubmitStatus({
@@ -66,12 +83,16 @@ export function ContactForm() {
           message: "",
         })
       } else {
-        throw new Error("Failed to send message")
+        console.error("❌ API error response:", responseData)
+        throw new Error(responseData.error || "Failed to send message")
       }
-    } catch (error) {
+    } catch (error: any) {
+      console.error("❌ Form submission error:", error)
       setSubmitStatus({
         type: "error",
-        message: "Sorry, there was an error sending your message. Please try again or contact us directly.",
+        message:
+          error.message ||
+          "Sorry, there was an error sending your message. Please try again or contact us directly at info@diva-fitness.co.uk",
       })
     } finally {
       setIsSubmitting(false)

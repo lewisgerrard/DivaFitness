@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     console.log("📧 Contact form submission received:", {
       name,
       email,
-      service,
+      service: Array.isArray(service) ? service : [service],
       hasPhone: !!phone,
       messageLength: message?.length,
     })
@@ -35,13 +35,16 @@ export async function POST(request: NextRequest) {
 
     console.log("✅ RESEND_API_KEY is available")
 
+    // Format service data for database and email
+    const serviceData = Array.isArray(service) ? service.join(", ") : service || ""
+
     // Save to database first
     try {
       await createContactSubmission({
         name,
         email,
-        phone,
-        service,
+        phone: phone || null,
+        service: serviceData,
         message,
       })
       console.log("✅ Contact submission saved to database")
@@ -103,9 +106,9 @@ export async function POST(request: NextRequest) {
         react: BusinessNotificationEmail({
           name,
           email,
-          phone,
+          phone: phone || undefined,
           message,
-          service,
+          service: serviceData,
         }),
         headers: {
           "X-Entity-Ref-ID": `business-notification-${Date.now()}`,
@@ -144,6 +147,7 @@ export async function POST(request: NextRequest) {
 
     console.log("📊 Final response:", response)
 
+    // Return success even if one email fails, as long as at least one succeeds
     if (!customerEmailSuccess && !businessEmailSuccess) {
       return NextResponse.json(
         {
