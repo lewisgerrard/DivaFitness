@@ -14,8 +14,8 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
         <Section style={header}>
           <Img
             src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="200"
-            height="60"
+            width="240"
+            height="auto"
             alt="Diva Fitness"
             style={logo}
           />
@@ -98,55 +98,58 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
   </Html>
 )
 
-// Styles using Diva Fitness brand colors
+// Styles matching website design
 const main = {
-  backgroundColor: "#f8f9fa",
-  fontFamily: "Roboto, Arial, sans-serif",
+  backgroundColor: "#ffffff",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  margin: "0",
+  padding: "0",
 }
 
 const container = {
   backgroundColor: "#ffffff",
   margin: "0 auto",
   padding: "0",
-  marginBottom: "64px",
   maxWidth: "600px",
-  borderRadius: "12px",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  width: "100%",
 }
 
 const header = {
-  backgroundColor: "#7b329b",
-  padding: "30px 30px 20px",
+  backgroundColor: "#ffffff",
+  padding: "40px 30px 30px",
   textAlign: "center" as const,
-  borderRadius: "12px 12px 0 0",
+  borderBottom: "1px solid #f1f5f9",
 }
 
 const logo = {
-  margin: "0 auto 20px",
-  filter: "brightness(0) invert(1)",
-  maxWidth: "200px",
+  margin: "0 auto",
+  maxWidth: "240px",
+  width: "240px",
   height: "auto",
   display: "block",
 }
 
 const content = {
   padding: "40px 30px",
+  backgroundColor: "#ffffff",
 }
 
 const h1 = {
   color: "#7b329b",
-  fontSize: "28px",
-  fontWeight: "bold",
+  fontSize: "32px",
+  fontWeight: "700",
   textAlign: "center" as const,
-  margin: "0 0 30px",
-  fontFamily: "Poppins, Arial, sans-serif",
+  margin: "0 0 32px",
+  lineHeight: "1.2",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const text = {
-  color: "#1a1a1a",
+  color: "#334155",
   fontSize: "16px",
-  lineHeight: "26px",
-  margin: "0 0 20px",
+  lineHeight: "1.6",
+  margin: "0 0 24px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const ctaSection = {
@@ -156,46 +159,52 @@ const ctaSection = {
 
 const button = {
   backgroundColor: "#7b329b",
-  borderRadius: "25px",
+  borderRadius: "8px",
   color: "#ffffff",
   fontSize: "16px",
-  fontWeight: "bold",
+  fontWeight: "600",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "12px 30px",
+  padding: "14px 28px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  transition: "background-color 0.2s ease",
 }
 
 const signature = {
-  color: "#1a1a1a",
+  color: "#334155",
   fontSize: "16px",
-  lineHeight: "26px",
+  lineHeight: "1.6",
   margin: "40px 0 0",
   textAlign: "center" as const,
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const titleText = {
   color: "#7b329b",
   fontSize: "14px",
+  fontWeight: "500",
 }
 
 const footer = {
-  backgroundColor: "#f8f9fa",
-  padding: "30px",
+  backgroundColor: "#f8fafc",
+  padding: "40px 30px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e0c3fc",
+  borderTop: "1px solid #e2e8f0",
 }
 
 const footerText = {
-  color: "#6b7280",
+  color: "#64748b",
   fontSize: "14px",
-  lineHeight: "20px",
-  margin: "0 0 15px",
+  lineHeight: "1.5",
+  margin: "0 0 16px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const footerLink = {
   color: "#7b329b",
   textDecoration: "none",
+  fontWeight: "500",
 }
 
 export default CustomerThankYouEmail

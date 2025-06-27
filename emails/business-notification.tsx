@@ -18,8 +18,8 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
         <Section style={header}>
           <Img
             src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="200"
-            height="60"
+            width="240"
+            height="auto"
             alt="Diva Fitness"
             style={logo}
           />
@@ -28,9 +28,11 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
 
         {/* Main Content */}
         <Section style={content}>
-          <Text style={alertText}>✓ You have a new potential client inquiry!</Text>
+          <Section style={alertBox}>
+            <Text style={alertText}>✨ You have a new potential client inquiry!</Text>
+          </Section>
 
-          <Section style={detailsBox}>
+          <Section style={detailsCard}>
             <Heading style={h2}>Contact Details</Heading>
 
             <Section style={detailRow}>
@@ -66,14 +68,14 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
             )}
           </Section>
 
-          <Section style={messageBox}>
+          <Section style={messageCard}>
             <Heading style={h2}>Message</Heading>
             <Text style={messageText}>{message}</Text>
           </Section>
 
           <Section style={actionSection}>
             <Text style={reminderText}>
-              • Remember to respond within 24 hours to maintain our excellent customer service standards!
+              💡 Remember to respond within 24 hours to maintain excellent customer service!
             </Text>
 
             <Link href={`mailto:${email}?subject=Re: Your Diva Fitness Inquiry`} style={replyButton}>
@@ -96,97 +98,104 @@ export const BusinessNotificationEmail = ({ name, email, phone, message, service
   </Html>
 )
 
-// Styles
+// Styles matching website design
 const main = {
-  backgroundColor: "#f8f9fa",
-  fontFamily: "Roboto, Arial, sans-serif",
+  backgroundColor: "#ffffff",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  margin: "0",
+  padding: "0",
 }
 
 const container = {
   backgroundColor: "#ffffff",
   margin: "0 auto",
   padding: "0",
-  marginBottom: "64px",
-  maxWidth: "650px",
-  borderRadius: "12px",
-  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  maxWidth: "600px",
+  width: "100%",
 }
 
 const header = {
-  backgroundColor: "#7b329b",
-  padding: "30px 30px 20px",
+  backgroundColor: "#ffffff",
+  padding: "40px 30px 30px",
   textAlign: "center" as const,
-  borderRadius: "12px 12px 0 0",
+  borderBottom: "1px solid #f1f5f9",
 }
 
 const logo = {
-  margin: "0 auto 20px",
-  filter: "brightness(0) invert(1)",
-  maxWidth: "200px",
+  margin: "0 auto 24px",
+  maxWidth: "240px",
+  width: "240px",
   height: "auto",
   display: "block",
 }
 
 const h1 = {
-  color: "#ffffff",
-  fontSize: "24px",
-  fontWeight: "bold",
+  color: "#7b329b",
+  fontSize: "28px",
+  fontWeight: "700",
   textAlign: "center" as const,
   margin: "0",
-  fontFamily: "Poppins, Arial, sans-serif",
+  lineHeight: "1.2",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const content = {
   padding: "40px 30px",
+  backgroundColor: "#ffffff",
+}
+
+const alertBox = {
+  backgroundColor: "#f0f9ff",
+  border: "1px solid #7b329b",
+  borderRadius: "8px",
+  padding: "20px",
+  margin: "0 0 32px",
+  textAlign: "center" as const,
 }
 
 const alertText = {
   color: "#7b329b",
   fontSize: "18px",
-  fontWeight: "bold",
-  textAlign: "center" as const,
-  margin: "0 0 30px",
-  padding: "15px",
-  backgroundColor: "#e0c3fc",
-  borderRadius: "8px",
+  fontWeight: "600",
+  margin: "0",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
-const detailsBox = {
-  backgroundColor: "#f8f9fa",
-  padding: "25px",
-  borderRadius: "12px",
-  border: "1px solid #e0c3fc",
-  margin: "0 0 25px",
+const detailsCard = {
+  backgroundColor: "#f8fafc",
+  border: "1px solid #e2e8f0",
+  borderRadius: "8px",
+  padding: "24px",
+  margin: "0 0 24px",
 }
 
 const h2 = {
   color: "#7b329b",
-  fontSize: "18px",
-  fontWeight: "bold",
+  fontSize: "20px",
+  fontWeight: "600",
   margin: "0 0 20px",
-  fontFamily: "Poppins, Arial, sans-serif",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const detailRow = {
-  display: "flex",
-  margin: "0 0 15px",
-  alignItems: "flex-start",
+  margin: "0 0 16px",
+  display: "block",
 }
 
 const label = {
-  color: "#6b7280",
+  color: "#64748b",
   fontSize: "14px",
-  fontWeight: "bold",
-  margin: "0",
-  minWidth: "120px",
-  display: "inline-block",
+  fontWeight: "600",
+  margin: "0 0 4px",
+  display: "block",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const value = {
-  color: "#1a1a1a",
+  color: "#1e293b",
   fontSize: "16px",
   margin: "0",
-  flex: "1",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const emailLink = {
@@ -201,63 +210,68 @@ const phoneLink = {
   fontWeight: "500",
 }
 
-const messageBox = {
+const messageCard = {
   backgroundColor: "#ffffff",
-  padding: "25px",
-  borderRadius: "12px",
-  border: "2px solid #e0c3fc",
-  margin: "0 0 30px",
+  border: "1px solid #e2e8f0",
+  borderRadius: "8px",
+  padding: "24px",
+  margin: "0 0 32px",
 }
 
 const messageText = {
-  color: "#1a1a1a",
+  color: "#1e293b",
   fontSize: "16px",
-  lineHeight: "26px",
+  lineHeight: "1.6",
   margin: "0",
   whiteSpace: "pre-wrap" as const,
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const actionSection = {
   textAlign: "center" as const,
-  margin: "30px 0",
+  margin: "32px 0",
 }
 
 const reminderText = {
   color: "#7b329b",
   fontSize: "14px",
-  fontStyle: "italic",
-  margin: "0 0 20px",
+  fontWeight: "500",
+  margin: "0 0 24px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const replyButton = {
   backgroundColor: "#7b329b",
-  borderRadius: "25px",
+  borderRadius: "8px",
   color: "#ffffff",
   fontSize: "16px",
-  fontWeight: "bold",
+  fontWeight: "600",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "12px 30px",
+  padding: "14px 28px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const footer = {
-  backgroundColor: "#f8f9fa",
-  padding: "20px 30px",
+  backgroundColor: "#f8fafc",
+  padding: "40px 30px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e0c3fc",
+  borderTop: "1px solid #e2e8f0",
 }
 
 const footerText = {
-  color: "#6b7280",
-  fontSize: "12px",
-  lineHeight: "18px",
-  margin: "0 0 10px",
+  color: "#64748b",
+  fontSize: "14px",
+  lineHeight: "1.5",
+  margin: "0 0 16px",
+  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const footerLink = {
   color: "#7b329b",
   textDecoration: "none",
+  fontWeight: "500",
 }
 
 export default BusinessNotificationEmail
