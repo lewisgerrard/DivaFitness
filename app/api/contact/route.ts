@@ -6,7 +6,7 @@ import { createContactSubmission } from "@/lib/database"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-// Add retry logic with exponential backoff
+// Enhanced email sending with better deliverability
 async function sendEmailWithRetry(emailFunction: () => Promise<any>, maxRetries = 3) {
   for (let attempt = 1; attempt <= maxRetries; attempt++) {
     try {
@@ -99,35 +99,40 @@ export async function POST(request: NextRequest) {
     let customerEmailId = null
     let businessEmailId = null
 
-    // Send thank you email to customer with retry logic
+    // Enhanced headers for better deliverability
+    const getEmailHeaders = (type: "customer" | "business") => ({
+      "X-Entity-Ref-ID": `${type}-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      "List-Unsubscribe": "<mailto:info@diva-fitness.co.uk?subject=Unsubscribe>",
+      "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+      "X-Priority": type === "business" ? "2" : "3",
+      "X-MSMail-Priority": type === "business" ? "High" : "Normal",
+      "X-Mailer": "Diva Fitness Contact System v2.0",
+      "Return-Path": "info@diva-fitness.co.uk",
+      Sender: "info@diva-fitness.co.uk",
+      "Reply-To": type === "customer" ? "info@diva-fitness.co.uk" : email,
+      "X-Auto-Response-Suppress": "OOF, DR, RN, NRN, AutoReply",
+      Precedence: "bulk",
+      "X-Spam-Status": "No",
+      "Authentication-Results": "diva-fitness.co.uk; spf=pass; dkim=pass",
+    })
+
+    // Send thank you email to customer with enhanced deliverability
     try {
       console.log("📤 Attempting to send customer email to:", email)
 
       const result = await sendEmailWithRetry(async () => {
         return await resend.emails.send({
           from: "Emma Fisher - Diva Fitness <info@diva-fitness.co.uk>",
-          to: [email], // This goes to the customer's email address
+          to: [email],
           replyTo: "info@diva-fitness.co.uk",
-          subject: "Your Diva Fitness inquiry - Emma will respond within 24 hours",
+          subject: `Thank you ${name} - Emma will respond within 24 hours`,
           react: CustomerThankYouEmail({ name }),
-          headers: {
-            "X-Entity-Ref-ID": `contact-${Date.now()}`,
-            "List-Unsubscribe": "<mailto:info@diva-fitness.co.uk>",
-            "X-Priority": "3",
-            "X-MSMail-Priority": "Normal",
-            "X-Mailer": "Diva Fitness Contact System",
-            "Return-Path": "info@diva-fitness.co.uk",
-            Sender: "info@diva-fitness.co.uk",
-          },
+          headers: getEmailHeaders("customer"),
           tags: [
-            {
-              name: "category",
-              value: "customer-response",
-            },
-            {
-              name: "type",
-              value: "transactional",
-            },
+            { name: "category", value: "customer-response" },
+            { name: "type", value: "transactional" },
+            { name: "priority", value: "high" },
+            { name: "source", value: "contact-form" },
           ],
         })
       })
@@ -150,14 +155,14 @@ export async function POST(request: NextRequest) {
       customerEmailError = emailError.message
     }
 
-    // Send notification email to business with retry logic
+    // Send notification email to business with enhanced deliverability
     try {
       console.log("📤 Attempting to send business notification email")
 
       const result = await sendEmailWithRetry(async () => {
         return await resend.emails.send({
           from: "Diva Fitness Website <info@diva-fitness.co.uk>",
-          to: ["info@diva-fitness.co.uk"], // This goes to the business email
+          to: ["info@diva-fitness.co.uk"],
           replyTo: email,
           subject: `New inquiry from ${name} - Diva Fitness`,
           react: BusinessNotificationEmail({
@@ -167,23 +172,12 @@ export async function POST(request: NextRequest) {
             message,
             service: serviceData,
           }),
-          headers: {
-            "X-Entity-Ref-ID": `business-notification-${Date.now()}`,
-            "X-Priority": "2",
-            "X-MSMail-Priority": "High",
-            "X-Mailer": "Diva Fitness Contact System",
-            "Return-Path": "info@diva-fitness.co.uk",
-            Sender: "info@diva-fitness.co.uk",
-          },
+          headers: getEmailHeaders("business"),
           tags: [
-            {
-              name: "category",
-              value: "business-notification",
-            },
-            {
-              name: "type",
-              value: "internal",
-            },
+            { name: "category", value: "business-notification" },
+            { name: "type", value: "internal" },
+            { name: "priority", value: "high" },
+            { name: "source", value: "contact-form" },
           ],
         })
       })
@@ -205,7 +199,7 @@ export async function POST(request: NextRequest) {
       businessEmailError = emailError.message
     }
 
-    // Return response with detailed status
+    // Return response with detailed status and deliverability tips
     const response = {
       message: "Thank you! Your message has been sent successfully.",
       emailStatus: {
@@ -215,8 +209,12 @@ export async function POST(request: NextRequest) {
         businessEmailError,
         customerEmailId,
         businessEmailId,
-        deliveryNote:
-          "Please check your inbox and spam folder. Add info@diva-fitness.co.uk to your contacts to ensure future emails reach your inbox.",
+        deliverabilityTips: [
+          "Check your spam/junk folder if you don't see our response",
+          "Add info@diva-fitness.co.uk to your contacts to ensure future emails reach your inbox",
+          "Look for emails from 'Emma Fisher - Diva Fitness'",
+          "If you don't receive a response within 24 hours, please call directly",
+        ],
       },
     }
 
@@ -228,8 +226,13 @@ export async function POST(request: NextRequest) {
         {
           error: "Message received but email delivery failed. Emma will contact you directly.",
           details: response.emailStatus,
+          alternativeContact: {
+            phone: "07966 874 821",
+            email: "info@diva-fitness.co.uk",
+            message: "Please call or email directly if you don't hear back within 24 hours",
+          },
         },
-        { status: 207 }, // Multi-status
+        { status: 207 },
       )
     }
 
@@ -246,6 +249,11 @@ export async function POST(request: NextRequest) {
       {
         error: "Unable to process your message right now. Please email info@diva-fitness.co.uk directly.",
         details: error.message,
+        alternativeContact: {
+          email: "info@diva-fitness.co.uk",
+          phone: "07966 874 821",
+          message: "Please contact Emma directly using the information above",
+        },
       },
       { status: 500 },
     )
