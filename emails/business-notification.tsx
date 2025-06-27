@@ -5,197 +5,187 @@ interface BusinessNotificationEmailProps {
   email: string
   phone?: string
   message: string
-  service?: string
+  service: string
 }
 
-export const BusinessNotificationEmail = ({ name, email, phone, message, service }: BusinessNotificationEmailProps) => (
-  <Html>
-    <Head />
-    <Preview>New contact form submission from {name}</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        {/* Header */}
-        <Section style={header}>
-          <Img
-            src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="240"
-            height="auto"
-            alt="Diva Fitness"
-            style={logo}
-          />
-          <Heading style={h1}>New Contact Form Submission</Heading>
-        </Section>
-
-        {/* Main Content */}
-        <Section style={content}>
-          <Section style={alertBox}>
-            <Text style={alertText}>✨ You have a new potential client inquiry!</Text>
+export const BusinessNotificationEmail = ({ name, email, phone, message, service }: BusinessNotificationEmailProps) => {
+  return (
+    <Html>
+      <Head />
+      <Preview>New contact form submission from {name}</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          {/* Header */}
+          <Section style={header}>
+            <Img
+              src="https://diva-fitness.co.uk/logo-with-text.png"
+              width="200"
+              height="auto"
+              alt="Diva Fitness"
+              style={logo}
+            />
+            <Heading style={h1}>New Contact Form Submission</Heading>
           </Section>
 
-          <Section style={detailsCard}>
+          {/* Alert */}
+          <Section style={alertSection}>
+            <Text style={alertText}>✓ You have a new potential client inquiry!</Text>
+          </Section>
+
+          {/* Contact Details */}
+          <Section style={detailsSection}>
             <Heading style={h2}>Contact Details</Heading>
 
-            <Section style={detailRow}>
+            <div style={detailRow}>
               <Text style={label}>Name:</Text>
               <Text style={value}>{name}</Text>
-            </Section>
+            </div>
 
-            <Section style={detailRow}>
+            <div style={detailRow}>
               <Text style={label}>Email:</Text>
               <Text style={value}>
                 <Link href={`mailto:${email}`} style={emailLink}>
                   {email}
                 </Link>
               </Text>
-            </Section>
+            </div>
 
             {phone && (
-              <Section style={detailRow}>
+              <div style={detailRow}>
                 <Text style={label}>Phone:</Text>
                 <Text style={value}>
                   <Link href={`tel:${phone}`} style={phoneLink}>
                     {phone}
                   </Link>
                 </Text>
-              </Section>
+              </div>
             )}
 
-            {service && (
-              <Section style={detailRow}>
-                <Text style={label}>Interested In:</Text>
-                <Text style={value}>{service}</Text>
-              </Section>
-            )}
+            <div style={detailRow}>
+              <Text style={label}>Interested In:</Text>
+              <Text style={value}>{service}</Text>
+            </div>
           </Section>
 
-          <Section style={messageCard}>
+          {/* Message */}
+          <Section style={messageSection}>
             <Heading style={h2}>Message</Heading>
             <Text style={messageText}>{message}</Text>
           </Section>
 
+          {/* Action Section */}
           <Section style={actionSection}>
             <Text style={reminderText}>
-              💡 Remember to respond within 24 hours to maintain excellent customer service!
+              • Remember to respond within 24 hours to maintain our excellent customer service standards!
             </Text>
-
             <Link href={`mailto:${email}?subject=Re: Your Diva Fitness Inquiry`} style={replyButton}>
               Reply to {name}
             </Link>
           </Section>
-        </Section>
 
-        {/* Footer */}
-        <Section style={footer}>
-          <Text style={footerText}>This email was sent from the Diva Fitness contact form on your website.</Text>
-          <Text style={footerText}>
-            <Link href="https://diva-fitness.co.uk/contact" style={footerLink}>
-              View Contact Page
-            </Link>
-          </Text>
-        </Section>
-      </Container>
-    </Body>
-  </Html>
-)
+          {/* Footer */}
+          <Section style={footer}>
+            <Text style={footerText}>This email was sent from the Diva Fitness contact form on your website.</Text>
+            <Text style={footerText}>
+              <Link href="https://diva-fitness.co.uk/contact" style={footerLink}>
+                View Contact Page
+              </Link>
+            </Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
 
-// Styles matching website design
+// Styles
 const main = {
-  backgroundColor: "#ffffff",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  margin: "0",
-  padding: "0",
+  backgroundColor: "#f8f9fa",
+  fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const container = {
-  backgroundColor: "#ffffff",
   margin: "0 auto",
   padding: "0",
-  maxWidth: "600px",
-  width: "100%",
+  maxWidth: "650px",
+  backgroundColor: "#ffffff",
+  borderRadius: "12px",
+  overflow: "hidden",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+  marginBottom: "64px",
 }
 
 const header = {
-  backgroundColor: "#ffffff",
-  padding: "40px 30px 30px",
+  backgroundColor: "#7b329b",
+  padding: "30px 30px 20px",
   textAlign: "center" as const,
-  borderBottom: "1px solid #f1f5f9",
 }
 
 const logo = {
-  margin: "0 auto 24px",
-  maxWidth: "240px",
-  width: "240px",
+  margin: "0 auto 20px",
+  filter: "brightness(0) invert(1)",
+  maxWidth: "200px",
   height: "auto",
-  display: "block",
 }
 
 const h1 = {
-  color: "#7b329b",
-  fontSize: "28px",
-  fontWeight: "700",
+  color: "#ffffff",
+  fontSize: "24px",
+  fontWeight: "bold",
   textAlign: "center" as const,
   margin: "0",
-  lineHeight: "1.2",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-}
-
-const content = {
-  padding: "40px 30px",
-  backgroundColor: "#ffffff",
-}
-
-const alertBox = {
-  backgroundColor: "#f0f9ff",
-  border: "1px solid #7b329b",
-  borderRadius: "8px",
-  padding: "20px",
-  margin: "0 0 32px",
-  textAlign: "center" as const,
-}
-
-const alertText = {
-  color: "#7b329b",
-  fontSize: "18px",
-  fontWeight: "600",
-  margin: "0",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-}
-
-const detailsCard = {
-  backgroundColor: "#f8fafc",
-  border: "1px solid #e2e8f0",
-  borderRadius: "8px",
-  padding: "24px",
-  margin: "0 0 24px",
 }
 
 const h2 = {
   color: "#7b329b",
-  fontSize: "20px",
-  fontWeight: "600",
+  fontSize: "18px",
+  fontWeight: "bold",
   margin: "0 0 20px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+}
+
+const alertSection = {
+  padding: "20px 30px",
+  textAlign: "center" as const,
+}
+
+const alertText = {
+  fontSize: "18px",
+  color: "#7b329b",
+  fontWeight: "bold",
+  margin: "0",
+  padding: "15px",
+  backgroundColor: "#e0c3fc",
+  borderRadius: "8px",
+}
+
+const detailsSection = {
+  backgroundColor: "#f8f9fa",
+  padding: "25px",
+  borderRadius: "12px",
+  border: "1px solid #e0c3fc",
+  margin: "0 30px 25px",
 }
 
 const detailRow = {
-  margin: "0 0 16px",
-  display: "block",
+  display: "flex",
+  margin: "0 0 15px",
+  alignItems: "flex-start",
 }
 
 const label = {
-  color: "#64748b",
   fontSize: "14px",
-  fontWeight: "600",
-  margin: "0 0 4px",
-  display: "block",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  color: "#6b7280",
+  fontWeight: "bold",
+  margin: "0",
+  minWidth: "120px",
+  display: "inline-block",
 }
 
 const value = {
-  color: "#1e293b",
   fontSize: "16px",
+  color: "#1a1a1a",
   margin: "0",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  flex: "1",
 }
 
 const emailLink = {
@@ -210,68 +200,63 @@ const phoneLink = {
   fontWeight: "500",
 }
 
-const messageCard = {
+const messageSection = {
   backgroundColor: "#ffffff",
-  border: "1px solid #e2e8f0",
-  borderRadius: "8px",
-  padding: "24px",
-  margin: "0 0 32px",
+  padding: "25px",
+  borderRadius: "12px",
+  border: "2px solid #e0c3fc",
+  margin: "0 30px 30px",
 }
 
 const messageText = {
-  color: "#1e293b",
   fontSize: "16px",
   lineHeight: "1.6",
+  color: "#1a1a1a",
   margin: "0",
   whiteSpace: "pre-wrap" as const,
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const actionSection = {
   textAlign: "center" as const,
-  margin: "32px 0",
+  margin: "30px 0",
+  padding: "0 30px",
 }
 
 const reminderText = {
-  color: "#7b329b",
   fontSize: "14px",
-  fontWeight: "500",
-  margin: "0 0 24px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  color: "#7b329b",
+  fontStyle: "italic",
+  margin: "0 0 20px",
 }
 
 const replyButton = {
   backgroundColor: "#7b329b",
-  borderRadius: "8px",
+  borderRadius: "25px",
   color: "#ffffff",
   fontSize: "16px",
-  fontWeight: "600",
+  fontWeight: "bold",
   textDecoration: "none",
   textAlign: "center" as const,
   display: "inline-block",
-  padding: "14px 28px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  padding: "12px 30px",
 }
 
 const footer = {
-  backgroundColor: "#f8fafc",
-  padding: "40px 30px",
+  backgroundColor: "#f8f9fa",
+  padding: "20px 30px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e2e8f0",
+  borderTop: "1px solid #e0c3fc",
 }
 
 const footerText = {
-  color: "#64748b",
-  fontSize: "14px",
-  lineHeight: "1.5",
-  margin: "0 0 16px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  fontSize: "12px",
+  color: "#6b7280",
+  margin: "0 0 10px",
 }
 
 const footerLink = {
   color: "#7b329b",
   textDecoration: "none",
-  fontWeight: "500",
 }
 
 export default BusinessNotificationEmail

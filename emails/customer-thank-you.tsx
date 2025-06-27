@@ -1,165 +1,148 @@
-import { Body, Container, Head, Heading, Html, Img, Link, Preview, Section, Text } from "@react-email/components"
+import {
+  Body,
+  Container,
+  Head,
+  Heading,
+  Html,
+  Img,
+  Link,
+  Preview,
+  Section,
+  Text,
+  Button,
+} from "@react-email/components"
 
 interface CustomerThankYouEmailProps {
   name: string
 }
 
-export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
-  <Html>
-    <Head />
-    <Preview>Thank you for contacting Diva Fitness - Emma will be in touch soon!</Preview>
-    <Body style={main}>
-      <Container style={container}>
-        {/* Header with Logo */}
-        <Section style={header}>
-          <Img
-            src="https://diva-fitness.co.uk/logo-with-text.png"
-            width="240"
-            height="auto"
-            alt="Diva Fitness"
-            style={logo}
-          />
-        </Section>
-
-        {/* Main Content */}
-        <Section style={content}>
-          <Heading style={h1}>Thank You, {name}!</Heading>
-
-          <Text style={text}>
-            Thank you for reaching out to Diva Fitness. I'm thrilled that you're considering taking the next step in
-            your fitness journey!
-          </Text>
-
-          <Text style={text}>I've received your message and will personally respond within 24 hours.</Text>
-
-          <Text style={text}>
-            Every woman's fitness journey is unique, and I'm here to support you every step of the way in our beautiful
-            garden studio.
-          </Text>
-
-          <Section style={ctaSection}>
-            <Link href="https://diva-fitness.co.uk/about" style={button}>
-              Learn More About Emma
-            </Link>
+export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => {
+  return (
+    <Html>
+      <Head />
+      <Preview>Thank you for contacting Diva Fitness - Emma will be in touch soon!</Preview>
+      <Body style={main}>
+        <Container style={container}>
+          {/* Header */}
+          <Section style={header}>
+            <Img
+              src="https://diva-fitness.co.uk/logo-with-text.png"
+              width="240"
+              height="auto"
+              alt="Diva Fitness"
+              style={logo}
+            />
           </Section>
 
-          <Text style={signature}>
-            With excitement for your journey,
-            <br />
-            <strong>Emma Fisher</strong>
-            <br />
-            <span style={titleText}>Personal Trainer & Wellness Coach</span>
-          </Text>
-        </Section>
+          {/* Main Content */}
+          <Section style={content}>
+            <Heading style={h1}>Thank you for your inquiry, {name}!</Heading>
 
-        {/* Footer */}
-        <Section style={footer}>
-          <Text style={footerText}>
-            <strong>Diva Fitness</strong>
-            <br />
-            Chester, UK
-            <br />
-            Phone:{" "}
-            <Link href="tel:07966874821" style={footerLink}>
-              07966 874 821
-            </Link>
-            <br />
-            Email:{" "}
-            <Link href="mailto:info@diva-fitness.co.uk" style={footerLink}>
-              info@diva-fitness.co.uk
-            </Link>
-            <br />
-            Website:{" "}
-            <Link href="https://diva-fitness.co.uk" style={footerLink}>
-              diva-fitness.co.uk
-            </Link>
-          </Text>
+            <Text style={text}>
+              I've received your message and I'm excited to help you on your fitness journey. I'll personally review
+              your inquiry and get back to you within 24 hours.
+            </Text>
 
-          <Text style={footerText}>
-            You received this email because you contacted us through our website. If you have any questions, please
-            reply to this email or contact us at info@diva-fitness.co.uk
-          </Text>
+            <Text style={text}>
+              In the meantime, feel free to explore my website to learn more about my approach to personal training and
+              the beautiful garden studio where we'll work together.
+            </Text>
 
-          <Text style={footerText}>
-            Follow us:
-            <Link href="https://instagram.com/divafitnesschester" style={footerLink}>
-              {" "}
-              Instagram
-            </Link>{" "}
-            |
-            <Link href="https://facebook.com/DivaFitnessChester" style={footerLink}>
-              {" "}
-              Facebook
-            </Link>
-          </Text>
-        </Section>
-      </Container>
-    </Body>
-  </Html>
-)
+            <Section style={buttonContainer}>
+              <Button style={button} href="https://diva-fitness.co.uk/about">
+                Learn More About Emma
+              </Button>
+            </Section>
 
-// Styles matching website design
+            <Text style={text}>If you have any urgent questions, please don't hesitate to call me directly.</Text>
+          </Section>
+
+          {/* Footer */}
+          <Section style={footer}>
+            <Text style={footerText}>
+              <strong>Emma Fisher</strong>
+              <br />
+              Personal Trainer & Nutrition Coach
+              <br />
+              Diva Fitness
+            </Text>
+
+            <Text style={footerText}>
+              📧{" "}
+              <Link href="mailto:info@diva-fitness.co.uk" style={link}>
+                info@diva-fitness.co.uk
+              </Link>
+              <br />🌐{" "}
+              <Link href="https://diva-fitness.co.uk" style={link}>
+                diva-fitness.co.uk
+              </Link>
+            </Text>
+
+            <Text style={footerSmall}>This email was sent because you contacted Diva Fitness through our website.</Text>
+          </Section>
+        </Container>
+      </Body>
+    </Html>
+  )
+}
+
+// Styles
 const main = {
-  backgroundColor: "#ffffff",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  margin: "0",
-  padding: "0",
+  backgroundColor: "#f8f9fa",
+  fontFamily: "Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
 }
 
 const container = {
-  backgroundColor: "#ffffff",
   margin: "0 auto",
   padding: "0",
   maxWidth: "600px",
-  width: "100%",
+  backgroundColor: "#ffffff",
+  borderRadius: "12px",
+  overflow: "hidden",
+  boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
 }
 
 const header = {
   backgroundColor: "#ffffff",
   padding: "40px 30px 30px",
   textAlign: "center" as const,
-  borderBottom: "1px solid #f1f5f9",
+  borderBottom: "1px solid #e5e7eb",
 }
 
 const logo = {
   margin: "0 auto",
   maxWidth: "240px",
-  width: "240px",
   height: "auto",
-  display: "block",
 }
 
 const content = {
   padding: "40px 30px",
-  backgroundColor: "#ffffff",
 }
 
 const h1 = {
   color: "#7b329b",
-  fontSize: "32px",
-  fontWeight: "700",
+  fontSize: "28px",
+  fontWeight: "bold",
   textAlign: "center" as const,
-  margin: "0 0 32px",
-  lineHeight: "1.2",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  margin: "0 0 30px",
+  lineHeight: "1.3",
 }
 
 const text = {
-  color: "#334155",
+  color: "#374151",
   fontSize: "16px",
   lineHeight: "1.6",
-  margin: "0 0 24px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  margin: "0 0 20px",
 }
 
-const ctaSection = {
+const buttonContainer = {
   textAlign: "center" as const,
-  margin: "40px 0",
+  margin: "30px 0",
 }
 
 const button = {
   backgroundColor: "#7b329b",
-  borderRadius: "8px",
+  borderRadius: "25px",
   color: "#ffffff",
   fontSize: "16px",
   fontWeight: "600",
@@ -167,41 +150,32 @@ const button = {
   textAlign: "center" as const,
   display: "inline-block",
   padding: "14px 28px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-  transition: "background-color 0.2s ease",
-}
-
-const signature = {
-  color: "#334155",
-  fontSize: "16px",
-  lineHeight: "1.6",
-  margin: "40px 0 0",
-  textAlign: "center" as const,
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
-}
-
-const titleText = {
-  color: "#7b329b",
-  fontSize: "14px",
-  fontWeight: "500",
+  border: "none",
+  cursor: "pointer",
 }
 
 const footer = {
-  backgroundColor: "#f8fafc",
-  padding: "40px 30px",
+  backgroundColor: "#f8f9fa",
+  padding: "30px",
   textAlign: "center" as const,
-  borderTop: "1px solid #e2e8f0",
+  borderTop: "1px solid #e5e7eb",
 }
 
 const footerText = {
-  color: "#64748b",
+  color: "#6b7280",
   fontSize: "14px",
   lineHeight: "1.5",
-  margin: "0 0 16px",
-  fontFamily: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+  margin: "0 0 15px",
 }
 
-const footerLink = {
+const footerSmall = {
+  color: "#9ca3af",
+  fontSize: "12px",
+  lineHeight: "1.4",
+  margin: "20px 0 0",
+}
+
+const link = {
   color: "#7b329b",
   textDecoration: "none",
   fontWeight: "500",
