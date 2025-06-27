@@ -2,66 +2,56 @@ import { type NextRequest, NextResponse } from "next/server"
 import { Resend } from "resend"
 import { CustomerThankYouEmail } from "@/emails/customer-thank-you"
 import { BusinessNotificationEmail } from "@/emails/business-notification"
-import { sql } from "@/lib/database"
+import { neon } from "@neondatabase/serverless"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
+const sql = neon(process.env.DATABASE_URL!)
 
 export async function POST(request: NextRequest) {
-  console.log("🔄 Contact form retry API called")
+  console.log("🔄 Contact retry API called")
 
   try {
-    // Check if Resend API key is available
-    if (!process.env.RESEND_API_KEY) {
-      console.error("❌ RESEND_API_KEY not found in environment variables")
-      return NextResponse.json({ error: "Email service not configured" }, { status: 500 })
+    // Get all contact submissions from database
+    const contactSubmissions = await sql`
+      SELECT * FROM users 
+      WHERE temp_password_hash IS NOT NULL 
+      AND temp_password_hash != ''
+      ORDER BY created_at DESC
+      LIMIT 50
+    `
+
+    console.log(`📋 Found ${contactSubmissions.length} contact submissions to retry`)
+
+    if (contactSubmissions.length === 0) {
+      return NextResponse.json({
+        message: "No contact submissions found to retry",
+        results: [],
+      })
     }
 
-    // Get failed submissions from database (those with temp_password_hash indicating they're contact submissions)
-    let failedSubmissions = []
-    try {
-      if (sql) {
-        failedSubmissions = await sql`
-          SELECT * FROM users 
-          WHERE role = 'client' AND password_hash = 'temp_password_hash'
-          ORDER BY created_at DESC
-          LIMIT 50
-        `
-        console.log(`📋 Found ${failedSubmissions.length} contact submissions to retry`)
-      }
-    } catch (dbError) {
-      console.error("❌ Database query failed:", dbError)
-      return NextResponse.json({ error: "Database connection failed" }, { status: 500 })
-    }
-
-    if (failedSubmissions.length === 0) {
-      return NextResponse.json({ message: "No contact submissions found to retry" }, { status: 200 })
-    }
-
-    let successCount = 0
-    let failureCount = 0
     const results = []
 
-    for (const submission of failedSubmissions) {
-      const { first_name, last_name, email, phone } = submission
-      const fullName = `${first_name} ${last_name}`.trim()
-
-      console.log(`📤 Retrying emails for: ${fullName} (${email})`)
+    for (const submission of contactSubmissions) {
+      console.log(`🔄 Processing retry for: ${submission.name} (${submission.email})`)
 
       let customerEmailSuccess = false
       let businessEmailSuccess = false
       let customerEmailError = null
       let businessEmailError = null
 
-      // Send thank you email to customer
+      // Parse service data from temp_password_hash field
+      const serviceData = submission.temp_password_hash || ""
+
+      // Retry customer email
       try {
         const customerEmail = await resend.emails.send({
-          from: "Diva Fitness <onboarding@resend.dev>",
-          to: [email],
+          from: "Diva Fitness <noreply@diva-fitness.co.uk>",
+          to: [submission.email],
           replyTo: "info@diva-fitness.co.uk",
           subject: "Thank you for contacting Diva Fitness - Emma will be in touch soon!",
-          react: CustomerThankYouEmail({ name: fullName }),
+          react: CustomerThankYouEmail({ name: submission.name }),
           headers: {
-            "X-Entity-Ref-ID": `contact-retry-${Date.now()}-${submission.id}`,
+            "X-Entity-Ref-ID": `retry-contact-${Date.now()}`,
             "List-Unsubscribe": "<mailto:info@diva-fitness.co.uk>",
           },
           tags: [
@@ -72,35 +62,29 @@ export async function POST(request: NextRequest) {
           ],
         })
 
-        console.log("✅ Customer email sent successfully:", {
-          id: customerEmail.data?.id,
-          to: email,
-        })
         customerEmailSuccess = true
-      } catch (emailError: any) {
-        console.error("❌ Customer email failed:", {
-          error: emailError.message,
-          to: email,
-        })
-        customerEmailError = emailError.message
+        console.log(`✅ Customer retry email sent: ${customerEmail.data?.id}`)
+      } catch (error: any) {
+        customerEmailError = error.message
+        console.error(`❌ Customer retry email failed:`, error.message)
       }
 
-      // Send notification email to business
+      // Retry business email
       try {
         const businessEmail = await resend.emails.send({
-          from: "Diva Fitness Contact Form <onboarding@resend.dev>",
+          from: "Diva Fitness Contact Form <contact@diva-fitness.co.uk>",
           to: ["info@diva-fitness.co.uk"],
-          replyTo: email,
-          subject: `Contact Form Submission (Retry) from ${fullName}`,
+          replyTo: submission.email,
+          subject: `[RETRY] New Contact Form Submission from ${submission.name}`,
           react: BusinessNotificationEmail({
-            name: fullName,
-            email,
-            phone: phone || undefined,
-            message: "This is a retry of a previous contact form submission. Original message may not be available.",
-            service: "Contact form retry",
+            name: submission.name,
+            email: submission.email,
+            phone: submission.phone || undefined,
+            message: submission.bio || "No message provided",
+            service: serviceData,
           }),
           headers: {
-            "X-Entity-Ref-ID": `business-notification-retry-${Date.now()}-${submission.id}`,
+            "X-Entity-Ref-ID": `retry-business-notification-${Date.now()}`,
           },
           tags: [
             {
@@ -110,61 +94,47 @@ export async function POST(request: NextRequest) {
           ],
         })
 
-        console.log("✅ Business email sent successfully:", {
-          id: businessEmail.data?.id,
-          to: "info@diva-fitness.co.uk",
-        })
         businessEmailSuccess = true
-      } catch (emailError: any) {
-        console.error("❌ Business email failed:", {
-          error: emailError.message,
-        })
-        businessEmailError = emailError.message
+        console.log(`✅ Business retry email sent: ${businessEmail.data?.id}`)
+      } catch (error: any) {
+        businessEmailError = error.message
+        console.error(`❌ Business retry email failed:`, error.message)
       }
 
-      const result = {
-        submissionId: submission.id,
-        name: fullName,
-        email,
-        customerEmailSuccess,
-        businessEmailSuccess,
+      results.push({
+        id: submission.id,
+        name: submission.name,
+        email: submission.email,
+        customerEmail: customerEmailSuccess ? "sent" : "failed",
+        businessEmail: businessEmailSuccess ? "sent" : "failed",
         customerEmailError,
         businessEmailError,
-      }
+      })
 
-      results.push(result)
-
-      if (customerEmailSuccess || businessEmailSuccess) {
-        successCount++
-      } else {
-        failureCount++
-      }
-
-      // Add a small delay between emails to avoid rate limiting
-      await new Promise((resolve) => setTimeout(resolve, 100))
+      // Small delay between emails to avoid rate limiting
+      await new Promise((resolve) => setTimeout(resolve, 1000))
     }
 
-    const response = {
-      message: `Retry completed. ${successCount} successful, ${failureCount} failed.`,
-      totalProcessed: failedSubmissions.length,
-      successCount,
-      failureCount,
+    const summary = {
+      total: results.length,
+      customerEmailsSent: results.filter((r) => r.customerEmail === "sent").length,
+      businessEmailsSent: results.filter((r) => r.businessEmail === "sent").length,
+      customerEmailsFailed: results.filter((r) => r.customerEmail === "failed").length,
+      businessEmailsFailed: results.filter((r) => r.businessEmail === "failed").length,
+    }
+
+    console.log("📊 Retry summary:", summary)
+
+    return NextResponse.json({
+      message: "Email retry completed",
+      summary,
       results,
-    }
-
-    console.log("📊 Retry results:", response)
-
-    return NextResponse.json(response, { status: 200 })
-  } catch (error: any) {
-    console.error("❌ Contact form retry critical error:", {
-      message: error.message,
-      stack: error.stack,
-      error,
     })
-
+  } catch (error: any) {
+    console.error("❌ Retry API error:", error)
     return NextResponse.json(
       {
-        error: "Failed to retry contact form submissions",
+        error: "Failed to retry emails",
         details: error.message,
       },
       { status: 500 },
