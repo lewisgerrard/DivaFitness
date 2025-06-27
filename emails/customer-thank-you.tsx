@@ -30,11 +30,8 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => (
             your fitness journey!
           </Text>
 
-          <Text style={text}>
-            I've received your message and will personally respond within 24 hours.
-          </Text>
+          <Text style={text}>I've received your message and will personally respond within 24 hours.</Text>
 
-        
           <Text style={text}>
             Every woman's fitness journey is unique, and I'm here to support you every step of the way in our beautiful
             garden studio.
@@ -150,22 +147,6 @@ const text = {
   fontSize: "16px",
   lineHeight: "26px",
   margin: "0 0 20px",
-}
-
-const bulletPoints = {
-  margin: "30px 0",
-  padding: "20px",
-  backgroundColor: "#e0c3fc",
-  borderRadius: "12px",
-  border: "1px solid #d4b3f7",
-}
-
-const bulletPoint = {
-  color: "#7b329b",
-  fontSize: "16px",
-  lineHeight: "26px",
-  margin: "0 0 10px",
-  fontWeight: "500",
 }
 
 const ctaSection = {
