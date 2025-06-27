@@ -255,7 +255,12 @@ export default function TrainingPage() {
 
                     <div className="pt-6">
                       <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
-                        <Link href="/contact" className="flex items-center gap-2">
+                        <Link
+                          href="https://www.bookwhen.com/divafitness"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2"
+                        >
                           Book Now
                           <ArrowRight className="w-4 h-4" />
                         </Link>
@@ -326,7 +331,7 @@ export default function TrainingPage() {
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg" asChild>
+              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg bg-transparent" asChild>
                 <Link href="/nutrition" className="flex items-center gap-2">
                   View Nutrition Services
                   <ArrowRight className="w-5 h-5" />
