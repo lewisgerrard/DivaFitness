@@ -256,7 +256,11 @@ export default function TrainingPage() {
                     <div className="pt-6">
                       <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
                         <Link
-                          href="https://www.bookwhen.com/divafitness"
+                          href={
+                            service.id === "group-training"
+                              ? "https://www.bookwhen.com/divafitness"
+                              : "https://www.bookwhen.com/divafitness"
+                          }
                           target="_blank"
                           rel="noopener noreferrer"
                           className="flex items-center gap-2"
