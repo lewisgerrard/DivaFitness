@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Textarea } from "@/components/ui/textarea"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Send, CheckCircle, AlertCircle } from "lucide-react"
@@ -17,7 +16,7 @@ interface ContactFormData {
   name: string
   email: string
   phone: string
-  service: string
+  service: string[]
   message: string
 }
 
@@ -26,7 +25,7 @@ export function ContactForm() {
     name: "",
     email: "",
     phone: "",
-    service: "",
+    service: [],
     message: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -38,10 +37,6 @@ export function ContactForm() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
-  }
-
-  const handleSelectChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, service: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -67,7 +62,7 @@ export function ContactForm() {
           name: "",
           email: "",
           phone: "",
-          service: "",
+          service: [],
           message: "",
         })
       } else {
@@ -103,7 +98,7 @@ export function ContactForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-secondary font-medium">
                 Full Name *
@@ -136,7 +131,7 @@ export function ContactForm() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="phone" className="text-secondary font-medium">
                 Phone Number
@@ -153,21 +148,37 @@ export function ContactForm() {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="service" className="text-secondary font-medium">
-                Service Interest
-              </Label>
-              <Select value={formData.service} onValueChange={handleSelectChange}>
-                <SelectTrigger className="border-primary/20 focus:border-primary">
-                  <SelectValue placeholder="Select a service" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="free-consultation">Free Consultation</SelectItem>
-                  <SelectItem value="1-to-1-training">1-to-1 Personal Training</SelectItem>
-                  <SelectItem value="group-training">Group Training</SelectItem>
-                  <SelectItem value="nutrition-coaching">Nutrition Coaching</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
+              <Label className="text-secondary font-medium">Service Interest (select all that apply)</Label>
+              <div className="space-y-3 p-4 border border-primary/20 rounded-md">
+                {[
+                  { value: "book-consultation", label: "Book Consultation" },
+                  { value: "1-to-1-training", label: "1:1 Personal Training" },
+                  { value: "group-training", label: "Group Training" },
+                  { value: "nutrition-coaching", label: "Nutrition Coaching" },
+                  { value: "other", label: "Other" },
+                ].map((service) => (
+                  <div key={service.value} className="flex items-center space-x-2">
+                    <input
+                      type="checkbox"
+                      id={service.value}
+                      checked={formData.service.includes(service.value)}
+                      onChange={(e) => {
+                        const isChecked = e.target.checked
+                        setFormData((prev) => ({
+                          ...prev,
+                          service: isChecked
+                            ? [...prev.service, service.value]
+                            : prev.service.filter((s) => s !== service.value),
+                        }))
+                      }}
+                      className="w-4 h-4 text-primary bg-gray-100 border-gray-300 rounded focus:ring-primary focus:ring-2"
+                    />
+                    <Label htmlFor={service.value} className="text-sm font-normal cursor-pointer">
+                      {service.label}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
 
