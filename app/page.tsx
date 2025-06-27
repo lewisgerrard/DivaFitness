@@ -41,7 +41,7 @@ export default function HomePage() {
         subtitle="Fitness Journey"
         description="Experience personalised training in a stunning garden studio designed exclusively for your privacy and comfort."
         primaryButtonText="Start Your Journey"
-        primaryButtonHref="/services"
+        primaryButtonHref="/contact"
         secondaryButtonText="Meet Emma"
         secondaryButtonHref="/about"
         tertiaryButtonText="Get In Touch"

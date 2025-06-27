@@ -1,5 +1,6 @@
-import { MapPin } from "lucide-react"
+import { MapPin, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 interface MapSectionProps {
   title?: string
@@ -7,6 +8,13 @@ interface MapSectionProps {
   mapUrl?: string
   directionsUrl?: string
   className?: string
+}
+
+// Update the component to include multiple map options
+const getDirectionsUrls = {
+  google: "https://www.google.com/maps/dir/?api=1&destination=Diva+Fitness+Chester+UK",
+  apple: "http://maps.apple.com/?daddr=Diva+Fitness+Chester+UK",
+  waze: "https://waze.com/ul?q=Diva+Fitness+Chester+UK",
 }
 
 export default function MapSection({
@@ -40,17 +48,58 @@ export default function MapSection({
       <div className="text-center">
         <h3 className="font-heading text-lg font-bold text-secondary mb-2">Visit the Studio</h3>
         <p className="text-muted-foreground text-sm mb-4">{description}</p>
-        <Button asChild size="sm" className="bg-primary hover:bg-primary-dark rounded-full w-full">
-          <a
-            href={directionsUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2"
-          >
-            <MapPin className="w-4 h-4" />
-            Get Directions
-          </a>
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button size="sm" className="bg-primary hover:bg-primary-dark rounded-full w-full">
+              <div className="flex items-center justify-center gap-2">
+                <MapPin className="w-4 h-4" />
+                Get Directions
+                <ChevronDown className="w-4 h-4" />
+              </div>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="center" className="w-48">
+            <DropdownMenuItem asChild>
+              <a
+                href={getDirectionsUrls.google}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <div className="w-4 h-4 bg-blue-500 rounded-sm flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">G</span>
+                </div>
+                Google Maps
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a
+                href={getDirectionsUrls.apple}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <div className="w-4 h-4 bg-gray-800 rounded-sm flex items-center justify-center">
+                  <span className="text-white text-xs">🍎</span>
+                </div>
+                Apple Maps
+              </a>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <a
+                href={getDirectionsUrls.waze}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-2 cursor-pointer"
+              >
+                <div className="w-4 h-4 bg-blue-400 rounded-sm flex items-center justify-center">
+                  <span className="text-white text-xs font-bold">W</span>
+                </div>
+                Waze
+              </a>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </div>
   )
