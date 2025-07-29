@@ -101,11 +101,11 @@ export default function TrainingPage() {
           <ul className="space-y-3">
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Tuesdays – 17:30 & 19:00</span>
+              <span className="text-gray-700">Tuesdays – 17:30</span>
             </li>
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Thursday – 17:30 & 19:00</span>
+              <span className="text-gray-700">Thursday – 17:30</span>
             </li>
           </ul>
           <div className="bg-primary/10 rounded-xl p-4">
@@ -151,9 +151,9 @@ export default function TrainingPage() {
     {
       id: "studio-hire",
       title: "Hire My Studio",
-      shortDescription: "Private studio hire for personal trainers or clients wanting space.",
+      shortDescription: "Private studio hire for clients wanting a space to train.",
       description:
-        "Looking for a private place to train? The studio is availible for private hire for partners, friends or just for you.",
+        "Looking for a private place to train? The studio is available for private hire for partners, friends or just for you.",
       icon: Home,
       image: "/images/studio-exterior-cropped.jpg",
       price: "£20",
