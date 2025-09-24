@@ -62,7 +62,7 @@ export async function POST(request: NextRequest) {
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
             <div style="text-align: center; margin-bottom: 30px;">
-              <img src="https://diva-fitness.co.uk/logo-with-text.png" alt="Diva Fitness" style="max-width: 200px; height: auto;">
+              <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/design-mode-images/logo-with-text%281%29-y21tljMm8iXRg4m1EHTd3GttPq5kjO.png" alt="Diva Fitness" style="max-width: 200px; height: auto;">
             </div>
             <h1 style="color: #7b329b; text-align: center;">Email Test Successful!</h1>
             <p style="font-size: 16px; line-height: 1.6; color: #333;">

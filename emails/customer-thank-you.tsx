@@ -26,7 +26,7 @@ export const CustomerThankYouEmail = ({ name }: CustomerThankYouEmailProps) => {
           {/* Header */}
           <Section style={header}>
             <Img
-              src="https://diva-fitness.co.uk/logo-with-text.png"
+              src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/design-mode-images/logo-with-text%281%29-y21tljMm8iXRg4m1EHTd3GttPq5kjO.png"
               width="240"
               height="auto"
               alt="Diva Fitness"
