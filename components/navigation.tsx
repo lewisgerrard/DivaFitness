@@ -2,35 +2,15 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X, User, LogOut } from "lucide-react"
+import { Menu, X } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { useAuth } from "@/hooks/use-auth"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import Image from "next/image"
 import { usePathname } from "next/navigation"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
   const [servicesOpen, setServicesOpen] = useState(false)
-  const { user, logout } = useAuth()
   const pathname = usePathname()
-
-  const navItems = [
-    { href: "/", label: "Home" },
-    { href: "/about", label: "About" },
-    { href: "/faqs", label: "FAQs" },
-  ]
-
-  const handleLogout = async () => {
-    await logout()
-    window.location.href = "/"
-  }
 
   return (
     <nav className="sticky top-0 z-50 border-b border-gray-200" style={{ backgroundColor: "#fefcff" }}>
@@ -52,7 +32,6 @@ export function Navigation() {
           {/* Desktop Navigation - Right Side */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
-              {/* Render Home and About */}
               <Link
                 href="/"
                 className={`transition-colors duration-200 font-medium text-sm ${
@@ -110,7 +89,6 @@ export function Navigation() {
                 )}
               </div>
 
-              {/* Render FAQs */}
               <Link
                 href="/faqs"
                 className={`transition-colors duration-200 font-medium text-sm ${
@@ -121,33 +99,9 @@ export function Navigation() {
               </Link>
             </div>
 
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" size="sm" className="bg-primary text-white hover:bg-primary/90 font-medium">
-                    <User className="w-4 h-4 mr-2" />
-                    {user.first_name || (user.name ? user.name.split(" ")[0] : user.email?.split("@")[0] || "User")}
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent align="end" className="w-48">
-                  <DropdownMenuItem asChild>
-                    <Link href="/dashboard" className="flex items-center">
-                      <User className="w-4 h-4 mr-2" />
-                      Dashboard
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} className="flex items-center text-red-600">
-                    <LogOut className="w-4 h-4 mr-2" />
-                    Logout
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <Button asChild size="sm" className="bg-primary text-white hover:bg-primary/90 font-semibold">
-                <Link href="/contact">Book Consultation</Link>
-              </Button>
-            )}
+            <Button asChild size="sm" className="bg-primary text-white hover:bg-primary/90 font-semibold">
+              <Link href="/contact">Book Consultation</Link>
+            </Button>
           </div>
 
           {/* Mobile menu button */}
@@ -168,7 +122,6 @@ export function Navigation() {
               className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200"
               style={{ backgroundColor: "#fefcff" }}
             >
-              {/* Mobile Navigation Items */}
               <Link
                 href="/"
                 className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
@@ -212,34 +165,9 @@ export function Navigation() {
               </Link>
 
               <div className="px-3 py-2">
-                {user ? (
-                  <div className="space-y-2">
-                    <Link
-                      href="/profile"
-                      className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
-                    >
-                      My Profile
-                    </Link>
-                    {user.role === "admin" && (
-                      <Link
-                        href="/admin"
-                        className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
-                      >
-                        Admin Panel
-                      </Link>
-                    )}
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-left px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors text-sm"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                ) : (
-                  <Button asChild size="sm" className="w-full bg-primary text-white hover:bg-primary/90 font-semibold">
-                    <Link href="/contact">Book Consultation</Link>
-                  </Button>
-                )}
+                <Button asChild size="sm" className="w-full bg-primary text-white hover:bg-primary/90 font-semibold">
+                  <Link href="/contact">Book Consultation</Link>
+                </Button>
               </div>
             </div>
           </div>

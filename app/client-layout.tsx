@@ -1,39 +1,28 @@
 "use client"
 
 import type React from "react"
-import { Poppins, Roboto } from "next/font/google"
+
+import { ThemeProvider } from "@/components/theme-provider"
+import { Toaster } from "@/components/ui/toaster"
+import { AuthProvider } from "@/hooks/use-auth"
 import Navigation from "@/components/navigation"
 import Footer from "@/components/footer"
-import { AuthProvider } from "@/hooks/use-auth"
-import { usePathname } from "next/navigation"
-
-const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-heading",
-})
-
-const roboto = Roboto({
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-  variable: "--font-body",
-})
 
 export default function ClientLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  const pathname = usePathname()
-  const isLoginPage = pathname === "/login"
-
   return (
-    <div className={`${poppins.variable} ${roboto.variable} font-body bg-white text-secondary`}>
+    <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
       <AuthProvider>
-        <Navigation />
-        <main>{children}</main>
-        {!isLoginPage && <Footer />}
+        <div className="min-h-screen flex flex-col">
+          <Navigation />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </div>
+        <Toaster />
       </AuthProvider>
-    </div>
+    </ThemeProvider>
   )
 }

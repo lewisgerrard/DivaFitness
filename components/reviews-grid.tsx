@@ -1,92 +1,63 @@
-"use client"
-
 import { Card, CardContent } from "@/components/ui/card"
 import { Star } from "lucide-react"
 
-const reviews = [
-  {
-    id: 1,
-    name: "Sarah Johnson",
-    rating: 5,
-    comment:
-      "Emma has completely transformed my approach to fitness. Her personalized training sessions are challenging yet achievable, and I've seen incredible results in just 3 months!",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 2,
-    name: "Michelle Davis",
-    rating: 5,
-    comment:
-      "The nutrition guidance combined with the training has been life-changing. Emma really understands how to work with women's bodies and hormones.",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 3,
-    name: "Lisa Thompson",
-    rating: 5,
-    comment:
-      "I love the supportive environment at Diva Fitness. Emma makes every session enjoyable while pushing me to reach my goals. Highly recommend!",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 4,
-    name: "Rachel Green",
-    rating: 5,
-    comment:
-      "After struggling with fitness for years, Emma helped me find a sustainable routine. The results speak for themselves - I feel stronger and more confident than ever.",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 5,
-    name: "Amanda Wilson",
-    rating: 5,
-    comment:
-      "The group training sessions are fantastic! Great energy, supportive community, and Emma's expertise shines through in every workout.",
-    image: "/placeholder-user.jpg",
-  },
-  {
-    id: 6,
-    name: "Jennifer Brown",
-    rating: 5,
-    comment:
-      "Emma's holistic approach to fitness and nutrition has helped me achieve goals I never thought possible. Professional, knowledgeable, and truly caring.",
-    image: "/placeholder-user.jpg",
-  },
-]
+export default function ReviewsGrid() {
+  const reviews = [
+    {
+      name: "Sarah M.",
+      rating: 5,
+      text: "Emma has completely transformed my relationship with fitness. Her approach is so encouraging and she really listens to what you need. I've never felt stronger or more confident!",
+      achievement: "Lost 2 stone and gained confidence",
+    },
+    {
+      name: "Jennifer L.",
+      rating: 5,
+      text: "The nutrition coaching has been life-changing. Emma helped me understand how to fuel my body properly without restrictive dieting. I have so much more energy now!",
+      achievement: "Improved energy and health markers",
+    },
+    {
+      name: "Michelle R.",
+      rating: 5,
+      text: "As someone who was intimidated by gyms, Emma made me feel so comfortable. Her studio is welcoming and she's incredibly knowledgeable. Best decision I've made for my health!",
+      achievement: "Overcame gym anxiety and built strength",
+    },
+    {
+      name: "Lisa K.",
+      rating: 5,
+      text: "Emma's holistic approach to fitness and wellness is exactly what I needed. She doesn't just focus on exercise but helps with mindset and lifestyle changes too.",
+      achievement: "Achieved work-life balance and fitness goals",
+    },
+  ]
 
-function StarRating({ rating }: { rating: number }) {
   return (
-    <div className="flex space-x-1">
-      {[...Array(5)].map((_, i) => (
-        <Star key={i} className={`w-4 h-4 ${i < rating ? "fill-yellow-400 text-yellow-400" : "text-gray-300"}`} />
-      ))}
-    </div>
-  )
-}
+    <div className="space-y-12">
+      <div className="text-center">
+        <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Real Results from Real Women</h2>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          Don't just take our word for it. Here's what our clients have to say about their transformation journeys.
+        </p>
+      </div>
 
-export function ReviewsGrid() {
-  return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {reviews.map((review) => (
-        <Card key={review.id} className="h-full">
-          <CardContent className="p-6">
-            <div className="flex items-center space-x-4 mb-4">
-              <img
-                src={review.image || "/placeholder.svg"}
-                alt={review.name}
-                className="w-12 h-12 rounded-full object-cover"
-              />
-              <div>
-                <h4 className="font-semibold text-secondary">{review.name}</h4>
-                <StarRating rating={review.rating} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {reviews.map((review, index) => (
+          <Card key={index} className="h-full hover:shadow-lg transition-shadow duration-300">
+            <CardContent className="p-6 space-y-4">
+              <div className="flex items-center gap-1">
+                {[...Array(review.rating)].map((_, i) => (
+                  <Star key={i} className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                ))}
               </div>
-            </div>
-            <p className="text-gray-600 leading-relaxed">{review.comment}</p>
-          </CardContent>
-        </Card>
-      ))}
+
+              <blockquote className="text-gray-700 italic">"{review.text}"</blockquote>
+
+              <div className="border-t pt-4">
+                <div className="font-semibold text-gray-900">{review.name}</div>
+                <div className="text-sm text-primary font-medium">{review.achievement}</div>
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }
-
-export default ReviewsGrid
