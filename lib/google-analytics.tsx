@@ -3,11 +3,8 @@
 import Script from "next/script"
 
 export default function GoogleAnalytics() {
-  const GA_ID = process.env.NEXT_PUBLIC_GA_ID
-
-  if (!GA_ID) {
-    return null
-  }
+  // Use the hardcoded GA ID from the analytics.ts file
+  const GA_ID = "G-XL637GHGS1"
 
   return (
     <>
