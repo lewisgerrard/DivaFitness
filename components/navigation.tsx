@@ -25,7 +25,6 @@ export function Navigation() {
     { href: "/", label: "Home" },
     { href: "/about", label: "About" },
     { href: "/faqs", label: "FAQs" },
-    { href: "/contact", label: "Contact" },
   ]
 
   const handleLogout = async () => {
@@ -111,7 +110,7 @@ export function Navigation() {
                 )}
               </div>
 
-              {/* Render FAQs and Contact */}
+              {/* Render FAQs */}
               <Link
                 href="/faqs"
                 className={`transition-colors duration-200 font-medium text-sm ${
@@ -119,14 +118,6 @@ export function Navigation() {
                 }`}
               >
                 FAQs
-              </Link>
-              <Link
-                href="/contact"
-                className={`transition-colors duration-200 font-medium text-sm ${
-                  pathname === "/contact" ? "text-primary" : "text-secondary/80 hover:text-secondary"
-                }`}
-              >
-                Contact
               </Link>
             </div>
 
@@ -154,7 +145,7 @@ export function Navigation() {
               </DropdownMenu>
             ) : (
               <Button asChild size="sm" className="bg-primary text-white hover:bg-primary/90 font-semibold">
-                <Link href="/login">Login</Link>
+                <Link href="/contact">Book Consultation</Link>
               </Button>
             )}
           </div>
@@ -219,13 +210,7 @@ export function Navigation() {
               >
                 FAQs
               </Link>
-              <Link
-                href="/contact"
-                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
-                onClick={() => setIsOpen(false)}
-              >
-                Contact
-              </Link>
+
               <div className="px-3 py-2">
                 {user ? (
                   <div className="space-y-2">
@@ -252,7 +237,7 @@ export function Navigation() {
                   </div>
                 ) : (
                   <Button asChild size="sm" className="w-full bg-primary text-white hover:bg-primary/90 font-semibold">
-                    <Link href="/login">Login</Link>
+                    <Link href="/contact">Book Consultation</Link>
                   </Button>
                 )}
               </div>

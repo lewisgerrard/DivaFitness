@@ -4,6 +4,7 @@ import Link from "next/link"
 import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { brandClasses, brandKit } from "@/lib/brand-kit"
+import Image from "next/image"
 
 interface HeroHomeProps {
   title: string
@@ -36,27 +37,34 @@ export function HeroHome({
   stats,
 }: HeroHomeProps) {
   return (
-    <section
-      className={`${brandKit.components.hero.container} min-h-screen bg-cover bg-center bg-no-repeat relative`}
-      style={{
-        backgroundImage: "url('/images/studio-exterior-full.jpg')",
-      }}
-    >
-      {/* Overlay */}
-      <div className="absolute inset-0 bg-black/30" />
+    <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
+      {/* Background Image */}
+      <div className="absolute inset-0">
+        <Image
+          src="/images/studio-exterior-full.jpg"
+          alt="Diva Fitness Studio Exterior"
+          fill
+          priority
+          className="object-cover"
+          sizes="100vw"
+          quality={85}
+        />
+        <div className="absolute inset-0 bg-black/40" />
+      </div>
 
-      <div className={`${brandKit.components.hero.content} relative z-10`}>
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-4 text-center text-white">
         <div className={brandKit.components.hero.badge}>
           <Sparkles className="w-4 h-4" />
           <span className="text-sm font-medium">{badge || title}</span>
         </div>
 
-        <h1 className={brandClasses.heroTitle}>
+        <h1 className={`${brandClasses.heroTitle} text-white`}>
           {title}
-          {subtitle && <span className={brandKit.components.hero.subtitle}>{subtitle}</span>}
+          {subtitle && <span className={`${brandKit.components.hero.subtitle} text-white`}>{subtitle}</span>}
         </h1>
 
-        <p className={brandClasses.heroDescription}>{description}</p>
+        <p className={`${brandClasses.heroDescription} text-white/90 max-w-2xl mx-auto`}>{description}</p>
 
         {(primaryButtonText || secondaryButtonText || tertiaryButtonText) && (
           <div className={brandKit.components.hero.buttonContainer}>
@@ -70,7 +78,12 @@ export function HeroHome({
             )}
 
             {secondaryButtonText && secondaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
+              <Button
+                asChild
+                size="lg"
+                variant="outline"
+                className="bg-transparent border-white text-white hover:bg-white hover:text-black"
+              >
                 <Link href={secondaryButtonHref} className="flex items-center gap-2 justify-center">
                   {secondaryButtonText}
                   <ArrowRight className="w-4 h-4" />
@@ -79,7 +92,7 @@ export function HeroHome({
             )}
 
             {tertiaryButtonText && tertiaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
+              <Button asChild size="lg" variant="ghost" className="text-white hover:bg-white/10">
                 <Link href={tertiaryButtonHref} className="flex items-center gap-2 justify-center">
                   {tertiaryButtonText}
                   <ArrowRight className="w-4 h-4" />

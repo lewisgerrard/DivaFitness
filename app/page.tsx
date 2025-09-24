@@ -37,8 +37,8 @@ export default function HomePage() {
   return (
     <div className="min-h-screen">
       <HeroHome
-        title="Transform Your"
-        subtitle="Fitness Journey"
+        title="Fully Qualified Female"
+        subtitle="Personal Trainer in Chester"
         description="Experience personalised training in a stunning garden studio designed exclusively for your privacy and comfort."
         primaryButtonText="Start Your Journey"
         primaryButtonHref="/contact"

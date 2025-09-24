@@ -1,10 +1,12 @@
 import { type NextRequest, NextResponse } from "next/server"
 import { jwtVerify } from "jose"
 import { createUser } from "@/lib/auth"
-import { sql } from "@/lib/database"
+import { neon } from "@neondatabase/serverless"
+import jwt from "jsonwebtoken"
 
 const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
 const secret = new TextEncoder().encode(JWT_SECRET)
+const sql = neon(process.env.DATABASE_URL!)
 
 export async function POST(request: NextRequest) {
   console.log("=== Create user API called ===")
@@ -109,13 +111,29 @@ export async function POST(request: NextRequest) {
 }
 
 export async function GET(request: NextRequest) {
-  return NextResponse.json(
-    {
-      message: "This is an API endpoint. Use POST to create users.",
-      endpoints: {
-        POST: "/api/admin/clients - Create a new user",
-      },
-    },
-    { status: 200 },
-  )
+  try {
+    const authHeader = request.headers.get("authorization")
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+
+    if (decoded.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    }
+
+    const clients = await sql`
+      SELECT id, first_name, last_name, email, phone, status, created_at, address, date_of_birth
+      FROM users 
+      WHERE role = 'client'
+      ORDER BY created_at DESC
+    `
+
+    return NextResponse.json({ clients })
+  } catch (error) {
+    console.error("Error fetching clients:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+  }
 }

@@ -1,30 +1,32 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { jwtVerify } from "jose"
-import { getContactSubmissions } from "@/lib/database"
+import { neon } from "@neondatabase/serverless"
+import jwt from "jsonwebtoken"
 
-// Force dynamic rendering
-export const dynamic = "force-dynamic"
-
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
+const sql = neon(process.env.DATABASE_URL!)
 
 export async function GET(request: NextRequest) {
   try {
-    const token = request.cookies.get("auth-token")?.value
-
-    if (!token) {
-      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
+    const authHeader = request.headers.get("authorization")
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { payload } = await jwtVerify(token, secret)
+    const token = authHeader.split(" ")[1]
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
 
-    if (payload.role !== "admin") {
-      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
+    if (decoded.role !== "admin") {
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
     }
 
-    const submissions = await getContactSubmissions()
+    const submissions = await sql`
+      SELECT id, name, email, phone, message, status, created_at
+      FROM contact_submissions 
+      ORDER BY created_at DESC
+    `
+
     return NextResponse.json({ submissions })
   } catch (error) {
-    console.error("Get contact submissions error:", error)
-    return NextResponse.json({ error: "Failed to fetch submissions" }, { status: 500 })
+    console.error("Error fetching contact submissions:", error)
+    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }
