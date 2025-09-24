@@ -1,12 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
-import { Toaster } from "@/components/ui/toaster"
-import { AuthProvider } from "@/hooks/use-auth"
-import Navigation from "@/components/navigation"
-import Footer from "@/components/footer"
 import Script from "next/script"
+import ClientLayout from "./ClientLayout"
 import "./globals.css"
 
 const inter = Inter({ subsets: ["latin"] })
@@ -28,14 +24,7 @@ export default function RootLayout({
         <link rel="icon" href="/logo-icon.png" />
       </head>
       <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem={false} disableTransitionOnChange>
-          <AuthProvider>
-            <Navigation />
-            <main>{children}</main>
-            <Footer />
-            <Toaster />
-          </AuthProvider>
-        </ThemeProvider>
+        <ClientLayout>{children}</ClientLayout>
 
         {/* Google Analytics */}
         {process.env.NEXT_PUBLIC_GA_ID && (
