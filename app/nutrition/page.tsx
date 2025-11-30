@@ -1,8 +1,9 @@
 "use client"
 import Link from "next/link"
 import Image from "next/image"
-import { ArrowRight, Check, Apple, BookOpen } from "lucide-react"
+import { ArrowRight, Check, CreditCard, Clock, Apple, BookOpen } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import HeroPage from "@/components/hero-page"
 
 export default function NutritionPage() {
@@ -73,6 +74,13 @@ export default function NutritionPage() {
     },
   ]
 
+  const scrollToService = (serviceId: string) => {
+    const element = document.getElementById(serviceId)
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth", block: "start" })
+    }
+  }
+
   return (
     <div className="min-h-screen bg-[#fefcff]">
       {/* Hero Section */}
@@ -113,6 +121,15 @@ export default function NutritionPage() {
                     </div>
 
                     {service.content && <div className="mt-8">{service.content}</div>}
+
+                    <div className="pt-6">
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
+                        <Link href="/contact" className="flex items-center gap-2">
+                          Book Now
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
+                    </div>
                   </div>
 
                   <div className={`relative ${index % 2 === 1 ? "lg:order-1" : ""}`}>
@@ -129,6 +146,119 @@ export default function NutritionPage() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Nutrition Benefits Section */}
+      <section className="py-16 bg-[#fefcff]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <div className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Why Nutrition Matters</h2>
+              <p className="text-lg text-gray-600">
+                Proper nutrition is the foundation of any successful fitness journey. Here's how my approach helps:
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8">
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Sustainable Habits</h3>
+                    <p className="text-gray-600">
+                      Build lasting eating habits that fit your lifestyle, not restrictive diets.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Personalized Approach</h3>
+                    <p className="text-gray-600">
+                      Tailored nutrition plans based on your goals, preferences, and lifestyle.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Education Focus</h3>
+                    <p className="text-gray-600">
+                      Learn the 'why' behind nutrition choices to make informed decisions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="space-y-8">
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Practical Solutions</h3>
+                    <p className="text-gray-600">
+                      Real-world strategies that work with busy schedules and family life.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Ongoing Support</h3>
+                    <p className="text-gray-600">Continuous guidance and adjustments as your needs change.</p>
+                  </div>
+                </div>
+                <div className="flex items-start gap-4">
+                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0">
+                    <Check className="w-6 h-6 text-primary" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-bold text-gray-900 mb-3">Holistic Wellness</h3>
+                    <p className="text-gray-600">Focus on overall health, not just weight loss or muscle gain.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Payment Details */}
+      <section className="py-12 bg-[#fefcff]">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto">
+            <Card className="border-0 shadow-lg">
+              <CardContent className="p-8">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6 text-center">Payment Information</h3>
+                <div className="grid md:grid-cols-3 gap-6">
+                  <div className="text-center">
+                    <Clock className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Quick Payment</h4>
+                    <p className="text-sm text-gray-600">Sessions must be paid for within 24 hours</p>
+                  </div>
+                  <div className="text-center">
+                    <CreditCard className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Flexible Options</h4>
+                    <p className="text-sm text-gray-600">Payment via bank transfer or card</p>
+                  </div>
+                  <div className="text-center">
+                    <Check className="w-8 h-8 text-primary mx-auto mb-3" />
+                    <h4 className="font-semibold text-gray-900 mb-2">Convenient</h4>
+                    <p className="text-sm text-gray-600">Card payments available in person or by link</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
           </div>
         </div>
       </section>
@@ -150,7 +280,7 @@ export default function NutritionPage() {
                   <ArrowRight className="w-5 h-5" />
                 </Link>
               </Button>
-              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg bg-transparent" asChild>
+              <Button size="lg" variant="outline" className="rounded-xl px-8 py-6 text-lg" asChild>
                 <Link href="/training" className="flex items-center gap-2">
                   View Training Services
                   <ArrowRight className="w-5 h-5" />

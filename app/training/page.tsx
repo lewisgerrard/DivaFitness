@@ -87,7 +87,7 @@ export default function TrainingPage() {
     },
     {
       id: "group-training",
-      title: "Small Group Training",
+      title: "Train Together, Change Together",
       shortDescription: "Affordable training with built-in accountability in a supportive environment.",
       description:
         "Affordable training with built-in accountability. Train with like-minded women in a supportive small group environment.",
@@ -101,11 +101,11 @@ export default function TrainingPage() {
           <ul className="space-y-3">
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Tuesday: 18:00 - 19:00</span>
+              <span className="text-gray-700">Tuesdays – 17:30</span>
             </li>
             <li className="flex items-center gap-3">
               <Clock className="w-5 h-5 text-primary" />
-              <span className="text-gray-700">Thursday: 18:00 - 19:00</span>
+              <span className="text-gray-700">Thursday – 17:30</span>
             </li>
           </ul>
           <div className="bg-primary/10 rounded-xl p-4">
@@ -153,13 +153,17 @@ export default function TrainingPage() {
       title: "Hire My Studio",
       shortDescription: "Private studio hire for clients wanting a space to train.",
       description:
-        "Looking for a private place to train? The studio is available for private hire for partners, friends or just for you. Perfect for clients who want private access to professional fitness equipment and space.",
+        "Looking for a private place to train? The studio is available for private hire for partners, friends or just for you.",
       icon: Home,
       image: "/images/studio-exterior-cropped.jpg",
-      price: "£15 / 45 mins",
+      price: "£20",
       duration: "60 mins",
       content: (
         <div className="space-y-4">
+          <p className="text-gray-700">
+            Perfect for personal trainers or clients who want private access to professional fitness equipment and
+            space.
+          </p>
           <div className="bg-primary/10 rounded-xl p-4">
             <p className="text-primary font-medium">Available: 07:00–20:00 daily</p>
           </div>
@@ -250,19 +254,21 @@ export default function TrainingPage() {
                     {service.content && <div className="mt-8">{service.content}</div>}
 
                     <div className="pt-6">
-                      {service.id === "group-training" ? (
-                        <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
-                          <Link
-                            href="https://www.bookwhen.com/divafitness"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center gap-2"
-                          >
-                            Book Now
-                            <ArrowRight className="w-4 h-4" />
-                          </Link>
-                        </Button>
-                      ) : null}
+                      <Button size="lg" className="bg-primary hover:bg-primary/90 rounded-xl px-8" asChild>
+                        <Link
+                          href={
+                            service.id === "group-training"
+                              ? "https://www.bookwhen.com/divafitness"
+                              : "https://www.bookwhen.com/divafitness"
+                          }
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex items-center gap-2"
+                        >
+                          Book Now
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
                     </div>
                   </div>
 

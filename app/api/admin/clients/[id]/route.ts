@@ -1,114 +1,125 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { neon } from "@neondatabase/serverless"
-import jwt from "jsonwebtoken"
+import { jwtVerify } from "jose"
+import { sql } from "@/lib/database"
 
-const sql = neon(process.env.DATABASE_URL!)
+const secret = new TextEncoder().encode(process.env.JWT_SECRET || "your-secret-key")
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const token = request.cookies.get("auth-token")?.value
+
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+    const { payload } = await jwtVerify(token, secret)
 
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
-    const clientId = params.id
+    const id = Number.parseInt(params.id)
 
-    const client = await sql`
-      SELECT id, first_name, last_name, email, phone, role, status, created_at, address, date_of_birth
-      FROM users 
-      WHERE id = ${clientId} AND role = 'client'
+    // Get client by ID
+    const result = await sql`
+      SELECT * FROM clients 
+      WHERE id = ${id}
     `
 
-    if (client.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json({ error: "Client not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ client: client[0] })
+    const client = result[0]
+
+    return NextResponse.json({ client })
   } catch (error) {
-    console.error("Error fetching client:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Get client error:", error)
+    return NextResponse.json({ error: "Failed to fetch client" }, { status: 500 })
   }
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const token = request.cookies.get("auth-token")?.value
+
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+    const { payload } = await jwtVerify(token, secret)
 
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
-    const clientId = params.id
+    const id = Number.parseInt(params.id)
     const body = await request.json()
+    const { name, email, phone, service_interest, status, notes } = body
 
-    const updatedClient = await sql`
-      UPDATE users 
+    // Validate required fields
+    if (!name || !email) {
+      return NextResponse.json({ error: "Name and email are required" }, { status: 400 })
+    }
+
+    // Update client in the database
+    const result = await sql`
+      UPDATE clients 
       SET 
-        first_name = COALESCE(${body.first_name}, first_name),
-        last_name = COALESCE(${body.last_name}, last_name),
-        email = COALESCE(${body.email}, email),
-        phone = COALESCE(${body.phone}, phone),
-        status = COALESCE(${body.status}, status),
-        address = COALESCE(${body.address}, address),
-        date_of_birth = COALESCE(${body.date_of_birth}, date_of_birth),
-        updated_at = NOW()
-      WHERE id = ${clientId} AND role = 'client'
-      RETURNING id, first_name, last_name, email, phone, status, created_at, address, date_of_birth
+        name = ${name}, 
+        email = ${email}, 
+        phone = ${phone || null}, 
+        service_interest = ${service_interest || null}, 
+        status = ${status || "active"}, 
+        notes = ${notes || null},
+        updated_at = CURRENT_TIMESTAMP
+      WHERE id = ${id}
+      RETURNING *
     `
 
-    if (updatedClient.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json({ error: "Client not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ client: updatedClient[0] })
+    const client = result[0]
+
+    return NextResponse.json({ client })
   } catch (error) {
-    console.error("Error updating client:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Update client error:", error)
+    return NextResponse.json({ error: "Failed to update client" }, { status: 500 })
   }
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
-    const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const token = request.cookies.get("auth-token")?.value
+
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
+    const { payload } = await jwtVerify(token, secret)
 
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Admin access required" }, { status: 403 })
     }
 
-    const clientId = params.id
+    const id = Number.parseInt(params.id)
 
-    const deletedClient = await sql`
-      DELETE FROM users 
-      WHERE id = ${clientId} AND role = 'client'
+    // Delete client from the database
+    const result = await sql`
+      DELETE FROM clients 
+      WHERE id = ${id}
       RETURNING id
     `
 
-    if (deletedClient.length === 0) {
+    if (result.length === 0) {
       return NextResponse.json({ error: "Client not found" }, { status: 404 })
     }
 
     return NextResponse.json({ message: "Client deleted successfully" })
   } catch (error) {
-    console.error("Error deleting client:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Delete client error:", error)
+    return NextResponse.json({ error: "Failed to delete client" }, { status: 500 })
   }
 }

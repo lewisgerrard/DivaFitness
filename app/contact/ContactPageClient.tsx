@@ -1,9 +1,15 @@
 "use client"
+import type { Metadata } from "next"
 
 import Container from "@/components/container"
 import Section from "@/components/section"
 import { ContactForm } from "@/components/contact-form"
 import HeroPage from "@/components/hero-page"
+
+export const metadata: Metadata = {
+  title: "Contact",
+  description: "Contact Emma at Diva Fitness",
+}
 
 const ContactPageClient = () => {
   return (

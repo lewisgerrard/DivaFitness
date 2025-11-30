@@ -2,178 +2,66 @@
 
 import { useState } from "react"
 import Link from "next/link"
-import { Menu, X } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import Image from "next/image"
-import { usePathname } from "next/navigation"
+import { Menu } from "lucide-react"
+import { Button } from "@/components/ui/button"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+
+const navigationItems = [
+  { name: "Home", href: "/" },
+  { name: "About", href: "/about" },
+  { name: "Training", href: "/training" },
+  { name: "Nutrition", href: "/nutrition" },
+  { name: "FAQs", href: "/faqs" },
+  { name: "Contact", href: "/contact" },
+]
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const [servicesOpen, setServicesOpen] = useState(false)
-  const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-gray-200" style={{ backgroundColor: "#fefcff" }}>
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
-          {/* Logo - Left Side */}
-          <Link href="/" className="flex items-center space-x-3">
-            <Image
-              src="/diva-logo-fitness.png"
-              alt="Diva Fitness"
-              width={40}
-              height={40}
-              className="h-10 w-10"
-              priority
-            />
-            <span className="font-heading font-bold text-xl text-secondary">Diva Fitness</span>
-          </Link>
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="container flex h-16 items-center justify-between">
+        {/* Logo */}
+        <Link href="/" className="flex items-center space-x-2">
+          <Image src="/images/diva-logo.png" alt="Diva Fitness" width={40} height={40} className="h-10 w-10" />
+          <span className="text-xl font-bold text-primary">Diva Fitness</span>
+        </Link>
 
-          {/* Desktop Navigation - Right Side */}
-          <div className="hidden md:flex items-center space-x-8">
-            <div className="flex space-x-6">
-              <Link
-                href="/"
-                className={`transition-colors duration-200 font-medium text-sm ${
-                  pathname === "/" ? "text-primary" : "text-secondary/80 hover:text-secondary"
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                className={`transition-colors duration-200 font-medium text-sm ${
-                  pathname === "/about" ? "text-primary" : "text-secondary/80 hover:text-secondary"
-                }`}
-              >
-                About
-              </Link>
-
-              {/* Services Dropdown */}
-              <div className="relative">
-                <button
-                  onClick={() => setServicesOpen(!servicesOpen)}
-                  className={`transition-colors duration-200 font-medium text-sm flex items-center ${
-                    pathname === "/training" || pathname === "/nutrition"
-                      ? "text-primary"
-                      : "text-secondary/80 hover:text-secondary"
-                  }`}
-                  onBlur={(e) => {
-                    if (!e.currentTarget.contains(e.relatedTarget)) {
-                      setTimeout(() => setServicesOpen(false), 150)
-                    }
-                  }}
-                >
-                  Services
-                  <svg className="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                  </svg>
-                </button>
-                {servicesOpen && (
-                  <div className="absolute top-full left-0 mt-1 w-40 bg-white border border-gray-200 rounded-md shadow-lg z-50">
-                    <Link
-                      href="/training"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                      onClick={() => setServicesOpen(false)}
-                    >
-                      Training
-                    </Link>
-                    <Link
-                      href="/nutrition"
-                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
-                      onClick={() => setServicesOpen(false)}
-                    >
-                      Nutrition
-                    </Link>
-                  </div>
-                )}
-              </div>
-
-              <Link
-                href="/faqs"
-                className={`transition-colors duration-200 font-medium text-sm ${
-                  pathname === "/faqs" ? "text-primary" : "text-secondary/80 hover:text-secondary"
-                }`}
-              >
-                FAQs
-              </Link>
-            </div>
-
-            <Button asChild size="sm" className="bg-primary text-white hover:bg-primary/90 font-semibold">
-              <Link href="/contact">Book Consultation</Link>
-            </Button>
-          </div>
-
-          {/* Mobile menu button */}
-          <div className="md:hidden">
-            <button
-              onClick={() => setIsOpen(!isOpen)}
-              className="text-secondary hover:text-secondary/80 transition-colors"
-            >
-              {isOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
-          </div>
-        </div>
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center space-x-8">
+          {navigationItems.map((item) => (
+            <Link key={item.name} href={item.href} className="text-sm font-medium transition-colors hover:text-primary">
+              {item.name}
+            </Link>
+          ))}
+        </nav>
 
         {/* Mobile Navigation */}
-        {isOpen && (
-          <div className="md:hidden">
-            <div
-              className="px-2 pt-2 pb-3 space-y-1 sm:px-3 border-t border-gray-200"
-              style={{ backgroundColor: "#fefcff" }}
-            >
-              <Link
-                href="/"
-                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
-                onClick={() => setIsOpen(false)}
-              >
-                Home
-              </Link>
-              <Link
-                href="/about"
-                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
-                onClick={() => setIsOpen(false)}
-              >
-                About
-              </Link>
-
-              {/* Mobile Services Links */}
-              <div className="px-3 py-1">
-                <div className="text-xs font-semibold text-gray-500 uppercase tracking-wide mb-2">Services</div>
+        <Sheet open={isOpen} onOpenChange={setIsOpen}>
+          <SheetTrigger asChild className="md:hidden">
+            <Button variant="ghost" size="icon">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[300px] sm:w-[400px]">
+            <div className="flex flex-col space-y-4 mt-8">
+              {navigationItems.map((item) => (
                 <Link
-                  href="/training"
-                  className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
+                  key={item.name}
+                  href={item.href}
+                  className="text-lg font-medium transition-colors hover:text-primary"
                   onClick={() => setIsOpen(false)}
                 >
-                  Training
+                  {item.name}
                 </Link>
-                <Link
-                  href="/nutrition"
-                  className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
-                  onClick={() => setIsOpen(false)}
-                >
-                  Nutrition
-                </Link>
-              </div>
-
-              <Link
-                href="/faqs"
-                className="block px-3 py-2 text-secondary/80 hover:text-secondary hover:bg-gray-100 rounded-md transition-colors duration-200 text-sm"
-                onClick={() => setIsOpen(false)}
-              >
-                FAQs
-              </Link>
-
-              <div className="px-3 py-2">
-                <Button asChild size="sm" className="w-full bg-primary text-white hover:bg-primary/90 font-semibold">
-                  <Link href="/contact">Book Consultation</Link>
-                </Button>
-              </div>
+              ))}
             </div>
-          </div>
-        )}
+          </SheetContent>
+        </Sheet>
       </div>
-    </nav>
+    </header>
   )
 }
 

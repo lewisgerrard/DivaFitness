@@ -1,118 +1,127 @@
 "use client"
 
-import Link from "next/link"
-import { ArrowRight, Sparkles } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { brandClasses, brandKit } from "@/lib/brand-kit"
+import { Card, CardContent } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Star, Award, MapPin } from "lucide-react"
 import Image from "next/image"
+import Link from "next/link"
 
-interface HeroHomeProps {
-  title: string
-  subtitle?: string
-  description: string
-  primaryButtonText?: string
-  primaryButtonHref?: string
-  secondaryButtonText?: string
-  secondaryButtonHref?: string
-  tertiaryButtonText?: string
-  tertiaryButtonHref?: string
-  badge?: string
-  stats?: Array<{
-    value: string
-    label: string
-  }>
-}
-
-export function HeroHome({
-  title,
-  subtitle,
-  description,
-  primaryButtonText,
-  primaryButtonHref,
-  secondaryButtonText,
-  secondaryButtonHref,
-  tertiaryButtonText,
-  tertiaryButtonHref,
-  badge,
-  stats,
-}: HeroHomeProps) {
+export function HeroHome() {
   return (
-    <section className="min-h-screen relative flex items-center justify-center overflow-hidden">
-      {/* Background Image */}
-      <div className="absolute inset-0">
-        <Image
-          src="/images/studio-exterior-full.jpg"
-          alt="Diva Fitness Studio Exterior"
-          fill
-          priority
-          className="object-cover"
-          sizes="100vw"
-          quality={85}
-        />
-        <div className="absolute inset-0 bg-black/40" />
-      </div>
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-pink-50 via-white to-purple-50">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 bg-[url('/placeholder.svg?height=800&width=800')] opacity-5" />
 
-      {/* Content */}
-      <div className="relative z-10 container mx-auto px-4 text-center text-white">
-        <div className={brandKit.components.hero.badge}>
-          <Sparkles className="w-4 h-4" />
-          <span className="text-sm font-medium">{badge || title}</span>
-        </div>
+      {/* Floating Elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 bg-pink-200 rounded-full opacity-20 animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-32 h-32 bg-purple-200 rounded-full opacity-20 animate-pulse delay-1000" />
 
-        <h1 className={`${brandClasses.heroTitle} text-white`}>
-          {title}
-          {subtitle && <span className={`${brandKit.components.hero.subtitle} text-white`}>{subtitle}</span>}
-        </h1>
+      <div className="container mx-auto px-4 py-20">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <Badge variant="secondary" className="bg-pink-100 text-pink-800 hover:bg-pink-200">
+                <Award className="w-4 h-4 mr-2" />
+                8+ Years Experience
+              </Badge>
 
-        <p className={`${brandClasses.heroDescription} text-white/90 max-w-2xl mx-auto`}>{description}</p>
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+                Transform Your{" "}
+                <span className="bg-gradient-to-r from-pink-600 to-purple-600 bg-clip-text text-transparent">
+                  Fitness Journey
+                </span>
+              </h1>
 
-        {(primaryButtonText || secondaryButtonText || tertiaryButtonText) && (
-          <div className={brandKit.components.hero.buttonContainer}>
-            {primaryButtonText && primaryButtonHref && (
-              <Button asChild size="lg" className={brandKit.components.hero.button}>
-                <Link href={primaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {primaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-              </Button>
-            )}
+              <p className="text-xl text-muted-foreground max-w-lg">
+                Experience personalised training in a stunning garden studio designed exclusively for your privacy and
+                comfort. Specialist in female fitness with proven results.
+              </p>
+            </div>
 
-            {secondaryButtonText && secondaryButtonHref && (
+            {/* Stats */}
+            <div className="flex flex-wrap gap-6">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-pink-600">200+</div>
+                <div className="text-sm text-muted-foreground">Happy Clients</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-purple-600">8+</div>
+                <div className="text-sm text-muted-foreground">Years Experience</div>
+              </div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-pink-600">95%</div>
+                <div className="text-sm text-muted-foreground">Success Rate</div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4">
               <Button
                 asChild
                 size="lg"
-                variant="outline"
-                className="bg-transparent border-white text-white hover:bg-white hover:text-black"
+                className="bg-gradient-to-r from-pink-600 to-purple-600 hover:from-pink-700 hover:to-purple-700"
               >
-                <Link href={secondaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {secondaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                <Link href="/contact">Start Your Journey</Link>
               </Button>
-            )}
-
-            {tertiaryButtonText && tertiaryButtonHref && (
-              <Button asChild size="lg" variant="ghost" className="text-white hover:bg-white/10">
-                <Link href={tertiaryButtonHref} className="flex items-center gap-2 justify-center">
-                  {tertiaryButtonText}
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+              <Button asChild variant="outline" size="lg">
+                <Link href="/about">Learn More</Link>
               </Button>
-            )}
-          </div>
-        )}
+            </div>
 
-        {/* Stats for home page */}
-        {stats && stats.length > 0 && (
-          <div className="flex items-center justify-center gap-8 mt-8">
-            {stats.map((stat, index) => (
-              <div key={index} className="text-center">
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-sm text-white/80">{stat.label}</div>
+            {/* Trust Indicators */}
+            <div className="flex items-center gap-4 pt-4">
+              <div className="flex items-center gap-1">
+                {[...Array(5)].map((_, i) => (
+                  <Star key={i} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                ))}
               </div>
-            ))}
+              <span className="text-sm text-muted-foreground">5.0 from 50+ reviews</span>
+            </div>
           </div>
-        )}
+
+          {/* Right Content - Image and Floating Card */}
+          <div className="relative">
+            <div className="relative">
+              <Image
+                src="/images/studio-emma-sitting.jpg"
+                alt="Emma Fisher - Personal Trainer"
+                width={600}
+                height={700}
+                className="rounded-2xl shadow-2xl"
+                priority
+              />
+
+              {/* Floating Review Card */}
+              <Card className="absolute -bottom-6 -left-6 w-80 shadow-xl bg-white/95 backdrop-blur">
+                <CardContent className="p-4">
+                  <div className="flex items-start gap-3">
+                    <Image src="/placeholder-user.jpg" alt="Client" width={40} height={40} className="rounded-full" />
+                    <div className="flex-1">
+                      <div className="flex items-center gap-1 mb-1">
+                        {[...Array(5)].map((_, i) => (
+                          <Star key={i} className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+                        ))}
+                      </div>
+                      <p className="text-sm text-muted-foreground">
+                        "Emma transformed my fitness journey completely. The private studio setting made all the
+                        difference!"
+                      </p>
+                      <p className="text-xs font-medium mt-1">- Sarah M.</p>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Location Badge */}
+            <Badge className="absolute top-4 right-4 bg-white/90 text-gray-800 hover:bg-white">
+              <MapPin className="w-3 h-3 mr-1" />
+              Wickford, Essex
+            </Badge>
+          </div>
+        </div>
       </div>
     </section>
   )

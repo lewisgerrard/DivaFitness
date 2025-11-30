@@ -1,114 +1,122 @@
 import { type NextRequest, NextResponse } from "next/server"
-import { neon } from "@neondatabase/serverless"
-import jwt from "jsonwebtoken"
+import { jwtVerify } from "jose"
+import { getUserById, updateUser, deleteUser } from "@/lib/auth"
 
-const sql = neon(process.env.DATABASE_URL!)
+// Force dynamic rendering
+export const dynamic = "force-dynamic"
+
+const JWT_SECRET = process.env.JWT_SECRET || "your-secret-key"
+const secret = new TextEncoder().encode(JWT_SECRET)
 
 export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const cookieToken = request.cookies.get("auth-token")?.value
+
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
-
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const userId = params.id
+    const { payload } = await jwtVerify(token, secret)
 
-    const user = await sql`
-      SELECT id, first_name, last_name, email, phone, role, status, created_at, address, date_of_birth
-      FROM users 
-      WHERE id = ${userId}
-    `
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
 
-    if (user.length === 0) {
+    const userId = Number.parseInt(params.id)
+    const user = await getUserById(userId)
+
+    if (!user) {
       return NextResponse.json({ error: "User not found" }, { status: 404 })
     }
 
-    return NextResponse.json({ user: user[0] })
+    return NextResponse.json({ user })
   } catch (error) {
-    console.error("Error fetching user:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Get user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
 
 export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const cookieToken = request.cookies.get("auth-token")?.value
+
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
-
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const userId = params.id
-    const body = await request.json()
+    const { payload } = await jwtVerify(token, secret)
 
-    const updatedUser = await sql`
-      UPDATE users 
-      SET 
-        first_name = COALESCE(${body.first_name}, first_name),
-        last_name = COALESCE(${body.last_name}, last_name),
-        email = COALESCE(${body.email}, email),
-        phone = COALESCE(${body.phone}, phone),
-        status = COALESCE(${body.status}, status),
-        address = COALESCE(${body.address}, address),
-        date_of_birth = COALESCE(${body.date_of_birth}, date_of_birth),
-        updated_at = NOW()
-      WHERE id = ${userId}
-      RETURNING id, first_name, last_name, email, phone, role, status, created_at, address, date_of_birth
-    `
-
-    if (updatedUser.length === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
     }
 
-    return NextResponse.json({ user: updatedUser[0] })
+    const userId = Number.parseInt(params.id)
+    const updateData = await request.json()
+
+    const updatedUser = await updateUser(userId, updateData)
+
+    if (!updatedUser) {
+      return NextResponse.json({ error: "Failed to update user" }, { status: 400 })
+    }
+
+    return NextResponse.json({ user: updatedUser })
   } catch (error) {
-    console.error("Error updating user:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Update user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }
 
 export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
   try {
     const authHeader = request.headers.get("authorization")
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    const cookieToken = request.cookies.get("auth-token")?.value
+
+    let token = null
+
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      token = authHeader.substring(7)
+    } else if (cookieToken) {
+      token = cookieToken
     }
 
-    const token = authHeader.split(" ")[1]
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any
-
-    if (decoded.role !== "admin") {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 })
+    if (!token) {
+      return NextResponse.json({ error: "Not authenticated" }, { status: 401 })
     }
 
-    const userId = params.id
+    const { payload } = await jwtVerify(token, secret)
 
-    const deletedUser = await sql`
-      DELETE FROM users 
-      WHERE id = ${userId}
-      RETURNING id
-    `
+    if (payload.role !== "admin") {
+      return NextResponse.json({ error: "Not authorized" }, { status: 403 })
+    }
 
-    if (deletedUser.length === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 })
+    const userId = Number.parseInt(params.id)
+    const success = await deleteUser(userId)
+
+    if (!success) {
+      return NextResponse.json({ error: "Failed to delete user" }, { status: 400 })
     }
 
     return NextResponse.json({ message: "User deleted successfully" })
   } catch (error) {
-    console.error("Error deleting user:", error)
-    return NextResponse.json({ error: "Internal server error" }, { status: 500 })
+    console.error("Delete user API error:", error)
+    return NextResponse.json({ error: "Server error" }, { status: 500 })
   }
 }

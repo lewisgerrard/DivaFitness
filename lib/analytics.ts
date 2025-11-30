@@ -1,8 +1,7 @@
-// Google Analytics helper functions
-// Use the hardcoded GA ID or empty string if not needed
-export const GA_TRACKING_ID = "G-XL637GHGS1" // Hardcoded, no env var needed
+// Google Analytics configuration
+export const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GA_ID || ""
 
-// Track page views
+// Log page views
 export const pageview = (url: string) => {
   if (typeof window !== "undefined" && window.gtag) {
     window.gtag("config", GA_TRACKING_ID, {
@@ -11,7 +10,7 @@ export const pageview = (url: string) => {
   }
 }
 
-// Track custom events
+// Log specific events
 export const event = ({
   action,
   category,
@@ -30,31 +29,4 @@ export const event = ({
       value: value,
     })
   }
-}
-
-// Track contact form submissions
-export const trackContactForm = () => {
-  event({
-    action: "submit",
-    category: "Contact",
-    label: "Contact Form",
-  })
-}
-
-// Track service page visits
-export const trackServiceView = (service: string) => {
-  event({
-    action: "view",
-    category: "Services",
-    label: service,
-  })
-}
-
-// Track booking button clicks
-export const trackBookingClick = (service: string) => {
-  event({
-    action: "click",
-    category: "Booking",
-    label: service,
-  })
 }
